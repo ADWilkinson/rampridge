@@ -433,7 +433,13 @@ export async function fetchPayeeHandle(platform: BuyPlatformId, payeeDetailsHash
   return (await fetchPayee(platform, payeeDetailsHash))?.handle ?? null;
 }
 
-async function ensureGas(client: Zkp2pClient, sender: TxSender): Promise<void> {
+/** A wallet that pays its own gas has none. */
+const NO_GAS = "Your wallet needs a little ETH on Base to pay gas.";
+/** The same, before an order exists: an email or Google login gets a wallet whose gas the bank sponsors. */
+export const NO_GAS_NEW_ORDER =
+  "Your wallet has no ETH on Base to pay gas. Add a little and try again, or log in with email or Google, where the bank pays gas.";
+
+async function ensureGas(client: Zkp2pClient, sender: TxSender, message = NO_GAS): Promise<void> {
   if (sender.sponsored) return;
   let balance: bigint;
   try {
@@ -442,7 +448,7 @@ async function ensureGas(client: Zkp2pClient, sender: TxSender): Promise<void> {
     return;
   }
   if (balance === 0n) {
-    throw new BuyFlowError("insufficient_gas", "Your wallet needs a little ETH on Base to pay gas.", true);
+    throw new BuyFlowError("insufficient_gas", message, true);
   }
 }
 
@@ -515,7 +521,7 @@ function prepareSignal(client: Zkp2pClient, sender: TxSender, quote: BuyQuote, w
  * intent could not be read; every other error means no intent was created.
  */
 export async function signalBuyIntent(client: Zkp2pClient, sender: TxSender, quote: BuyQuote): Promise<SignalResult> {
-  await ensureGas(client, sender);
+  await ensureGas(client, sender, NO_GAS_NEW_ORDER);
   const withReferrerFee = quote.fees.referrer > 0n;
   let prepared = await prepareSignal(client, sender, quote, withReferrerFee);
   let call = decodeSignalCall(prepared.data);

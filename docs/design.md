@@ -138,7 +138,10 @@ dollars as the stack size and show exact cents on hover/examine).
   short address), rate, fees, and USDC received. Fees are itemised on
   every buy confirm screen: Peer's fee and the RampRidge fee (0.5%), both
   already taken from the USDC shown. "Confirm offer" signals the
-  intent (wallet prompt or sponsored, invisible gas).
+  intent (wallet prompt or sponsored, invisible gas). A wallet that pays its
+  own gas and has no ETH on Base is stopped before anything is sent: add a
+  little and try again, or log in with email or Google, where the bank pays
+  gas.
 - **Proving needs a computer**: on a browser that can't run the Peer
   extension (a phone, an iPad, Safari, Firefox) and doesn't already have it,
   the buy screen says in red, before any order exists: "To finish, you must
