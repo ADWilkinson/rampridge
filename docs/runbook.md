@@ -327,6 +327,14 @@ Launch: `meta/worlds` 14 and `meta/roomCap` 2000, `meta/worldCap` unset
 reach their 70% soft fill (140 each) at 1,960, so nobody is crowded into a
 full world before the ceiling.
 
+Now (since 2026-10-12, left running for fun at the lowest cost):
+`meta/worlds` 3, `meta/worldCap` 100 and `meta/roomCap` 100. Arrivals fill
+World 301 to 70 before 302 gets anyone, so a full bank costs about $0.90 an
+hour at most, and an ordinary day with a handful of players stays inside
+Firebase's free allowance. The prune cron runs hourly, since heartbeats do
+the frequent sweeps. Before sending a crowd (a post, a stream), raise
+`meta/roomCap` and `meta/worlds` as the table above allows.
+
 - **Cost**: opening worlds never adds cost by itself: an empty world sends
   nothing, and arrivals fill the busiest world below 140 before the next
   gets anyone. Once players spill over, more open worlds are cheaper than
@@ -347,7 +355,7 @@ full world before the ceiling.
 - **Emergency brake**: lower `meta/roomCap` (or `meta/worldCap`). It stops new
   joins at once; nobody already inside is removed.
 - The counts are soft. Each world's count (`meta/worldPop/{id}`) is recounted
-  by the light prune about every 30 s (and by the per-minute cron) and moved
+  by the light prune about every 30 s (and by the hourly cron) and moved
   in between by server-side increments on every arrival, hop and leave, so a
   burst of joins can overshoot a cap by the few that read the same counts.
 - Where each player stands is `presence/{pid}` (server only): one record per

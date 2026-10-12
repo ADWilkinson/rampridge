@@ -131,7 +131,7 @@ docs/         design.md (product spec), runbook.md (operations)
   heartbeat that rewrites `ls` only once it is 20 s old (every other
   heartbeat, so about every 30 s). A player whose `ls` is 60 s old is gone:
   clients stop drawing them, and the light prune (run by heartbeats at most
-  every 30 s, and by the per-minute cron) deletes them.
+  every 30 s, and by the hourly cron) deletes them.
 - World limits, because every player downloads every other player's updates
   in their world (traffic grows with the square of a world): `meta/worlds`
   (open worlds, default 3), `meta/worldCap` (players per world, default 200)

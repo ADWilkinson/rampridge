@@ -130,7 +130,7 @@
   "crons": [
     {
       "path": "/api/cron/prune",
-      "schedule": "* * * * *"
+      "schedule": "0 * * * *"
     }
   ]
 }
