@@ -574,6 +574,12 @@ wallet with no gas, a send whose outcome is not known yet.
 
 ## Accessibility and robustness
 
+- The page opts out of browser translation (`translate="no"` and Google's
+  `notranslate`). Chrome's translator swaps the text nodes React renders for
+  its own, and React then crashes the first time it removes one: on the
+  payment scroll that is the rules tick, right after an order is placed.
+  Another language would need its own strings in the app, not the browser's.
+
 - All interfaces work with keyboard (Esc closes, Enter confirms, Tab moves).
   An irreversible confirm (Send's review) answers only to its own button.
 - Focus rings visible on interface buttons.

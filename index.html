@@ -1,7 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" translate="no">
   <head>
     <meta charset="UTF-8" />
+    <!-- Browser translation rewrites text nodes React owns and crashes the app mid-trade (src/app/translation.test.ts). -->
+    <meta name="google" content="notranslate" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
     <title>RampRidge: the Varrock bank, but it trades real USDC</title>
     <meta name="description" content="Walk into Varrock West Bank and buy or sell USDC for Revolut, Venmo, Wise and more with real players. Every trade settles on Base through Peer." />
