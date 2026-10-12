@@ -1,0 +1,14 @@
+# Link previews (X, Meta, Slack, Discord and others) fetch /t/{id}, /api/share and /api/og,
+# so those stay open to every crawler.
+User-agent: *
+Allow: /
+Allow: /t/
+Allow: /api/share
+Allow: /api/og
+Disallow: /api/act
+Disallow: /api/session
+Disallow: /api/wallet
+Disallow: /api/market
+Disallow: /api/cron/
+
+Sitemap: https://www.rampridge.xyz/sitemap.xml

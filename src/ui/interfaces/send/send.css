@@ -1,0 +1,368 @@
+/*
+ * Send and Receive interfaces. Built on the kit's Window, buttons and scroll
+ * area; this sheet only lays them out, in the client's colours (orange
+ * labels, white values, yellow while waiting, green done, red problems).
+ * Inputs use the 16px RuneScape font, so phones never zoom into them, and on
+ * touch screens every control is at least 44px tall.
+ */
+
+/*
+ * Legibility on the stone (#483e33 under the texture). The client's red
+ * (#ff0000) is about 2.5:1 there and its grey (#9f9f9f) 3.8:1, so in these
+ * windows quiet text uses a lighter warm grey (4.7:1 or better), and red only
+ * ever sits on a dark well (about 4.9:1): .sd-alert for a message,
+ * .sd-alert--note for a field's error, .sd-alert--inline inside a line.
+ */
+.sd-window {
+  --sd-quiet: #b8b0a0;
+  --sd-well: rgba(0, 0, 0, 0.78);
+}
+.sd-window .rs-c-grey {
+  color: var(--sd-quiet);
+}
+.sd-alert {
+  max-width: 100%;
+  padding: 3px 7px 4px;
+  background: var(--sd-well);
+  border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px #3d362c;
+}
+.sd-alert--inline {
+  padding: 0 4px;
+  border: 0;
+  box-shadow: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+/* A field's error under it: a thin band, only a few pixels taller than the note it replaces. */
+.sd-alert--note {
+  display: block;
+  padding: 1px 6px 2px;
+}
+
+.sd-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  text-align: center;
+  line-height: 16px;
+}
+
+.sd-body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 4px 6px 6px;
+}
+.sd-scroll {
+  flex: 1;
+  min-height: 0;
+}
+.sd-foot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px 12px;
+  padding-top: 6px;
+  border-top: 1px solid #000;
+}
+
+.sd-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+}
+.sd-row--center {
+  justify-content: center;
+}
+.sd-inline {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+}
+
+.sd-window .rs-btn {
+  min-width: 64px;
+}
+
+/* ---------- Form ------------------------------------------------------------ */
+
+.sd-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 6px 8px 4px;
+}
+.sd-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+.sd-input {
+  width: 100%;
+  min-width: 0;
+  height: 26px;
+  padding: 0 6px;
+  color: var(--rs-white);
+  text-shadow: var(--rs-shadow);
+  caret-color: var(--rs-yellow);
+  background: linear-gradient(#1c1914, #2b2620);
+  border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px #3d362c;
+  border-radius: 0;
+  /* The pixel font is drawn at 16px: phones never zoom into a field this size. */
+  font-size: 16px;
+}
+.sd-input:focus-visible {
+  outline: 1px solid var(--rs-focus);
+  outline-offset: 1px;
+}
+.sd-input::placeholder {
+  /* 4.7:1 on the field (the client's #7d7262 was 3.2:1). */
+  color: #a09682;
+  text-shadow: none;
+}
+.sd-input.is-bad {
+  box-shadow: inset 0 0 0 1px var(--rs-aborted);
+}
+.sd-input.is-good {
+  box-shadow: inset 0 0 0 1px #1f7a1f;
+}
+.sd-field .sd-row {
+  flex-wrap: nowrap;
+}
+.sd-labelrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+/* A whole address (42 characters) fits the field without scrolling. */
+.sd-input--address {
+  flex: 1;
+  padding: 0 4px;
+  letter-spacing: -0.25px;
+}
+.sd-amountrow {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.sd-quick {
+  display: flex;
+  gap: 6px;
+}
+.sd-quick .rs-btn {
+  flex: 1;
+  min-width: 0;
+}
+.sd-note {
+  min-height: 16px;
+  line-height: 16px;
+}
+.sd-textbtn {
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+  border-bottom: 1px solid currentColor;
+}
+.sd-textbtn:hover {
+  color: var(--rs-white);
+}
+
+/* A phone held sideways: the quick amounts beside the amount, so the whole form fits without scaling. */
+.sd-body--landscape .sd-amountrow {
+  flex-direction: row;
+}
+.sd-body--landscape .sd-amountrow .sd-input {
+  flex: 1;
+}
+.sd-body--landscape .sd-quick {
+  flex: none;
+  width: 216px;
+}
+
+/*
+ * A phone held upright with the keyboard up: the window moves to the top of
+ * the screen, so the field being typed in and Continue stay above the keyboard.
+ */
+.sd-window--typing.sd--phone {
+  align-self: start;
+  margin-top: 8px;
+}
+
+/* ---------- Review ---------------------------------------------------------- */
+
+.sd-review {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 10px 8px 4px;
+  line-height: 16px;
+}
+/* The question heads the review, centred like the trade's second screen (and Sell's review). */
+.sd-review__ask {
+  text-align: center;
+  padding-bottom: 2px;
+}
+/* Text focused on open so screen readers start there (and Tab stays in the window); not a control, so no focus ring. */
+.rs-game .sd-review__ask:focus,
+.rs-game .sd-review__ask:focus-visible,
+.rs-game .sd-focus-text:focus,
+.rs-game .sd-focus-text:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.sd-facts {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 6px 10px;
+  align-items: baseline;
+}
+.sd-fact {
+  display: contents;
+}
+/* The global reset leaves dl and dd their browser margins (1em above and below, 40px left). */
+.sd-facts,
+.sd-facts dd {
+  margin: 0;
+}
+.sd-fact--address dt {
+  align-self: start;
+  padding-top: 4px;
+}
+/* The one line that must be read: bold, on the dark well so the client's red stays legible (about 4.9:1). */
+.sd-review__warn {
+  margin-top: 2px;
+  padding: 4px 8px;
+  text-align: center;
+  background: var(--sd-well);
+  border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px #3d362c;
+}
+.sd-foot--review .rs-btn {
+  min-width: 96px;
+}
+
+/*
+ * The address in a well, one 4-character group after another, wrapped between
+ * groups only. A tap or click selects the whole address (copying gives it
+ * without the gaps; see GroupedAddress).
+ */
+.rs-game .sd-address,
+.rs-game .sd-address * {
+  -webkit-user-select: all;
+  user-select: all;
+}
+.sd-address {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 9px;
+  padding: 3px 6px 4px;
+  background: linear-gradient(#1c1914, #2b2620);
+  border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px #3d362c;
+  text-align: left;
+  letter-spacing: 0.5px;
+}
+.sd-address__group {
+  white-space: nowrap;
+}
+
+/* ---------- States ---------------------------------------------------------- */
+
+.sd-headline {
+  font-size: 32px;
+  line-height: 32px;
+}
+.sd-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+}
+.sd-link__text {
+  border-bottom: 1px solid currentColor;
+  box-shadow: 0 1px 0 #000;
+}
+.sd-link:hover {
+  color: var(--rs-white);
+}
+
+/* ---------- Receive --------------------------------------------------------- */
+
+.sd-receive {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  padding: 8px 14px 10px 10px;
+  line-height: 16px;
+}
+.sd-receive__qr {
+  display: flex;
+  padding: 4px;
+  background: #000;
+  border: 1px solid #3d362c;
+}
+.sd-receive__qr .rs-qr {
+  display: block;
+}
+.sd-receive__text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.sd-receive--phone {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  align-content: center;
+  gap: 12px;
+  overflow-y: auto;
+}
+.sd-receive--phone .sd-receive__text {
+  width: 100%;
+  text-align: center;
+  align-items: center;
+}
+
+/* ---------- Touch: 44px controls ------------------------------------------- */
+
+@media (pointer: coarse) {
+  .sd-window .rs-btn,
+  .sd-input {
+    height: 44px;
+  }
+  .sd-window .rs-btn::after {
+    inset: 0;
+  }
+  /* The close button stays its original 21px; its hit area is 44px. */
+  .sd-window .rs-close::after {
+    inset: calc((21px - 44px) / 2);
+  }
+  .sd-link,
+  .sd-textbtn {
+    min-height: 44px;
+    padding: 0 6px;
+  }
+  .sd-textbtn {
+    border-bottom: 0;
+    text-decoration: underline;
+  }
+  .sd-form {
+    gap: 8px;
+  }
+  .sd-review {
+    gap: 6px;
+  }
+}

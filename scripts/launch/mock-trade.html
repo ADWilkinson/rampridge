@@ -1,0 +1,16 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;width:1200px;height:1500px;overflow:hidden}
+body{background:radial-gradient(ellipse 70% 60% at 50% 45%,#2a2420 0%,#141210 55%,#0b0a09 100%);display:flex;align-items:center;justify-content:center}
+.phone{position:relative;width:630px;height:1120px;padding:20px;border-radius:84px;background:linear-gradient(145deg,#2c2c2e,#121213 60%,#1c1c1e);
+ box-shadow:0 0 0 2px #3a3a3c inset,0 0 0 1px #000,0 60px 120px rgba(0,0,0,.65),0 20px 40px rgba(0,0,0,.5)}
+.screen{width:630px;height:1120px;border-radius:64px;overflow:hidden;background:#000;position:relative}
+.screen img{width:100%;height:100%;display:block}
+.island{position:absolute;top:36px;left:50%;transform:translateX(-50%);width:150px;height:40px;border-radius:20px;background:#000;z-index:2}
+.btn{position:absolute;width:5px;border-radius:3px;background:#2a2a2c}
+</style></head><body><div class="phone"><div class="island"></div>
+<div class="btn" style="left:-5px;top:230px;height:70px"></div><div class="btn" style="left:-5px;top:320px;height:70px"></div><div class="btn" style="right:-5px;top:280px;height:110px"></div>
+<div class="screen"><img id="shot" alt=""></div></div>
+<script>
+// The phone-sized still to frame: ?img=<file:// or http URL>, else a PNG next to this page.
+document.getElementById("shot").src = new URLSearchParams(location.search).get("img") || "trade-phone.png";
+</script></body></html>

@@ -1,0 +1,44 @@
+name: Feature request
+description: Suggest an improvement to the bank, the trading flows or the tooling.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        RampRidge is deliberately one room: Varrock West Bank, as the 2007 client had it. Ideas that make that room better are the most likely to land. [docs/design.md](https://github.com/ADWilkinson/rampridge/blob/main/docs/design.md) is the product spec, and its "Deferred, and why" section lists ideas already considered.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Who runs into it, and when.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What do you suggest?
+      description: How it would look and behave. If it changes a trading flow, say how it affects what a player pays, receives or sees.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Game world and interfaces
+        - Buying, selling or sending
+        - Worlds, chat and moderation
+        - Setup, tests or tooling
+        - Something else
+    validations:
+      required: true
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Contributing
+      options:
+        - label: I'd like to work on this myself.

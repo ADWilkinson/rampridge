@@ -1,0 +1,14 @@
+# gitleaks configuration: the default rules, plus allowlists for values verified
+# to be public. Keep every entry narrow (one value, one rule) and say why it is safe.
+#   gitleaks dir . --config .gitleaks.toml
+
+title = "RampRidge"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Circle's USDC contract on Base, a public address. generic-api-key matches it after a `token:` key in tests and fixtures."
+targetRules = ["generic-api-key"]
+regexTarget = "match"
+regexes = ['''(?i)0x833589fcd6edb6e08f4c7c32d4f71b54bda02913''']

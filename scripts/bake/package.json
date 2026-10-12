@@ -1,0 +1,37 @@
+{
+  "name": "rampridge-bake",
+  "private": true,
+  "type": "module",
+  "description": "Build-time asset pipeline: decodes the OSRS cache with vendored rs-map-viewer and writes public/game (world, collision, minimap, sprites, fonts, sounds, ui) plus shared/collision.json and shared/world-meta.json, and records the outputs in assets.lock.json.",
+  "scripts": {
+    "bake": "tsx index.ts",
+    "setup": "tsx setup.ts",
+    "fetch-cache": "tsx fetch-cache.ts",
+    "fetch-fonts": "tsx fetch-fonts.ts",
+    "optimize-png": "tsx optimize-png.ts",
+    "shoot": "tsx preview/shoot.ts",
+    "typecheck": "../../node_modules/.bin/tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@foxglove/wasm-bz2": "^0.1.1",
+    "@gltf-transform/core": "^4.5.1",
+    "@gltf-transform/extensions": "^4.5.1",
+    "@gltf-transform/functions": "^4.5.1",
+    "bzip2": "^0.1.1",
+    "denque": "^2.1.0",
+    "fast-memoize": "^2.5.2",
+    "gl-matrix": "^3.4.4",
+    "java-random": "^0.4.0",
+    "js-xxhash": "^5.0.1",
+    "meshoptimizer": "^0.25.0",
+    "pako": "^2.2.0",
+    "pngjs": "^7.0.0",
+    "tsx": "^4.23.15",
+    "wasm-gzip": "^1.0.1",
+    "xxhash-wasm": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/pako": "2.0.4",
+    "@types/pngjs": "6.0.5"
+  }
+}

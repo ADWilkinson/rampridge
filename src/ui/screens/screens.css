@@ -1,0 +1,522 @@
+/* Screens: loader, title, character design, rename, how it works. */
+
+/* ---------- Loading ------------------------------------------------------- */
+
+/* Both full-screen layers draw at --rs-ui-zoom on big monitors (styles/tokens.css), like the HUD. */
+.rs-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  zoom: var(--rs-ui-zoom, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #000;
+  color: var(--rs-white);
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px))
+    max(16px, env(safe-area-inset-left, 0px));
+  text-align: center;
+  touch-action: pan-x pan-y;
+}
+.rs-loading__headline {
+  color: var(--rs-white);
+}
+/* The client draws a 304x34 outline in Color(140,17,17), a black inner rect, then the fill. */
+.rs-loading__bar {
+  position: relative;
+  width: 304px;
+  max-width: 100%;
+  height: 34px;
+  border: 1px solid var(--rs-loading-red);
+  background: #000;
+}
+.rs-loading__fill {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  bottom: 1px;
+  max-width: calc(100% - 2px);
+  background: var(--rs-loading-red);
+}
+.rs-loading__text {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--rs-white);
+}
+.rs-loading__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  max-width: 360px;
+  color: var(--rs-white);
+}
+
+/* ---------- Title --------------------------------------------------------- */
+
+.rs-title {
+  position: absolute;
+  inset: 0;
+  z-index: 90;
+  zoom: var(--rs-ui-zoom, 1);
+  background: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.55) 60%, rgba(0, 0, 0, 0.85) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(56px + env(safe-area-inset-bottom, 0px))
+    max(16px, env(safe-area-inset-left, 0px));
+  touch-action: pan-x pan-y;
+}
+/* The wordmark holds the logo's place until the image has loaded (same cell, no shift). */
+.rs-title__logo {
+  display: grid;
+  place-items: center;
+  max-width: 100%;
+}
+.rs-title__logo > * {
+  grid-area: 1 / 1;
+}
+.rs-title__logo img {
+  max-width: min(520px, 92vw);
+  height: auto;
+  image-rendering: auto;
+}
+.rs-title__logo img.is-loading {
+  visibility: hidden;
+}
+/*
+ * The 360x200 title box sprite. On phones narrower than the box plus the
+ * gutters it narrows (the sprite and the buttons stretch to fit) rather than
+ * scaling, so the RuneScape text stays on whole pixels and sharp. Only a
+ * screen too small even for that scales it down as one unit (TitleScreen
+ * publishes --rs-fit-scale; the negative margins give back the height the
+ * scale frees).
+ */
+.rs-title__box {
+  position: relative;
+  flex: none;
+  width: min(360px, 100%);
+  min-width: 288px;
+  height: 200px;
+  transform: scale(var(--rs-fit-scale, 1));
+  margin-block: calc((var(--rs-fit-scale, 1) - 1) * 100px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 18px 26px;
+  text-align: center;
+  background-image: var(--spr-titleBox, none);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.rs-title__box--fallback {
+  background: linear-gradient(#585a63, #3f4049 35%, #2c2d34);
+  border: 2px solid #121317;
+  border-radius: 14px;
+  box-shadow:
+    inset 0 0 0 2px #6e707a,
+    inset 0 0 0 4px #24252b,
+    0 4px 0 rgba(0, 0, 0, 0.5);
+}
+.rs-title__welcome {
+  color: var(--rs-yellow);
+  text-shadow: var(--rs-shadow);
+}
+.rs-title__tagline {
+  color: var(--rs-white);
+  text-shadow: var(--rs-shadow);
+  max-width: 290px;
+}
+.rs-title__buttons {
+  display: flex;
+  gap: 18px;
+}
+.rs-titlebtn {
+  flex: none;
+  width: 147px;
+  height: 41px;
+  background-size: 100% 100%;
+  color: var(--rs-white);
+  text-shadow: var(--rs-shadow);
+  text-align: center;
+  background-color: #34353d;
+  background-image: var(--spr-titleButton, linear-gradient(#4a4b54, #2c2d34));
+  background-repeat: no-repeat;
+  border-radius: 3px;
+}
+.rs-titlebtn:hover:not(:disabled) {
+  color: var(--rs-yellow);
+}
+.rs-titlebtn:active:not(:disabled) {
+  padding-top: 2px;
+}
+.rs-title__busy {
+  color: var(--rs-yellow);
+  text-shadow: var(--rs-shadow);
+  height: 41px;
+  display: grid;
+  place-items: center;
+}
+.rs-title__error {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 8px;
+  /* Yellow, as the original login box's messages: red of any kind measures under 4.5:1 on its grey marble. */
+  color: var(--rs-yellow);
+  text-shadow: var(--rs-shadow);
+}
+.rs-title__footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  color: var(--rs-grey-text);
+  text-shadow: var(--rs-shadow);
+}
+.rs-title__footer a,
+.rs-title__footer button {
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+}
+/* Touch: 36px-tall links, the footer moved down by the extra so it keeps its place. */
+@media (pointer: coarse) {
+  .rs-title__footer {
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    gap: 4px;
+  }
+  .rs-title__footer a,
+  .rs-title__footer button {
+    min-height: 36px;
+    padding: 0 8px;
+  }
+}
+.rs-wordmark {
+  font-family: var(--rs-font-b12);
+  font-size: 64px;
+  line-height: 64px;
+  letter-spacing: 4px;
+  white-space: nowrap;
+}
+.rs-wordmark__text {
+  display: inline-block;
+  color: transparent;
+  background: linear-gradient(to bottom, #fffbd0 0%, #ffe46b 18%, #f4b72e 42%, #a76a0c 52%, #e2a531 70%, #ffe993 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(3px 0 0 #2a1600) drop-shadow(-3px 0 0 #2a1600) drop-shadow(0 3px 0 #2a1600) drop-shadow(0 -3px 0 #2a1600)
+    drop-shadow(5px 6px 0 rgba(0, 0, 0, 0.75));
+}
+@media (max-width: 400px) {
+  .rs-title__box {
+    padding-inline: 16px;
+  }
+  .rs-title__buttons {
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+  }
+  .rs-titlebtn {
+    flex: 0 1 147px;
+    min-width: 0;
+  }
+}
+@media (max-width: 420px) {
+  .rs-wordmark {
+    font-size: 48px;
+    line-height: 48px;
+    letter-spacing: 3px;
+  }
+}
+
+/* ---------- Character design ---------------------------------------------- */
+
+.rs-design__grid {
+  display: grid;
+  grid-template-columns: 160px 1fr 160px;
+  grid-template-areas: "parts centre colours";
+  gap: 6px;
+  padding: 4px 8px 0;
+}
+/* Phones: body parts and colours side by side, the preview underneath. */
+.rs-design--mobile .rs-design__grid {
+  grid-template-columns: 1fr 1fr;
+  column-gap: 12px;
+  grid-template-areas:
+    "parts colours"
+    "centre centre";
+  row-gap: 4px;
+}
+.rs-design--mobile .rs-design__row {
+  height: 36px;
+}
+.rs-design--mobile .rs-design__preview {
+  width: 150px;
+  height: 170px;
+}
+.rs-design--mobile .rs-design__footer {
+  flex-direction: column;
+  align-items: stretch;
+}
+.rs-design--mobile .rs-design__actions {
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 0;
+}
+.rs-design__col {
+  display: flex;
+  flex-direction: column;
+}
+.rs-design__parts {
+  grid-area: parts;
+}
+.rs-design__colours {
+  grid-area: colours;
+}
+.rs-design__centre {
+  grid-area: centre;
+}
+.rs-design__heading {
+  text-align: center;
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+  margin-bottom: 2px;
+}
+.rs-design__row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 31px;
+}
+.rs-design__label {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+}
+.rs-design__colour {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 29px;
+}
+.rs-design__colour:hover:not(:disabled) {
+  color: var(--rs-white);
+}
+.rs-swatch {
+  width: 12px;
+  height: 12px;
+  border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+.rs-design__centre {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.rs-design__preview {
+  width: 150px;
+  height: 196px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px #5d5547;
+}
+.rs-design__gender {
+  display: flex;
+  gap: 6px;
+}
+.rs-palette {
+  position: absolute;
+  right: 0;
+  top: 30px;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(6, 20px);
+  gap: 3px;
+  padding: 6px;
+  background: #3e3529;
+  border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px #6b6250;
+}
+.rs-palette__swatch {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #000;
+}
+.rs-palette__swatch--on {
+  outline: 1px solid var(--rs-white);
+  outline-offset: 1px;
+}
+/* Touch: 30px swatches 6px apart, each with a 36px target that meets its neighbours'. */
+@media (pointer: coarse) {
+  .rs-palette {
+    grid-template-columns: repeat(6, 30px);
+    gap: 6px;
+  }
+  .rs-palette__swatch {
+    position: relative;
+    width: 30px;
+    height: 30px;
+  }
+  .rs-palette__swatch::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+  }
+}
+.rs-design__footer {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2px 12px;
+  margin-top: 6px;
+  padding: 6px 12px 0;
+}
+.rs-design__footer::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  top: 0;
+  height: 1px;
+  background: #5d5547;
+  box-shadow: 0 1px 0 #1f1c16;
+}
+.rs-design__name {
+  flex: 1;
+  min-width: 0;
+}
+.rs-design__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding-top: 10px;
+  min-width: 124px;
+}
+/* Its own line under the name and buttons (the window grows to hold it), so a refusal that wraps stays inside. */
+.rs-design__error {
+  width: 100%;
+  margin: 0;
+  color: var(--rs-stone-red);
+  text-shadow: var(--rs-shadow);
+}
+.rs-design--mobile .rs-design__error {
+  text-align: center;
+}
+
+/* ---------- Name field ---------------------------------------------------- */
+
+.rs-namefield {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.rs-namefield__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.rs-textfield {
+  width: 150px;
+  height: 22px;
+  padding: 0 6px;
+  color: var(--rs-white);
+  text-shadow: var(--rs-shadow);
+  background: #1c1914;
+  border: 1px solid #000;
+  box-shadow: 0 0 0 1px #5d5547;
+  caret-color: var(--rs-yellow);
+  font-size: 16px;
+}
+.rs-textfield-hit {
+  position: relative;
+  display: inline-flex;
+}
+.rs-textfield-hit > .rs-textfield {
+  position: relative;
+  z-index: 1;
+}
+/* Touch: a 36px band around the 22px field, under the field itself so taps on it still place the caret. */
+@media (pointer: coarse) {
+  .rs-textfield-hit::after {
+    content: "";
+    position: absolute;
+    inset: -7px -4px;
+  }
+}
+.rs-textfield:focus-visible {
+  outline: 1px solid var(--rs-focus);
+  outline-offset: 1px;
+}
+.rs-namefield__status {
+  min-height: 14px;
+}
+
+/* ---------- Rename ------------------------------------------------------- */
+
+.rs-nameentry__body {
+  text-wrap-style: pretty;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rs-nameentry__actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* ---------- How it works ------------------------------------------------- */
+
+.rs-howto__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.rs-howto__step {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.rs-howto__num {
+  flex: none;
+  width: 18px;
+  color: var(--rs-dark-red);
+  text-align: right;
+}
+.rs-howto__lead {
+  color: var(--rs-black);
+  font-weight: normal;
+}
+.rs-howto__foot {
+  margin-top: 12px;
+  text-align: center;
+}
+.rs-howto__more {
+  margin-top: 4px;
+  text-align: center;
+}

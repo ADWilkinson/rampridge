@@ -1,0 +1,1489 @@
+{
+  "generatedAt": "2026-10-11T20:59:09.301Z",
+  "scannedBlocks": {
+    "from": 51881185,
+    "to": 52481184
+  },
+  "seen": {
+    "cashapp": {
+      "buyer-tee": 182,
+      "seller-tee": 203,
+      "none": 2
+    },
+    "venmo": {
+      "seller-tee": 451,
+      "buyer-tee": 215,
+      "none": 21
+    },
+    "revolut": {
+      "buyer-tee": 726,
+      "none": 5
+    },
+    "wise": {
+      "seller-tee": 59,
+      "buyer-tee": 465,
+      "none": 1
+    },
+    "upi": {
+      "buyer-tee": 13,
+      "none": 1
+    },
+    "chime": {
+      "buyer-tee": 47
+    },
+    "zelle": {
+      "buyer-tee": 102,
+      "none": 3
+    },
+    "paypal": {
+      "buyer-tee": 96,
+      "seller-tee": 27,
+      "none": 5
+    },
+    "alipay": {
+      "buyer-tee": 37
+    },
+    "monzo": {
+      "buyer-tee": 27,
+      "none": 1
+    },
+    "manual-release": {
+      "manual": 13
+    },
+    "xmoney": {
+      "buyer-tee": 5,
+      "none": 1
+    },
+    "monobank": {
+      "buyer-tee": 5
+    }
+  },
+  "cases": [
+    {
+      "id": "venmo-1",
+      "platform": "venmo",
+      "currency": "USD",
+      "intentHash": "0x1aa79a3e03cc674ecb9372c42c5dda3e0667f32b53d1a0e29d36d805ec74d592",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "4704",
+      "owner": "0xDA88210A95a48bAbFe0944080f9d7FF8e4cB710D",
+      "to": "0xDA88210A95a48bAbFe0944080f9d7FF8e4cB710D",
+      "amount": "9699029",
+      "conversionRate": "1031031031031031031",
+      "paymentMethod": "0x90262a3db0edd0be2369c6b28f9e8511ec0bac7136cefbada0880602f87e7268",
+      "fiatCurrency": "0xc4ae21aac0c6549d71dd96035b7e0bdb6c79ebdba8891b666115bc976d16a29e",
+      "payeeDetails": "0xee1676f076f636a0fbd9b8235ffc8d641dfb34dad06aa3b82582db74c86d1be7",
+      "signaledAt": 1791742119,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "44500000000000000"
+        },
+        {
+          "recipient": "0xc58c79b8E2037Ccc0B554fdCB10Fbb760504e119",
+          "fee": "4000000000000000"
+        },
+        {
+          "recipient": "0xc10C19Ee4d7728672eD16A1B448BAD14df2Ff29C",
+          "fee": "1000000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0xdffd1823179b85ec4e23731da47288f8f64fa7224ea3f16bd8eccfee60617962",
+        "blockNumber": 52476386,
+        "caller": "0xDA88210A95a48bAbFe0944080f9d7FF8e4cB710D",
+        "direct": false,
+        "suffixCodes": [
+          "zkp2p-pay",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791745716,
+        "lockExpiry": 1791763719,
+        "lockExpiryAtFulfil": 1791850119,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0xb1401a1ea1fef480aa5f513ce3ca59ee1e4195b9f3c54f2c1a727cb934e0029d",
+        "blockNumber": 52476963,
+        "blockTimestamp": 1791743273,
+        "caller": "0xDA88210A95a48bAbFe0944080f9d7FF8e4cB710D",
+        "direct": false,
+        "txFrom": "0x23B32BaE4708bc9AF3962B81d6d8Ca5327e9dFFC",
+        "suffixCodes": [
+          "zkp2p-pay",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "9699029",
+        "netAmount": "9209229",
+        "fundsTransferredTo": "0xDA88210A95a48bAbFe0944080f9d7FF8e4cB710D",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "1000",
+        "paymentTimestampMs": "1791742256000",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0x5115f759595822b9e28fc192f65581c6a32695caa30275354b9225b3b5598f01",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0xfb3bc3487d66b8b5ca394417fe36eed5f8816d39c06f73d8b35328ee9f3613a2",
+        "handleHashesToPayee": false
+      }
+    },
+    {
+      "id": "venmo-2",
+      "platform": "venmo",
+      "currency": "USD",
+      "intentHash": "0x0ff52a23589fa1f8d1964943f52aec704cb6978c58c3b48c8306d825ae7a6cc2",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "4704",
+      "owner": "0xDA88210A95a48bAbFe0944080f9d7FF8e4cB710D",
+      "to": "0xDA88210A95a48bAbFe0944080f9d7FF8e4cB710D",
+      "amount": "17458252",
+      "conversionRate": "1031031031031031031",
+      "paymentMethod": "0x90262a3db0edd0be2369c6b28f9e8511ec0bac7136cefbada0880602f87e7268",
+      "fiatCurrency": "0xc4ae21aac0c6549d71dd96035b7e0bdb6c79ebdba8891b666115bc976d16a29e",
+      "payeeDetails": "0xee1676f076f636a0fbd9b8235ffc8d641dfb34dad06aa3b82582db74c86d1be7",
+      "signaledAt": 1791741237,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "44500000000000000"
+        },
+        {
+          "recipient": "0xc58c79b8E2037Ccc0B554fdCB10Fbb760504e119",
+          "fee": "4000000000000000"
+        },
+        {
+          "recipient": "0xc10C19Ee4d7728672eD16A1B448BAD14df2Ff29C",
+          "fee": "1000000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0xc104750470cf4463519221c5aab6849c215c1f3d2be521c923253163db1ff059",
+        "blockNumber": 52475945,
+        "caller": "0xDA88210A95a48bAbFe0944080f9d7FF8e4cB710D",
+        "direct": false,
+        "suffixCodes": [
+          "zkp2p-pay",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791744835,
+        "lockExpiry": 1791762837,
+        "lockExpiryAtFulfil": 1791762837,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0xdf08268cc7d23303679e8a1a6474867a77770d1ce67369d4018caa64a7a1ea8c",
+        "blockNumber": 52476172,
+        "blockTimestamp": 1791741691,
+        "caller": "0xDA88210A95a48bAbFe0944080f9d7FF8e4cB710D",
+        "direct": false,
+        "txFrom": "0x23B32BaE4708bc9AF3962B81d6d8Ca5327e9dFFC",
+        "suffixCodes": [
+          "zkp2p-pay",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "17458252",
+        "netAmount": "16576611",
+        "fundsTransferredTo": "0xDA88210A95a48bAbFe0944080f9d7FF8e4cB710D",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "1800",
+        "paymentTimestampMs": "1791741354000",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0x4ef90584ff37b2e4f23cd4a7ff292d68975ec1ec94b39e76e6f67e53aa744a5a",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0xfb3bc3487d66b8b5ca394417fe36eed5f8816d39c06f73d8b35328ee9f3613a2",
+        "handleHashesToPayee": false
+      }
+    },
+    {
+      "id": "cashapp-1",
+      "platform": "cashapp",
+      "currency": "USD",
+      "intentHash": "0x15886770b387f999f74b3acc62a4fe42a91956376c5878cba382c371df25c797",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "6547",
+      "owner": "0x39e5eF5F626a17beaE39f13e5d22dBD7fa42b206",
+      "to": "0x39e5eF5F626a17beaE39f13e5d22dBD7fa42b206",
+      "amount": "14471576",
+      "conversionRate": "1000000000000000000",
+      "paymentMethod": "0x10940ee67cfb3c6c064569ec92c0ee934cd7afa18dd2ca2d6a2254fcb009c17d",
+      "fiatCurrency": "0xc4ae21aac0c6549d71dd96035b7e0bdb6c79ebdba8891b666115bc976d16a29e",
+      "payeeDetails": "0xda394d109523ea55a991db85262e4dbf6c771db0f36dc46a77a937a0642338e1",
+      "signaledAt": 1791750147,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "9500000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0x66c688e4c9dce0e2d62ce56f57e9585e9a5a3065e1ec79e0ebc03b816c7e5706",
+        "blockNumber": 52480400,
+        "caller": "0x39e5eF5F626a17beaE39f13e5d22dBD7fa42b206",
+        "direct": false,
+        "suffixCodes": [
+          "zkp2p-web",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791753743,
+        "lockExpiry": 1791771747,
+        "lockExpiryAtFulfil": 1791771747,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0xe4e301ede0b816c2914b4b041b456c1d96e1574e58cb12bc665973504e5be7d7",
+        "blockNumber": 52480454,
+        "blockTimestamp": 1791750255,
+        "caller": "0x39e5eF5F626a17beaE39f13e5d22dBD7fa42b206",
+        "direct": false,
+        "txFrom": "0x912db254b148125c2f5Aba7b6716B5020640F5E3",
+        "suffixCodes": [
+          "zkp2p-web",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "14471576",
+        "netAmount": "14334097",
+        "fundsTransferredTo": "0x39e5eF5F626a17beaE39f13e5d22dBD7fa42b206",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "1448",
+        "paymentTimestampMs": "1791750228118",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0x82773a6d44801e5b01ec512775251486c729dbee81cd351acade5dd08a4a253a",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0x62f3d4a0670dd66a566f054be62127fcaf211b537e9d987a95282700911732de",
+        "handleHashesToPayee": false
+      }
+    },
+    {
+      "id": "cashapp-2",
+      "platform": "cashapp",
+      "currency": "USD",
+      "intentHash": "0x23bad35c30967dc9ccc86462f70736e3fd2ca1ed3995347990b5e782d9044665",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "6540",
+      "owner": "0x03183a2914Ef0FC5c804f50bA976C54674F70797",
+      "to": "0x03183a2914Ef0FC5c804f50bA976C54674F70797",
+      "amount": "170322010",
+      "conversionRate": "1000000000000000000",
+      "paymentMethod": "0x10940ee67cfb3c6c064569ec92c0ee934cd7afa18dd2ca2d6a2254fcb009c17d",
+      "fiatCurrency": "0xc4ae21aac0c6549d71dd96035b7e0bdb6c79ebdba8891b666115bc976d16a29e",
+      "payeeDetails": "0x9c31bbeaf7d670d9e08bcdaecebb12e76a002ebfb77ddb80e296f15b6ec0d74c",
+      "signaledAt": 1791726309,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "4500000000000000"
+        },
+        {
+          "recipient": "0xC141Cbe4f4a9CAbc3cc78159a9268a4e008922CD",
+          "fee": "5000000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0xac763d0ccdc54e711d5d7833b2874e9619deaf270f2d9baf0ee49eac23843770",
+        "blockNumber": 52468481,
+        "caller": "0x03183a2914Ef0FC5c804f50bA976C54674F70797",
+        "direct": true,
+        "suffixCodes": [
+          "zkp2p-web",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791729899,
+        "lockExpiry": 1791747909,
+        "lockExpiryAtFulfil": 1791747909,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0x4c5e561a7eceecd84b95a9322e4ff98e51ae21bf77f4a03b1e6f6137b02a7935",
+        "blockNumber": 52468528,
+        "blockTimestamp": 1791726403,
+        "caller": "0x03183a2914Ef0FC5c804f50bA976C54674F70797",
+        "direct": true,
+        "txFrom": "0x03183a2914Ef0FC5c804f50bA976C54674F70797",
+        "suffixCodes": [
+          "zkp2p-web",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "170322010",
+        "netAmount": "168703951",
+        "fundsTransferredTo": "0x03183a2914Ef0FC5c804f50bA976C54674F70797",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "17033",
+        "paymentTimestampMs": "1791726332772",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0xd7d6c85e70885424e765b6e995367cfcedd68feb83bc297e7cfa336751216ceb",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0xaacd7f119988328dbbafff7ccd6e140d13c3e969f0ab29ee2dde000c65a876fc",
+        "handleHashesToPayee": false
+      }
+    },
+    {
+      "id": "revolut-1",
+      "platform": "revolut",
+      "currency": "GBP",
+      "intentHash": "0x02767c9f94a8d1ec46086ba7096de6fba2a636e4d75d2257ea00d56092925f1a",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "4321",
+      "owner": "0x25F4dc787Da1632d47cC37Bb1810FEAECc3D5EBb",
+      "to": "0x25F4dc787Da1632d47cC37Bb1810FEAECc3D5EBb",
+      "amount": "103835294",
+      "conversionRate": "770450940403353726",
+      "paymentMethod": "0x617f88ab82b5c1b014c539f7e75121427f0bb50a4c58b187a238531e7d58605d",
+      "fiatCurrency": "0x90832e2dc3221e4d56977c1aa8f6a6706b9ad6542fbbdaac13097d0fa5e42e67",
+      "payeeDetails": "0x7432040e3642021bab1d937388d57234eabd602c67d4547f323db410226ff9fb",
+      "signaledAt": 1791749235,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "9500000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0x162cff05d9b6505610438210551f2b608f0017b75db6470919669aefba936529",
+        "blockNumber": 52479944,
+        "caller": "0x25F4dc787Da1632d47cC37Bb1810FEAECc3D5EBb",
+        "direct": false,
+        "suffixCodes": [
+          "zkp2p-ios",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791752830,
+        "lockExpiry": 1791770835,
+        "lockExpiryAtFulfil": 1791770835,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0x75e6afd976c27749b1a7b37a71b86a3d1fa80ee9999859f395beda1ab405e713",
+        "blockNumber": 52480023,
+        "blockTimestamp": 1791749393,
+        "caller": "0x25F4dc787Da1632d47cC37Bb1810FEAECc3D5EBb",
+        "direct": false,
+        "txFrom": "0xCfdEe1E80f67d45761F321f3c9eCB28AAe769810",
+        "suffixCodes": [
+          "zkp2p-ios",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "103835294",
+        "netAmount": "102848859",
+        "fundsTransferredTo": "0x25F4dc787Da1632d47cC37Bb1810FEAECc3D5EBb",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "8000",
+        "paymentTimestampMs": "1791749319927",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0xb98df6cbfd5cb0f8b56bc95b559ee1e6a71478233ae9fefc3a72edc71ee42b10",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0x7432040e3642021bab1d937388d57234eabd602c67d4547f323db410226ff9fb",
+        "handleHashesToPayee": true
+      }
+    },
+    {
+      "id": "revolut-2",
+      "platform": "revolut",
+      "currency": "EUR",
+      "intentHash": "0x180cbb4bfdbf2a86d7418764a7786440352c3b47ed4541cb29f429a4c1e6eb8b",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "1987",
+      "owner": "0x733a615Fcb9B9D7Ac03a30BB101Ed20c7cCD5a7c",
+      "to": "0x733a615Fcb9B9D7Ac03a30BB101Ed20c7cCD5a7c",
+      "amount": "166528874",
+      "conversionRate": "905248416742412933",
+      "paymentMethod": "0x617f88ab82b5c1b014c539f7e75121427f0bb50a4c58b187a238531e7d58605d",
+      "fiatCurrency": "0xfff16d60be267153303bbfa66e593fb8d06e24ea5ef24b6acca5224c2ca6b907",
+      "payeeDetails": "0x3a242baf64f22f10901e48ccbee123b969c7bb9436233a859324db70b8a94f91",
+      "signaledAt": 1791742689,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "29500000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0xdbac25f462d0b2b1d49cc135b0268330e887fc50c793362782e9db6b555b422c",
+        "blockNumber": 52476671,
+        "caller": "0x733a615Fcb9B9D7Ac03a30BB101Ed20c7cCD5a7c",
+        "direct": false,
+        "suffixCodes": [
+          "zkp2p-pay",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791746286,
+        "lockExpiry": 1791764289,
+        "lockExpiryAtFulfil": 1791850689,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0x4cdaa909d2b3e6ee0949763c692767a854e5fa0d48c8fafa229b81a70e65565b",
+        "blockNumber": 52479534,
+        "blockTimestamp": 1791748415,
+        "caller": "0x733a615Fcb9B9D7Ac03a30BB101Ed20c7cCD5a7c",
+        "direct": false,
+        "txFrom": "0x23B32BaE4708bc9AF3962B81d6d8Ca5327e9dFFC",
+        "suffixCodes": [
+          "zkp2p-pay",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "166528874",
+        "netAmount": "161449745",
+        "fundsTransferredTo": "0x733a615Fcb9B9D7Ac03a30BB101Ed20c7cCD5a7c",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "15075",
+        "paymentTimestampMs": "1791743381267",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0x72aff6340d00311e5ccf65eefbaad1a2d93e9af21f9da67cbca1cc937c30290c",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0x3a242baf64f22f10901e48ccbee123b969c7bb9436233a859324db70b8a94f91",
+        "handleHashesToPayee": true
+      }
+    },
+    {
+      "id": "wise-1",
+      "platform": "wise",
+      "currency": "AUD",
+      "intentHash": "0x1349ab622382815862872af8a0a407ef3ac43a1e2c028006bdb84d60a78103db",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "5715",
+      "owner": "0xa4152975230b5dc505A96CB24bDe2a15a3678e8E",
+      "to": "0xb144c4174cb12e7aD70A1f1Ef33C071438bbE0aA",
+      "amount": "260119134",
+      "conversionRate": "1490432454488836075",
+      "paymentMethod": "0x554a007c2217df766b977723b276671aee5ebb4adaea0edb6433c88b3e61dac5",
+      "fiatCurrency": "0xcb83cbb58eaa5007af6cad99939e4581c1e1b50d65609c30f303983301524ef3",
+      "payeeDetails": "0x23d84178e4e51b406b5d391399d7bc458c9265c0dfb7c51572d3e19980155c6b",
+      "signaledAt": 1791743571,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "134500000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0x03bb9f192072d30abf8da151142795757842633c783710c8cef0a933f724179d",
+        "blockNumber": 52477112,
+        "caller": "0xa4152975230b5dc505A96CB24bDe2a15a3678e8E",
+        "direct": true,
+        "suffixCodes": [
+          "zkp2p-pay",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791747168,
+        "lockExpiry": 1791765171,
+        "lockExpiryAtFulfil": 1791765171,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0xdaee3bd5510488b6422bf02be766933a9abd791e0474d066a6e087e73a166816",
+        "blockNumber": 52477297,
+        "blockTimestamp": 1791743941,
+        "caller": "0x5A46c09024a77e52EDB16CE71d605A943c7790b1",
+        "direct": true,
+        "txFrom": "0x5A46c09024a77e52EDB16CE71d605A943c7790b1",
+        "suffixCodes": [
+          "zkp2p-pay",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "260119134",
+        "netAmount": "225133111",
+        "fundsTransferredTo": "0xb144c4174cb12e7aD70A1f1Ef33C071438bbE0aA",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "38769",
+        "paymentTimestampMs": "1791743752209",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0xa5eb9865b1b1ae6ba0e81fb14f68847756ff50fcb71b705b105fed9cba759097",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0xad6accb8f22daa8a93d991b99bd5a739b6c203c83fca17dd70e7f018cf959e36",
+        "handleHashesToPayee": false
+      }
+    },
+    {
+      "id": "wise-2",
+      "platform": "wise",
+      "currency": "CAD",
+      "intentHash": "0x0fa0bb99ed1e6210ef2e682ad91e96bf53f2ea138437013c9a22c694211b8682",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "4062",
+      "owner": "0x49bA505684F6f67E4E6E93590ACB7693B28569fc",
+      "to": "0x49bA505684F6f67E4E6E93590ACB7693B28569fc",
+      "amount": "34383437",
+      "conversionRate": "1454188506997918642",
+      "paymentMethod": "0x554a007c2217df766b977723b276671aee5ebb4adaea0edb6433c88b3e61dac5",
+      "fiatCurrency": "0x221012e06ebf59a20b82e3003cf5d6ee973d9008bdb6e2f604faa89a27235522",
+      "payeeDetails": "0x019777d02f4357d27e7c21a69c9eb8e739c580b2996748f4a51ba6124164d592",
+      "signaledAt": 1791737105,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "4500000000000000"
+        },
+        {
+          "recipient": "0xB2FF34Ba0f558Cf91eF011Ad5c6ecBC3E69EF6eD",
+          "fee": "4000000000000000"
+        },
+        {
+          "recipient": "0xC141Cbe4f4a9CAbc3cc78159a9268a4e008922CD",
+          "fee": "1000000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0x877186cec249264eb9c0864ea1e9f3a1d16f87c91fb1276a95c1cf9ee241f0ec",
+        "blockNumber": 52473879,
+        "caller": "0x49bA505684F6f67E4E6E93590ACB7693B28569fc",
+        "direct": true,
+        "suffixCodes": [
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791740703,
+        "lockExpiry": 1791758705,
+        "lockExpiryAtFulfil": 1791758705,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0x9627dd03eaceb2c61eb3ed70278257483cd0986b6abd2c90638ab7f6f0fa327b",
+        "blockNumber": 52476726,
+        "blockTimestamp": 1791742799,
+        "caller": "0x49bA505684F6f67E4E6E93590ACB7693B28569fc",
+        "direct": true,
+        "txFrom": "0x49bA505684F6f67E4E6E93590ACB7693B28569fc",
+        "suffixCodes": [
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "34383437",
+        "netAmount": "34056796",
+        "fundsTransferredTo": "0x49bA505684F6f67E4E6E93590ACB7693B28569fc",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "5000",
+        "paymentTimestampMs": "1791697743098",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0x3e7c0f806e3ce07951926deacfeba3697621200491b3f85848593db1b4946b6e",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0x39a590c0df25df11c0b672432ae60b98310a0e228b1f86d88aa338a3178cb8e0",
+        "handleHashesToPayee": false
+      }
+    },
+    {
+      "id": "zelle-1",
+      "platform": "zelle",
+      "currency": "USD",
+      "intentHash": "0x00007a7cb2e801cf1226bc3cd29d78b16b5fb7b0a41e2bd61e96ff7acda8c4db",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "6440",
+      "owner": "0x6eA735Edd8D5256869CD033f616975e3b33DA409",
+      "to": "0x6eA735Edd8D5256869CD033f616975e3b33DA409",
+      "amount": "140000000",
+      "conversionRate": "1000000000000000000",
+      "paymentMethod": "0xf752c7d19698ecb0bb8988abf9b9a53a4c3657f3bc8850a6fb59fdf3e3ce8cd3",
+      "fiatCurrency": "0xc4ae21aac0c6549d71dd96035b7e0bdb6c79ebdba8891b666115bc976d16a29e",
+      "payeeDetails": "0xdb9f0854d9210bcbbf6ab568cbdf314f2bec0a21e365f02247eb7a9b9662ce8f",
+      "signaledAt": 1791735823,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "9500000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0xba0b9a05fc531c05bfe3d6dc3f5df80474ae7dcaeee4d6f5cd3f5a75aa597685",
+        "blockNumber": 52473238,
+        "caller": "0x6eA735Edd8D5256869CD033f616975e3b33DA409",
+        "direct": false,
+        "suffixCodes": [
+          "zkp2p-ios",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791739414,
+        "lockExpiry": 1791757423,
+        "lockExpiryAtFulfil": 1791757423,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0x5d30519c7f22bc2941cfa110adf4e2a644243802dc6b928f71b810b2ea5f4917",
+        "blockNumber": 52473308,
+        "blockTimestamp": 1791735963,
+        "caller": "0x6eA735Edd8D5256869CD033f616975e3b33DA409",
+        "direct": false,
+        "txFrom": "0xCfdEe1E80f67d45761F321f3c9eCB28AAe769810",
+        "suffixCodes": [
+          "zkp2p-ios",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "140000000",
+        "netAmount": "138670000",
+        "fundsTransferredTo": "0x6eA735Edd8D5256869CD033f616975e3b33DA409",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "14000",
+        "paymentTimestampMs": "1791849599000",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0xf3d84bb3bc7861b25a31b8873b09652b7f6fd2cc285322593ae67d7b82b91b00",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0xdb9f0854d9210bcbbf6ab568cbdf314f2bec0a21e365f02247eb7a9b9662ce8f",
+        "handleHashesToPayee": true
+      }
+    },
+    {
+      "id": "zelle-2",
+      "platform": "zelle",
+      "currency": "USD",
+      "intentHash": "0x0d5cdbfa4cc4f46e4c9147b324762679a81e07edcff1536dd71f580f39b927f8",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "6503",
+      "owner": "0x31793fE76F8E6c5718115c6b6c00A31c7f90212D",
+      "to": "0x31793fE76F8E6c5718115c6b6c00A31c7f90212D",
+      "amount": "600000000",
+      "conversionRate": "1000000000000000000",
+      "paymentMethod": "0xf752c7d19698ecb0bb8988abf9b9a53a4c3657f3bc8850a6fb59fdf3e3ce8cd3",
+      "fiatCurrency": "0xc4ae21aac0c6549d71dd96035b7e0bdb6c79ebdba8891b666115bc976d16a29e",
+      "payeeDetails": "0x62adabd87daa61adb839acd9c4a2b6a240d8ed8ebf68fb6d06801ce3cbe59af2",
+      "signaledAt": 1791722403,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "9500000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0x522f9bf4295280a5c8d2a963bfc6f84434e4b8fb16209df534d6a96c428e3ce2",
+        "blockNumber": 52466528,
+        "caller": "0x31793fE76F8E6c5718115c6b6c00A31c7f90212D",
+        "direct": false,
+        "suffixCodes": [
+          "zkp2p-ios",
+          "zkp2p-snipe",
+          "zkp2p-p2p-tab",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791725985,
+        "lockExpiry": 1791744003,
+        "lockExpiryAtFulfil": 1791744003,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0xbac4aa7fa42ad1d2e49c38a607628584ffbb55e95cb680592b09f041722431e5",
+        "blockNumber": 52466607,
+        "blockTimestamp": 1791722561,
+        "caller": "0x31793fE76F8E6c5718115c6b6c00A31c7f90212D",
+        "direct": false,
+        "txFrom": "0x23B32BaE4708bc9AF3962B81d6d8Ca5327e9dFFC",
+        "suffixCodes": [
+          "zkp2p-ios",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "600000000",
+        "netAmount": "594300000",
+        "fundsTransferredTo": "0x31793fE76F8E6c5718115c6b6c00A31c7f90212D",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "60000",
+        "paymentTimestampMs": "1791849599000",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0x03540c99ad203f286b52474243de74ad8ca7df5b311eb43e2290c87890b83794",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0x62adabd87daa61adb839acd9c4a2b6a240d8ed8ebf68fb6d06801ce3cbe59af2",
+        "handleHashesToPayee": true
+      }
+    },
+    {
+      "id": "paypal-1",
+      "platform": "paypal",
+      "currency": "EUR",
+      "intentHash": "0x1c536c78faa4f7244d82258a67aacc34e9f68a344b0c86f8bbf3ba7a2e5bcefd",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "6526",
+      "owner": "0x7A538118e38A5A0a06066E6D542fCae30F2B182b",
+      "to": "0x7A538118e38A5A0a06066E6D542fCae30F2B182b",
+      "amount": "70000000",
+      "conversionRate": "892733594904276641",
+      "paymentMethod": "0x3ccc3d4d5e769b1f82dc4988485551dc0cd3c7a3926d7d8a4dde91507199490f",
+      "fiatCurrency": "0xfff16d60be267153303bbfa66e593fb8d06e24ea5ef24b6acca5224c2ca6b907",
+      "payeeDetails": "0x2d7f01a1e9f8cec55421044ab1421554a0d47cd46398fa425b4d9dbd7c7674be",
+      "signaledAt": 1791732851,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "9500000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0x25f0dd8da505eae8f60c6c1d895fe214abe098df04ca6bffd6292028d675ab1f",
+        "blockNumber": 52471752,
+        "caller": "0x7A538118e38A5A0a06066E6D542fCae30F2B182b",
+        "direct": false,
+        "suffixCodes": [
+          "zkp2p-android",
+          "zkp2p-snipe",
+          "zkp2p-p2p-tab",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791736299,
+        "lockExpiry": 1791754451,
+        "lockExpiryAtFulfil": 1791754451,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0x43ac93dc7175ca4a8f357e5ade3541275c66912c7f9f8cebd7cb33a251d706b5",
+        "blockNumber": 52471822,
+        "blockTimestamp": 1791732991,
+        "caller": "0x7A538118e38A5A0a06066E6D542fCae30F2B182b",
+        "direct": false,
+        "txFrom": "0x23B32BaE4708bc9AF3962B81d6d8Ca5327e9dFFC",
+        "suffixCodes": [
+          "zkp2p-web",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "70000000",
+        "netAmount": "69335000",
+        "fundsTransferredTo": "0x7A538118e38A5A0a06066E6D542fCae30F2B182b",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "6250",
+        "paymentTimestampMs": "1791732883000",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0x0028c559ada03449169229af1b0bc1474727da9a60cf69532544020e0c9931f7",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0x91187955784b8b6e2e95c4f4a9beb062239b42107b779a49cd625c7de9e8e6ef",
+        "handleHashesToPayee": false
+      }
+    },
+    {
+      "id": "paypal-2",
+      "platform": "paypal",
+      "currency": "USD",
+      "intentHash": "0x20ccdc7de0238f4c6c47eb4e574adf5ca939fe3c5f60e59c424b501531fd9a97",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "5227",
+      "owner": "0xa4152975230b5dc505A96CB24bDe2a15a3678e8E",
+      "to": "0xb144c4174cb12e7aD70A1f1Ef33C071438bbE0aA",
+      "amount": "570952380",
+      "conversionRate": "1050000000000000000",
+      "paymentMethod": "0x3ccc3d4d5e769b1f82dc4988485551dc0cd3c7a3926d7d8a4dde91507199490f",
+      "fiatCurrency": "0xc4ae21aac0c6549d71dd96035b7e0bdb6c79ebdba8891b666115bc976d16a29e",
+      "payeeDetails": "0x38d444ec442536b994c5a1840f4d71da5bbd56724d7a5daf37f484d8e24a3439",
+      "signaledAt": 1791706987,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "130500000000000000"
+        },
+        {
+          "recipient": "0x755459F9086A44435acd20D17bc077B3A6dF2B90",
+          "fee": "4000000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0x84689c34f84b0f3f50a2ea00f3187e24c0785e0b1ffade4514f74e02f1beb3da",
+        "blockNumber": 52458820,
+        "caller": "0xa4152975230b5dc505A96CB24bDe2a15a3678e8E",
+        "direct": true,
+        "suffixCodes": [
+          "zkp2p-pay",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791710584,
+        "lockExpiry": 1791728587,
+        "lockExpiryAtFulfil": 1791728587,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0xf8c7b220b24a47d40c499fb7d283489a7337cd6dd741c573be0ca1685086bece",
+        "blockNumber": 52459103,
+        "blockTimestamp": 1791707553,
+        "caller": "0x5A46c09024a77e52EDB16CE71d605A943c7790b1",
+        "direct": true,
+        "txFrom": "0x5A46c09024a77e52EDB16CE71d605A943c7790b1",
+        "suffixCodes": [
+          "zkp2p-pay",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "570952380",
+        "netAmount": "494159286",
+        "fundsTransferredTo": "0xb144c4174cb12e7aD70A1f1Ef33C071438bbE0aA",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "59950",
+        "paymentTimestampMs": "1791707336000",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0x731684dfc16f9444a9ada1b7e64d6f1a67c5d6e15bb2ca9065a0b184e417551b",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0x5f646cfa10a0ce68c157ed8cfb3ba53f7c9e8db7e5478955a35a952a32c1ee9d",
+        "handleHashesToPayee": false
+      }
+    },
+    {
+      "id": "monzo-1",
+      "platform": "monzo",
+      "currency": "GBP",
+      "intentHash": "0x0bba1646d2e065bb7e897fe79e75547ca852a11ca4e4bccd5685f5dc39ef3f48",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "5895",
+      "owner": "0xbC99307fc643652d3f27A3D62431B27A4eE12bfE",
+      "to": "0xbC99307fc643652d3f27A3D62431B27A4eE12bfE",
+      "amount": "142773529",
+      "conversionRate": "770450940403353726",
+      "paymentMethod": "0x62c7ed738ad3e7618111348af32691b5767777fbaf46a2d8943237625552645c",
+      "fiatCurrency": "0x90832e2dc3221e4d56977c1aa8f6a6706b9ad6542fbbdaac13097d0fa5e42e67",
+      "payeeDetails": "0x61b7870a816a4617c21bf60051da8ea7fc8998c44143f0b7a67ba48115e36507",
+      "signaledAt": 1791636693,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "9500000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0x2dbdc85fd8bf568cb65c2b1b68f8ea91cd94f8cbbd038f314591a3cf314ddb3b",
+        "blockNumber": 52423673,
+        "caller": "0xbC99307fc643652d3f27A3D62431B27A4eE12bfE",
+        "direct": false,
+        "suffixCodes": [
+          "zkp2p-web",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791640290,
+        "lockExpiry": 1791658293,
+        "lockExpiryAtFulfil": 1791658293,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0x8540f4b17faf4a8d3f0168cf8c9c2e0b3b04c329c4fa7ea6aff68d5f95425d67",
+        "blockNumber": 52423780,
+        "blockTimestamp": 1791636907,
+        "caller": "0xbC99307fc643652d3f27A3D62431B27A4eE12bfE",
+        "direct": false,
+        "txFrom": "0x912db254b148125c2f5Aba7b6716B5020640F5E3",
+        "suffixCodes": [
+          "zkp2p-web",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "142773529",
+        "netAmount": "141417181",
+        "fundsTransferredTo": "0xbC99307fc643652d3f27A3D62431B27A4eE12bfE",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "11000",
+        "paymentTimestampMs": "1791636729000",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0x3aefd0fe88b9544f8d12251438a6e61b82f3b5b781e5e783d0fe9a7b47e865a8",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0xb803528857ce7e83ac829aea16a3edae388876b0bf239f51865be91bc2c0bbee",
+        "handleHashesToPayee": false
+      }
+    },
+    {
+      "id": "monzo-2",
+      "platform": "monzo",
+      "currency": "GBP",
+      "intentHash": "0x1148a6e3d2020ab64623c40d578ab632766a0be0ec5434ea1a6dddf9befbb787",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "5895",
+      "owner": "0x441A35BffEc16735263af14393DC09f0705e1a44",
+      "to": "0x441A35BffEc16735263af14393DC09f0705e1a44",
+      "amount": "64919117",
+      "conversionRate": "770189149394042359",
+      "paymentMethod": "0x62c7ed738ad3e7618111348af32691b5767777fbaf46a2d8943237625552645c",
+      "fiatCurrency": "0x90832e2dc3221e4d56977c1aa8f6a6706b9ad6542fbbdaac13097d0fa5e42e67",
+      "payeeDetails": "0x61b7870a816a4617c21bf60051da8ea7fc8998c44143f0b7a67ba48115e36507",
+      "signaledAt": 1791587561,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "9500000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0x09d345796b82a657607b41399e1b6b0de9bfc2ad47aa892858ac656b28a2fc55",
+        "blockNumber": 52399107,
+        "caller": "0x441A35BffEc16735263af14393DC09f0705e1a44",
+        "direct": false,
+        "suffixCodes": [
+          "zkp2p-web",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791591157,
+        "lockExpiry": 1791609161,
+        "lockExpiryAtFulfil": 1791609161,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0xe8f40ccb24e8c46bf6fd18a987d29ccb5057f54e5e0de352c1ab9b070ae08193",
+        "blockNumber": 52399155,
+        "blockTimestamp": 1791587657,
+        "caller": "0x441A35BffEc16735263af14393DC09f0705e1a44",
+        "direct": false,
+        "txFrom": "0xCfdEe1E80f67d45761F321f3c9eCB28AAe769810",
+        "suffixCodes": [
+          "zkp2p-web",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "64919117",
+        "netAmount": "64302386",
+        "fundsTransferredTo": "0x441A35BffEc16735263af14393DC09f0705e1a44",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "5000",
+        "paymentTimestampMs": "1791587637000",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0x31c74935db52ef978fc67a881dab15903d239be623e544b9cda86b2250735fd7",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0xb803528857ce7e83ac829aea16a3edae388876b0bf239f51865be91bc2c0bbee",
+        "handleHashesToPayee": false
+      }
+    },
+    {
+      "id": "chime-1",
+      "platform": "chime",
+      "currency": "USD",
+      "intentHash": "0x2ed19bede4826bcfcf23c9957a0f3c3170934008abadb034401628fda7eb52a7",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "3768",
+      "owner": "0x55EC1e1025DD26aA26Eae2e2d3703353acE350fA",
+      "to": "0x55EC1e1025DD26aA26Eae2e2d3703353acE350fA",
+      "amount": "38361600",
+      "conversionRate": "1251251251251251251",
+      "paymentMethod": "0x5908bb0c9b87763ac6171d4104847667e7f02b4c47b574fe890c1f439ed128bb",
+      "fiatCurrency": "0xc4ae21aac0c6549d71dd96035b7e0bdb6c79ebdba8891b666115bc976d16a29e",
+      "payeeDetails": "0x5470bf245214c728f831256701c624d1bd8f96047cc8948a6432bbc1973c3d93",
+      "signaledAt": 1791744219,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "9500000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0x66e106ebd235e86a80cdfb8a4c60accbb84f33e12803b11d7caa840447868360",
+        "blockNumber": 52477436,
+        "caller": "0x55EC1e1025DD26aA26Eae2e2d3703353acE350fA",
+        "direct": false,
+        "suffixCodes": [
+          "zkp2p-ios",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791747815,
+        "lockExpiry": 1791765819,
+        "lockExpiryAtFulfil": 1791765819,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0x528a7cb38aa1bdc5e334c9059df70adb916b387f9aef0a5929a11d39709af80f",
+        "blockNumber": 52477482,
+        "blockTimestamp": 1791744311,
+        "caller": "0x55EC1e1025DD26aA26Eae2e2d3703353acE350fA",
+        "direct": false,
+        "txFrom": "0x23B32BaE4708bc9AF3962B81d6d8Ca5327e9dFFC",
+        "suffixCodes": [
+          "zkp2p-ios",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "38361600",
+        "netAmount": "37958804",
+        "fundsTransferredTo": "0x55EC1e1025DD26aA26Eae2e2d3703353acE350fA",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "4800",
+        "paymentTimestampMs": "1791744254000",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0x91fd3985c1ab40873eb69c2c834ec4b7b66d14fd387238532dc3f8f6cc5796bc",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0x5470bf245214c728f831256701c624d1bd8f96047cc8948a6432bbc1973c3d93",
+        "handleHashesToPayee": true
+      }
+    },
+    {
+      "id": "chime-2",
+      "platform": "chime",
+      "currency": "USD",
+      "intentHash": "0x2fe0397a26b401c5dbebdbae4bc166899f0421fcc1917ab85130f520e5db25fb",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "1300",
+      "owner": "0x55EC1e1025DD26aA26Eae2e2d3703353acE350fA",
+      "to": "0x55EC1e1025DD26aA26Eae2e2d3703353acE350fA",
+      "amount": "430622009",
+      "conversionRate": "1045000000000000000",
+      "paymentMethod": "0x5908bb0c9b87763ac6171d4104847667e7f02b4c47b574fe890c1f439ed128bb",
+      "fiatCurrency": "0xc4ae21aac0c6549d71dd96035b7e0bdb6c79ebdba8891b666115bc976d16a29e",
+      "payeeDetails": "0x0e0485e10418bb1bf8295d75f92c7d681270bb0b90b5b5e0b59c8b51652c06c7",
+      "signaledAt": 1791740783,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "4500000000000000"
+        },
+        {
+          "recipient": "0xc10C19Ee4d7728672eD16A1B448BAD14df2Ff29C",
+          "fee": "4000000000000000"
+        },
+        {
+          "recipient": "0xc58c79b8E2037Ccc0B554fdCB10Fbb760504e119",
+          "fee": "1000000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0xa85dbec2212331cb4cf6b9f57c09f51b2c521446d4abab0265afa860453cafa5",
+        "blockNumber": 52475718,
+        "caller": "0x55EC1e1025DD26aA26Eae2e2d3703353acE350fA",
+        "direct": false,
+        "suffixCodes": [
+          "zkp2p-ios",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791744379,
+        "lockExpiry": 1791762383,
+        "lockExpiryAtFulfil": 1791762383,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0xcdf01a7f3d04e4e95889332f743e966b4588ed872634735cca4373dccb449b96",
+        "blockNumber": 52475759,
+        "blockTimestamp": 1791740865,
+        "caller": "0x55EC1e1025DD26aA26Eae2e2d3703353acE350fA",
+        "direct": false,
+        "txFrom": "0x23B32BaE4708bc9AF3962B81d6d8Ca5327e9dFFC",
+        "suffixCodes": [
+          "zkp2p-ios",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "430622009",
+        "netAmount": "426531100",
+        "fundsTransferredTo": "0x55EC1e1025DD26aA26Eae2e2d3703353acE350fA",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "45000",
+        "paymentTimestampMs": "1791740824000",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0x403c981bbf88db74ec22aee73fb38a6b06b85c17bfa7c4da698f5302d6068b16",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0x0e0485e10418bb1bf8295d75f92c7d681270bb0b90b5b5e0b59c8b51652c06c7",
+        "handleHashesToPayee": true
+      }
+    },
+    {
+      "id": "monobank-1",
+      "platform": "monobank",
+      "currency": "UAH",
+      "intentHash": "0x08246f5818a331bddc7206199a39dc3ccd02d4fbfd389de0caf9e589623da15e",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "6036",
+      "owner": "0xc74ccAa3dff5A0f05235DFcb3fbe9dccF78fcb78",
+      "to": "0xc74ccAa3dff5A0f05235DFcb3fbe9dccF78fcb78",
+      "amount": "100000",
+      "conversionRate": "45000000000000000000",
+      "paymentMethod": "0x1d966dbd6aeb8674d7c05174bd0ded7b56a798672bfb862ef20bbe8c2bbfce18",
+      "fiatCurrency": "0x763ce5da7605b2b5ec3e9ec5b0ab2bbcf8b27d28da2b5002e4e364278d729d14",
+      "payeeDetails": "0x9d68f68e0ea74976eb76020bf0726e65bcd4d229f363b0e36b5f091537cc1564",
+      "signaledAt": 1791217729,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "4500000000000000"
+        },
+        {
+          "recipient": "0xC141Cbe4f4a9CAbc3cc78159a9268a4e008922CD",
+          "fee": "4000000000000000"
+        },
+        {
+          "recipient": "0xA24ec459A0E95C08a2F9b4d8380fdFEE6A885792",
+          "fee": "1000000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0xe4da2abd9a109c7bfc9702031c328e067bc8fe8a8f13f533a93cf42406adbc8b",
+        "blockNumber": 52214191,
+        "caller": "0xc74ccAa3dff5A0f05235DFcb3fbe9dccF78fcb78",
+        "direct": false,
+        "suffixCodes": [
+          "zkp2p-android",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791221319,
+        "lockExpiry": 1791239329,
+        "lockExpiryAtFulfil": 1791412129,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0x6edc064d36aaf64c482cf0539c94a25a70e60183b6fe2b62dc65400eee98f7e9",
+        "blockNumber": 52214389,
+        "blockTimestamp": 1791218125,
+        "caller": "0xc74ccAa3dff5A0f05235DFcb3fbe9dccF78fcb78",
+        "direct": false,
+        "txFrom": "0x6e1cbdF61f3372a20FdC47EBbC14cC80DD590adb",
+        "suffixCodes": [
+          "zkp2p-android",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "100000",
+        "netAmount": "99050",
+        "fundsTransferredTo": "0xc74ccAa3dff5A0f05235DFcb3fbe9dccF78fcb78",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "450",
+        "paymentTimestampMs": "1791217859000",
+        "timestampBufferSeconds": 1209600,
+        "dataHash": "0xa70615916e907d284c91c50ab8d6ea7751a8e6842fface90d277a6df47a16a83",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0x9d68f68e0ea74976eb76020bf0726e65bcd4d229f363b0e36b5f091537cc1564",
+        "handleHashesToPayee": true
+      }
+    },
+    {
+      "id": "monobank-2",
+      "platform": "monobank",
+      "currency": "UAH",
+      "intentHash": "0x0632434e6997087efafe1de0694cbe84d451462e8dbe5656aa94fc8f01d22cca",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "6036",
+      "owner": "0xc74ccAa3dff5A0f05235DFcb3fbe9dccF78fcb78",
+      "to": "0xc74ccAa3dff5A0f05235DFcb3fbe9dccF78fcb78",
+      "amount": "100000",
+      "conversionRate": "45000000000000000000",
+      "paymentMethod": "0x1d966dbd6aeb8674d7c05174bd0ded7b56a798672bfb862ef20bbe8c2bbfce18",
+      "fiatCurrency": "0x763ce5da7605b2b5ec3e9ec5b0ab2bbcf8b27d28da2b5002e4e364278d729d14",
+      "payeeDetails": "0x9d68f68e0ea74976eb76020bf0726e65bcd4d229f363b0e36b5f091537cc1564",
+      "signaledAt": 1791185187,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "4500000000000000"
+        },
+        {
+          "recipient": "0xC141Cbe4f4a9CAbc3cc78159a9268a4e008922CD",
+          "fee": "4000000000000000"
+        },
+        {
+          "recipient": "0xA24ec459A0E95C08a2F9b4d8380fdFEE6A885792",
+          "fee": "1000000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0x18fca9ca6dbf996ddf8dea6dd79b118939a66697040ef15db1222595daaf4384",
+        "blockNumber": 52197920,
+        "caller": "0xc74ccAa3dff5A0f05235DFcb3fbe9dccF78fcb78",
+        "direct": false,
+        "suffixCodes": [
+          "zkp2p-android",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791188775,
+        "lockExpiry": 1791206787,
+        "lockExpiryAtFulfil": 1791206787,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0xb83dd1a7b095637de4570edbef6737120c9d24e335cd3c6593112e8d836dae41",
+        "blockNumber": 52198032,
+        "blockTimestamp": 1791185411,
+        "caller": "0xc74ccAa3dff5A0f05235DFcb3fbe9dccF78fcb78",
+        "direct": false,
+        "txFrom": "0x6e1cbdF61f3372a20FdC47EBbC14cC80DD590adb",
+        "suffixCodes": [
+          "zkp2p-android",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "100000",
+        "netAmount": "99050",
+        "fundsTransferredTo": "0xc74ccAa3dff5A0f05235DFcb3fbe9dccF78fcb78",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "450",
+        "paymentTimestampMs": "1791185294000",
+        "timestampBufferSeconds": 1209600,
+        "dataHash": "0xf71c82c0eefbc67f1bbe86aba1f5f4e7e99dc421cac0a4af76e716eb50d8bc67",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0x9d68f68e0ea74976eb76020bf0726e65bcd4d229f363b0e36b5f091537cc1564",
+        "handleHashesToPayee": true
+      }
+    },
+    {
+      "id": "xmoney-1",
+      "platform": "xmoney",
+      "currency": "USD",
+      "intentHash": "0x24d1d15e13ce534068f96c3f734f88e42871c218431f772ba7bf4149fa2cd586",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "84",
+      "owner": "0x91D6E260A5965a3C33D5Bc4bf4ADCF96C449ED2e",
+      "to": "0x35b8689c0a70fd430cB699A2B242Efa635625497",
+      "amount": "143980582",
+      "conversionRate": "1030000000000000000",
+      "paymentMethod": "0x790dd0cc68b6e7f474649a6c0a5463a964be9d2589e2076b6dc99f5701543f51",
+      "fiatCurrency": "0xc4ae21aac0c6549d71dd96035b7e0bdb6c79ebdba8891b666115bc976d16a29e",
+      "payeeDetails": "0xfbdfc26355b3362946dfc2f55ae496ae054f2b72df5c2cfe702b1a4acbd4ed65",
+      "signaledAt": 1791442895,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "4500000000000000"
+        },
+        {
+          "recipient": "0xC141Cbe4f4a9CAbc3cc78159a9268a4e008922CD",
+          "fee": "4000000000000000"
+        },
+        {
+          "recipient": "0xA24ec459A0E95C08a2F9b4d8380fdFEE6A885792",
+          "fee": "1000000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0x86a34bd8280ce242b81dd7b9a4f2de7d54a291caa5c062c4bd306f99a6f54841",
+        "blockNumber": 52326774,
+        "caller": "0x91D6E260A5965a3C33D5Bc4bf4ADCF96C449ED2e",
+        "direct": true,
+        "suffixCodes": [
+          "zkp2p-web",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791446488,
+        "lockExpiry": 1791464495,
+        "lockExpiryAtFulfil": 1791464495,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0x944eba990793f8de67cb6fd77670ca13921e2ee5fab3989898e3b5d79fdb7b00",
+        "blockNumber": 52326819,
+        "blockTimestamp": 1791442985,
+        "caller": "0x91D6E260A5965a3C33D5Bc4bf4ADCF96C449ED2e",
+        "direct": true,
+        "txFrom": "0x91D6E260A5965a3C33D5Bc4bf4ADCF96C449ED2e",
+        "suffixCodes": [
+          "zkp2p-web",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "143980582",
+        "netAmount": "142612768",
+        "fundsTransferredTo": "0x35b8689c0a70fd430cB699A2B242Efa635625497",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "14831",
+        "paymentTimestampMs": "1791442953000",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0xe8c217de6315d7c0b4c6805d7f1a9768ea03715523fd917aa9eebbc8afd9cca5",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0xfbdfc26355b3362946dfc2f55ae496ae054f2b72df5c2cfe702b1a4acbd4ed65",
+        "handleHashesToPayee": true
+      }
+    },
+    {
+      "id": "xmoney-2",
+      "platform": "xmoney",
+      "currency": "USD",
+      "intentHash": "0x033f9156b643e5f08cbe87b34e15ce147cb8f283d6027a246e39a9dd07f9de97",
+      "orchestrator": "0x014025fDE093f8701d86e9f38e2C3a9b779cb5c7",
+      "escrow": "0x777777779d229cdF3110e9de47943791c26300Ef",
+      "depositId": "6081",
+      "owner": "0x91D6E260A5965a3C33D5Bc4bf4ADCF96C449ED2e",
+      "to": "0x35b8689c0a70fd430cB699A2B242Efa635625497",
+      "amount": "172549019",
+      "conversionRate": "1020000000000000000",
+      "paymentMethod": "0x790dd0cc68b6e7f474649a6c0a5463a964be9d2589e2076b6dc99f5701543f51",
+      "fiatCurrency": "0xc4ae21aac0c6549d71dd96035b7e0bdb6c79ebdba8891b666115bc976d16a29e",
+      "payeeDetails": "0x2f1e312e3880f2058157f1ac8738f955ec052d975fecade978fde540cbbded4a",
+      "signaledAt": 1791349525,
+      "referralFees": [
+        {
+          "recipient": "0x0bC26FF515411396DD588Abd6Ef6846E04470227",
+          "fee": "9500000000000000"
+        }
+      ],
+      "signal": {
+        "txHash": "0x8454dcea009bb23b32575ff0da64c52db0ed92d71ba1ea28d072da37102b1bf1",
+        "blockNumber": 52280089,
+        "caller": "0x91D6E260A5965a3C33D5Bc4bf4ADCF96C449ED2e",
+        "direct": true,
+        "suffixCodes": [
+          "zkp2p-web",
+          "bc_nbn6qkni"
+        ],
+        "signatureExpiration": 1791353116,
+        "lockExpiry": 1791371125,
+        "lockExpiryAtFulfil": 1791371125,
+        "gatingSignatureLength": 65
+      },
+      "fulfil": {
+        "txHash": "0x1fb79610c05b0a5d81f0499ebd48ffc3d70d0f8150c8d4dfd84cc068eed18e90",
+        "blockNumber": 52280148,
+        "blockTimestamp": 1791349643,
+        "caller": "0x91D6E260A5965a3C33D5Bc4bf4ADCF96C449ED2e",
+        "direct": true,
+        "txFrom": "0x91D6E260A5965a3C33D5Bc4bf4ADCF96C449ED2e",
+        "suffixCodes": [
+          "zkp2p-web",
+          "bc_nbn6qkni"
+        ],
+        "releaseAmount": "172549019",
+        "netAmount": "170909804",
+        "fundsTransferredTo": "0x35b8689c0a70fd430cB699A2B242Efa635625497",
+        "signer": "0xE078D93bFdd87A8c5C5cCA5905DCbA0Dd7A1F0BD",
+        "signatureCount": 1,
+        "attestationSource": "buyer-tee",
+        "metadataKeys": [
+          "source"
+        ],
+        "paymentAmountMinor": "17600",
+        "paymentTimestampMs": "1791349551000",
+        "timestampBufferSeconds": 2592000,
+        "dataHash": "0x23d4509324c409426cd9f1b07fa9777b69164fab08a3b4ce9afef03e675f30e4",
+        "postIntentHookData": "0x"
+      },
+      "payeeLookup": {
+        "found": true,
+        "handleKeccak": "0x2f1e312e3880f2058157f1ac8738f955ec052d975fecade978fde540cbbded4a",
+        "handleHashesToPayee": true
+      }
+    }
+  ]
+}

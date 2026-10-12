@@ -1,0 +1,5 @@
+{
+  "database": [
+    { "instance": "rampridge-world", "rules": "database.rules.json" }
+  ]
+}

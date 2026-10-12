@@ -1,0 +1,53 @@
+/* Dev harness only: bank-coloured backdrop and the scenario switcher. */
+
+.bh-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(255, 220, 160, 0.12), transparent 60%),
+    repeating-linear-gradient(90deg, #3b2f22 0 64px, #35291d 64px 128px),
+    #33281c;
+}
+.bh-backdrop canvas {
+  display: block;
+}
+
+.bh-switcher {
+  position: fixed;
+  top: 6px;
+  left: 6px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: min(440px, calc(100vw - 12px));
+  padding: 6px 8px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.72);
+  border: 1px solid #5d5447;
+  line-height: 16px;
+}
+.bh-switcher__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.bh-switcher select,
+.bh-switcher button {
+  font: inherit;
+  color: #ff981f;
+  background: #2b2620;
+  border: 1px solid #000;
+  padding: 1px 6px;
+}
+.bh-switcher select {
+  max-width: 330px;
+}
+.bh-switcher button:hover {
+  color: #fff;
+}
+.bh-switcher__hint {
+  color: #9f9f9f;
+  font-family: var(--rs-font-p11);
+}

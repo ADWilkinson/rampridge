@@ -1,0 +1,57 @@
+/* Capture harness only (dev/capture.html). */
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+}
+
+.cap-viewport,
+.cap-bare {
+  position: absolute;
+  inset: 0;
+}
+
+.cap-bare {
+  position: fixed;
+}
+
+.cap-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100000;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.cap-cursor svg {
+  display: block;
+  margin: -1px 0 0 -1px;
+}
+
+.cap-cursor--hidden {
+  display: none;
+}
+
+.cap-tap {
+  position: fixed;
+  z-index: 100001;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.55), inset 0 0 0 2px rgba(0, 0, 0, 0.35);
+  background: rgba(255, 255, 255, 0.18);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+}
+
+.cap-tap--mouse {
+  width: 26px;
+  height: 26px;
+  border-width: 2px;
+}

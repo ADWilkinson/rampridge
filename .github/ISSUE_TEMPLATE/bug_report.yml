@@ -1,0 +1,67 @@
+name: Bug report
+description: Something in the game or the code doesn't work as it should.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Issues are public: don't include payment handles, emails, or anything else that identifies you or another player.
+        A security problem goes through a [private report](https://github.com/ADWilkinson/rampridge/security/advisories/new) instead. For help with your own order, use "Get help" in the game.
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where did it happen?
+      options:
+        - The live site (www.rampridge.xyz)
+        - A local development build
+        - My own deployment (a fork)
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Game world (movement, camera, menus, rendering)
+        - Chat, worlds or other players
+        - Buying USDC
+        - Selling USDC
+        - Sending or receiving USDC
+        - Login or wallet
+        - Interfaces and layout
+        - Setup, bake, tests or tooling
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you saw, and what you expected to see instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the Exchange at a bank booth
+        2. ...
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and browser
+      placeholder: e.g. MacBook, Chrome 141 / iPhone 16, Safari
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots, console errors or logs
+      description: Screenshots of the interface help most. Remove anything private first.
+  - type: checkboxes
+    id: money
+    attributes:
+      label: Money involved
+      options:
+        - label: This affected a real order, deposit or send (say what state it is in above, without private details).

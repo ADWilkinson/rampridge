@@ -1,0 +1,65 @@
+/*
+ * Chat-head dialogue box. Standalone it is its own 519 x 142 chat parchment
+ * (.rs-chatarea); inside the chatbox (GameFrame chat.overlay) it fills the
+ * chat area and lets the chatbox's own parchment show through.
+ */
+.npcd {
+  max-width: calc(100vw - 16px);
+  filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.55));
+}
+.rs-chat__area > .npcd {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  max-width: none;
+  background: none;
+  filter: none;
+}
+.npcd__warning {
+  color: var(--rs-red);
+}
+
+/*
+ * Chathead: the head and shoulders filling the kit's head column (96px; less
+ * on a phone, where the chatbox is narrow and the text needs the room).
+ */
+.npcd .rs-dialogue__head {
+  align-self: stretch;
+}
+.npcd__headSlot,
+.npcd__head {
+  width: 100%;
+  height: 100%;
+}
+.npcd__headSlot {
+  pointer-events: none;
+}
+@media (max-width: 480px) {
+  .npcd .rs-dialogue__head {
+    width: 64px;
+  }
+}
+
+/*
+ * Touch: each option is a full-width row sharing the options area, so the
+ * whole box is tappable with no gaps between rows. The kit's enlarged hit
+ * area (::after) cannot be used here: .rs-dialogue__option clips it with
+ * overflow: hidden (kept for the ellipsis), which leaves 16px-tall targets.
+ * The rows sit above the phone chatbox's "Hide" button (z-index 2), whose
+ * invisible enlarged hit area otherwise reaches 6px into the first row; the
+ * button itself stays clear, beside the "Select an Option" title.
+ */
+@media (pointer: coarse) {
+  .npcd .rs-dialogue__options {
+    align-items: stretch;
+  }
+  .npcd .rs-dialogue__option {
+    flex: 1 1 0;
+    width: 100%;
+    z-index: 3;
+  }
+  .npcd .rs-dialogue__option::after {
+    content: none;
+  }
+}

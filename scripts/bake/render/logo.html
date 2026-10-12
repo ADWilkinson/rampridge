@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>logo</title>
+    <style>
+      @font-face {
+        font-family: "Cinzel";
+        src: url("../vendor/cinzel/Cinzel-wght.ttf") format("truetype");
+        font-weight: 400 900;
+      }
+      html, body { margin: 0; background: transparent; }
+      svg { display: block; }
+    </style>
+  </head>
+  <body>
+    <svg id="logo" xmlns="http://www.w3.org/2000/svg"></svg>
+    <script type="module">
+      // RuneScape title wordmark style: gold bevelled small-caps letters, a heavy dark
+      // outline and a hard drop shadow. ?text=&size= (font px). Bake trims the margins.
+      const q = new URLSearchParams(location.search);
+      const text = q.get("text") ?? "RampRidge";
+      const size = Number(q.get("size") ?? 200);
+      const outline = Math.round(size * 0.075);
+      const W = Math.round(size * text.length * 0.95) + outline * 4;
+      const H = Math.round(size * 1.5);
+      const svg = document.getElementById("logo");
+      svg.setAttribute("width", W);
+      svg.setAttribute("height", H);
+      svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+      const base = Math.round(H * 0.72);
+      const t = (attrs) =>
+        `<text x="${W / 2}" y="${base}" text-anchor="middle" font-family="Cinzel" font-weight="900" font-size="${size}" letter-spacing="${size * 0.01}" ${attrs}>${text}</text>`;
+      svg.innerHTML = `
+        <defs>
+          <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#fffbd0"/>
+            <stop offset="0.22" stop-color="#ffe066"/>
+            <stop offset="0.48" stop-color="#f2b418"/>
+            <stop offset="0.52" stop-color="#b06800"/>
+            <stop offset="0.8" stop-color="#d88e12"/>
+            <stop offset="1" stop-color="#ffd860"/>
+          </linearGradient>
+          <filter id="bevel" x="-5%" y="-5%" width="110%" height="110%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="${size * 0.02}" result="blur"/>
+            <feSpecularLighting in="blur" surfaceScale="${size * 0.03}" specularConstant="0.9" specularExponent="18" lighting-color="#fffbe0" result="spec">
+              <feDistantLight azimuth="235" elevation="38"/>
+            </feSpecularLighting>
+            <feComposite in="spec" in2="SourceAlpha" operator="in" result="specIn"/>
+            <feComposite in="SourceGraphic" in2="specIn" operator="arithmetic" k1="0" k2="1" k3="0.85" k4="0"/>
+          </filter>
+          <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+            <feOffset dx="${size * 0.02}" dy="${size * 0.035}" in="SourceAlpha" result="o"/>
+            <feComponentTransfer in="o" result="s"><feFuncA type="linear" slope="0.85"/></feComponentTransfer>
+            <feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <g filter="url(#shadow)">
+          ${t(`fill="#1a0e00" stroke="#1a0e00" stroke-width="${outline * 2}" stroke-linejoin="round"`)}
+          ${t(`fill="#5a3700" stroke="#5a3700" stroke-width="${Math.round(outline * 0.7)}" stroke-linejoin="round"`)}
+          ${t(`fill="url(#gold)" filter="url(#bevel)"`)}
+        </g>`;
+      await document.fonts.load(`900 ${size}px Cinzel`);
+      await document.fonts.ready;
+      document.title = document.fonts.check(`900 ${size}px Cinzel`) ? "READY" : "ERROR";
+    </script>
+  </body>
+</html>

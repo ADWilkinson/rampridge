@@ -1,0 +1,27 @@
+{
+  "id": "/",
+  "name": "RampRidge",
+  "short_name": "RampRidge",
+  "description": "Varrock West Bank, rebuilt as a live exchange. Buy and sell USDC for Revolut, Venmo, Wise and more with real players, settled on Base by Peer.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "any",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "categories": ["games", "finance"],
+  "icons": [
+    { "src": "/game/ui/favicon.png", "sizes": "32x32", "type": "image/png", "purpose": "any" },
+    { "src": "/game/ui/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "/game/ui/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/game/ui/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/game/ui/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "screenshots": [
+    { "src": "/og.png", "sizes": "1200x630", "type": "image/png", "form_factor": "wide", "label": "Players trading USDC in Varrock West Bank" },
+    { "src": "/og-square.png", "sizes": "1200x1200", "type": "image/png", "label": "The RampRidge bank, full of players and merchants" }
+  ]
+}

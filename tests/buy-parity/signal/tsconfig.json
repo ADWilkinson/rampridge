@@ -1,0 +1,10 @@
+{
+  "extends": "../../../tsconfig.app.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": null,
+    "baseUrl": "../../..",
+    "types": ["vite/client", "node"],
+    "noEmit": true
+  },
+  "include": ["./**/*.ts", "../setup/**/*.ts", "../../../vitest.parity.config.ts"]
+}

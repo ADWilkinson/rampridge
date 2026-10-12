@@ -1,0 +1,733 @@
+/*
+ * Bank, Sell and Collection box interfaces. Built on the kit's Window,
+ * buttons, tabs and item slots; this sheet only lays them out. Colours are
+ * the client's (orange labels, white values, yellow while waiting, green done,
+ * red problems) from the kit tokens.
+ */
+
+/* ---------- Shared ---------------------------------------------------------- */
+
+/*
+ * Legibility on the stone (#483e33 under the texture). The client's red
+ * (#ff0000) is about 2.5:1 there and its grey (#9f9f9f) 3.8:1, so in these
+ * windows quiet text uses a lighter warm grey (4.7:1 or better), and red only
+ * ever sits on a dark well (about 4.9:1): .bk-alert for a message,
+ * .bk-alert--inline for a short status inside a line.
+ */
+.bk-window {
+  --bk-quiet: #b8b0a0;
+  --bk-well: rgba(0, 0, 0, 0.78);
+}
+.bk-window .rs-c-grey {
+  color: var(--bk-quiet);
+}
+.bk-alert {
+  max-width: 100%;
+  padding: 3px 7px 4px;
+  background: var(--bk-well);
+  border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px #3d362c;
+}
+.bk-alert--inline {
+  padding: 0 4px;
+  border: 0;
+  box-shadow: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+/* Label and value pairs on one grid, labels in a column of their own. */
+.bk-facts {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 4px 10px;
+  align-items: baseline;
+}
+.bk-facts > div {
+  display: contents;
+}
+/* The global reset leaves dl and dd their browser margins (1em above and below, 40px left). */
+.bk-facts,
+.bk-facts dd {
+  margin: 0;
+}
+
+.bk-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 20px;
+  text-align: center;
+  line-height: 16px;
+}
+
+.bk-row {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+}
+
+.bk-link {
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+  border-bottom: 1px solid currentColor;
+  box-shadow: 0 1px 0 #000;
+}
+.bk-link:hover {
+  color: var(--rs-white);
+}
+
+.bk-error {
+  display: flex;
+  flex-direction: column;
+  align-items: inherit;
+  gap: 4px;
+  line-height: 15px;
+}
+
+.bk-window .rs-btn {
+  min-width: 64px;
+}
+
+/* Platform badge on a coin stack, like a bank note's item overlay. */
+.bk-orderIcon {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 32px;
+}
+.bk-orderIcon > .rs-sprite,
+.bk-orderIcon > img {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+}
+.bk-orderIcon__badge {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  line-height: 0;
+}
+/* The RuneScape fonts are only crisp at 16px: draw platform monograms at that size. */
+.bk-orderIcon__badge [role="img"],
+.bk-plat [role="img"],
+.bk-review__icon [role="img"] {
+  font-size: 16px !important;
+  line-height: 16px !important;
+  letter-spacing: -1px;
+}
+
+/* ---------- Bank ------------------------------------------------------------ */
+
+.bk-bank {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 6px 6px;
+  gap: 4px;
+}
+.bk-bank__top {
+  display: flex;
+  align-items: flex-end;
+}
+.bk-bank__grid {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  border-top: 1px solid #000;
+}
+.bk-bank__scroll {
+  height: 100%;
+  padding: 6px 0 0 10px;
+}
+.bk-bank__status {
+  position: relative;
+  min-height: 16px;
+  padding: 0 2px;
+  line-height: 15px;
+}
+.bk-bank__foot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.bk-bank__wallet {
+  margin-left: 6px;
+  white-space: nowrap;
+}
+.bk-bank--mobile .bk-bank__foot {
+  flex-wrap: wrap;
+}
+.bk-bank--mobile .bk-bank__wallet {
+  order: -1;
+  flex-basis: 100%;
+  margin: 0 0 4px;
+}
+.bk-bank--mobile .bk-bank__scroll {
+  padding-left: 6px;
+}
+
+.bk-examine {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.45);
+}
+.bk-examine__box {
+  max-width: min(320px, 92%);
+  line-height: 15px;
+}
+
+.bk-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+}
+
+.bk-inlinePrompt {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 4px);
+  width: auto;
+  height: 76px;
+  z-index: 4;
+  border: 1px solid #000;
+}
+
+/* ---------- Sell ------------------------------------------------------------ */
+
+.bk-sell {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 4px 6px 6px;
+}
+.bk-sell__scroll {
+  flex: 1;
+  min-height: 0;
+}
+.bk-sell__amount {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 2px 8px 8px 2px;
+}
+.bk-sell__wallet {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  line-height: 15px;
+}
+
+.bk-leg {
+  position: relative;
+  min-width: 0;
+  margin: 0 6px 8px 2px;
+  padding: 4px 8px 8px;
+  border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px #5d5547;
+  line-height: 15px;
+}
+.bk-leg__title {
+  float: left;
+  width: 100%;
+  padding: 2px 0 4px;
+}
+.bk-leg__title + * {
+  clear: both;
+}
+.bk-leg__remove {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+}
+/* Payout methods: a monogram tile with its name underneath, so every letter can be told apart. */
+.bk-leg__platforms {
+  clear: both;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 4px;
+  margin-bottom: 6px;
+}
+.bk-plat {
+  min-width: 0;
+  min-height: 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 2px 2px 1px;
+  border: 1px solid #000;
+  background: rgba(0, 0, 0, 0.22);
+}
+.bk-plat__name {
+  max-width: 100%;
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.bk-plat:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+}
+.bk-plat:hover:not(:disabled) .bk-plat__name,
+.bk-plat.is-selected .bk-plat__name {
+  color: var(--rs-white);
+}
+.bk-plat.is-selected {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+.bk-plat:disabled {
+  opacity: 0.3;
+}
+/* Phones: a two-column list, icon then name, each row a full-width tap target. */
+.bk-sell--mobile .bk-leg__platforms {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.bk-sell--mobile .bk-plat {
+  min-height: 34px;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 3px 8px 3px 4px;
+}
+.bk-sell--mobile .bk-plat__name {
+  text-align: left;
+  font-family: var(--rs-font-p12);
+  line-height: 14px;
+}
+.bk-leg__note {
+  margin-top: 4px;
+}
+.bk-plat:focus-visible,
+.bk-chip:focus-visible,
+.bk-link:focus-visible {
+  outline: 1px solid var(--rs-focus);
+  outline-offset: 1px;
+}
+.bk-leg__currencies {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  margin-bottom: 6px;
+}
+.bk-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+/* Zelle: the seller confirms the exact handle is enrolled. */
+.bk-leg__enroll {
+  align-items: flex-start;
+  margin: 4px 0 2px;
+  line-height: 15px;
+}
+.bk-leg__enroll--todo {
+  color: var(--rs-yellow);
+}
+/* Grand Exchange "price per item": the seller's spread on the market rate. */
+.bk-sell__price {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 2px 8px 8px 2px;
+}
+/* "Price per USDC:" with where the price sits against the market on the right, like Wallet and Sell all. */
+.bk-price__head,
+.bk-price__guide {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 10px;
+  line-height: 15px;
+}
+.bk-price__row {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  min-width: 0;
+}
+.bk-price__box {
+  flex: 1;
+  min-width: 0;
+}
+.bk-price__step {
+  flex: none;
+  min-width: 44px;
+}
+.bk-chip {
+  min-width: 36px;
+  height: 18px;
+  padding: 0 4px;
+  text-align: center;
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+  background: #2b2620;
+  border: 1px solid #000;
+  box-shadow: inset 1px 1px 0 #5d5547;
+}
+.bk-chip:hover {
+  color: var(--rs-white);
+}
+.bk-chip.is-on {
+  color: var(--rs-white);
+  background: #811e1c;
+  box-shadow: inset 1px 1px 0 #a2342f, inset -1px -1px 0 #4e100e;
+}
+.bk-leg__payee {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.bk-leg__payee label {
+  white-space: nowrap;
+}
+/* Phones: the label above a full-width field, so a whole email or handle shows and can be checked. */
+.bk-sell--mobile .bk-leg__payee {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+.bk-sell--mobile .bk-leg__payee .bk-input {
+  flex: none;
+  width: 100%;
+}
+.bk-input {
+  flex: 1;
+  min-width: 0;
+  height: 22px;
+  padding: 0 6px;
+  color: var(--rs-white);
+  text-shadow: var(--rs-shadow);
+  caret-color: var(--rs-yellow);
+  background: linear-gradient(#1c1914, #2b2620);
+  border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px #3d362c;
+  border-radius: 0;
+}
+.bk-input:focus-visible {
+  outline: 1px solid var(--rs-focus);
+  outline-offset: 1px;
+}
+.bk-input::placeholder {
+  /* 4.7:1 on the field (the client's #7d7262 was 3.2:1). */
+  color: #a09682;
+  text-shadow: none;
+}
+.bk-input.is-bad {
+  box-shadow: inset 0 0 0 1px var(--rs-aborted);
+}
+.bk-input.is-good {
+  box-shadow: inset 0 0 0 1px #1f7a1f;
+}
+.bk-leg__hint {
+  margin: 3px 0 4px;
+}
+.bk-leg__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  min-height: 16px;
+}
+.bk-leg__estimate {
+  margin-top: 6px;
+  padding-top: 5px;
+  border-top: 1px solid rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.bk-sell__addLeg {
+  margin: 0 0 8px 4px;
+}
+.bk-sell__foot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-top: 6px;
+  border-top: 1px solid #000;
+  text-align: center;
+  line-height: 15px;
+}
+.bk-sell__deposit {
+  margin-top: 2px;
+}
+
+/* Review before depositing: the trade's "Are you sure" screen for a sell offer. */
+.bk-review__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 10px 8px 4px;
+  line-height: 15px;
+}
+.bk-review__ask {
+  text-align: center;
+  padding-bottom: 4px;
+}
+.bk-review__facts {
+  padding: 0 2px;
+}
+.bk-review__sub {
+  display: block;
+  margin-top: 1px;
+}
+.bk-review__ask:focus {
+  outline: none;
+}
+.bk-review__legs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bk-review__leg {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px #5d5547;
+}
+.bk-review__icon {
+  display: grid;
+  place-items: center;
+  padding-top: 1px;
+}
+.bk-review__legText {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+/* The handle in an input-like well, wrapped anywhere so a long email shows in full. */
+.bk-review__handle {
+  overflow-wrap: anywhere;
+  padding: 3px 6px 4px;
+  background: linear-gradient(#1c1914, #2b2620);
+  border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px #3d362c;
+}
+/* The payout a seller is agreeing to: the one figure on the card set in bold. */
+.bk-review__receive {
+  margin-top: 2px;
+}
+.bk-review__warn {
+  text-align: center;
+  margin-top: 2px;
+}
+.bk-review__buttons {
+  justify-content: center;
+}
+
+.bk-sellState {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  text-align: center;
+  line-height: 16px;
+}
+.bk-sellState__headline {
+  font-size: 32px;
+  line-height: 32px;
+}
+.bk-sellState__buttons {
+  justify-content: center;
+  margin-top: 4px;
+}
+.bk-steps {
+  width: 100%;
+  max-width: 330px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 4px 0;
+}
+/* Each step in a dark well, so every status colour (red included) reads at 4.5:1 or better. */
+.bk-steps__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 3px 6px 4px;
+  background: var(--bk-well);
+  border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px #3d362c;
+}
+.bk-steps__status {
+  white-space: nowrap;
+}
+
+/* ---------- Collection box -------------------------------------------------- */
+
+.bk-coll {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 6px 6px;
+}
+.bk-coll__intro {
+  padding: 2px 2px 0;
+}
+.bk-coll__scroll {
+  flex: 1;
+  min-height: 0;
+  border-top: 1px solid #000;
+}
+.bk-coll__list {
+  padding: 0 6px 0 2px;
+}
+.bk-collRow {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.55);
+  line-height: 15px;
+}
+.bk-collRow__main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+}
+.bk-collRow__collect {
+  margin-top: 4px;
+}
+/*
+ * One fill per row on a shared grid (amount | buyer | outcome), so a long
+ * outcome wraps inside its own cell and never lands beside the next fill.
+ */
+.bk-fills {
+  align-self: stretch;
+  display: grid;
+  grid-template-columns: max-content max-content minmax(0, 1fr);
+  column-gap: 10px;
+  row-gap: 1px;
+  margin-top: 2px;
+}
+.bk-fills__row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: baseline;
+}
+.bk-fills__row > * {
+  justify-self: start;
+  min-width: 0;
+}
+.bk-coll__status {
+  min-height: 16px;
+  line-height: 15px;
+}
+
+@media (pointer: coarse) {
+  /* The Zelle enrolment tick: the whole label is the target, at least 36px tall. */
+  .bk-leg__enroll {
+    min-height: 36px;
+    align-items: center;
+  }
+  /* Touch: tiles at least 38px tall (the phone list rows likewise). */
+  .bk-plat {
+    min-height: 50px;
+  }
+  .bk-sell--mobile .bk-plat {
+    min-height: 38px;
+  }
+  .bk-chip {
+    min-width: 44px;
+    height: 30px;
+  }
+  /* Chip rows 6px apart, so each chip's hit area below is its own. */
+  .bk-chips {
+    row-gap: 6px;
+  }
+  .bk-input {
+    height: 36px;
+  }
+
+  /*
+   * Hit areas of at least 36px on screen, drawn as ::after so nothing visible
+   * changes size, and sized with the kit's --rs-touch (36px divided by the
+   * window's fit scale). Only where targets stack closer than that (chip
+   * rows, buyer rows) do the rows move apart, so no two areas overlap.
+   */
+  .bk-chip,
+  .bk-link {
+    position: relative;
+  }
+  .bk-chip::after,
+  .bk-link::after {
+    content: "";
+    position: absolute;
+  }
+  /* Centred on the element whatever its border, so the area is exactly --rs-touch tall. */
+  .bk-chip::after,
+  .bk-link::after {
+    top: calc(50% - var(--rs-touch, 36px) / 2);
+    height: var(--rs-touch, 36px);
+  }
+  .bk-chip::after {
+    left: -1px;
+    right: -1px;
+  }
+  .bk-link::after {
+    left: -4px;
+    right: -4px;
+  }
+  /*
+   * The collection box lists buyers one per 15px line; on touch the rows sit
+   * --rs-touch apart so each buyer link's hit area is its own.
+   */
+  .bk-fills {
+    row-gap: calc(var(--rs-touch, 36px) - 15px);
+  }
+  /*
+   * A link's own text sits above every neighbour's hit area, so in a dense
+   * list (the collection box's buyers) a tap on a link always opens that link.
+   */
+  .bk-link__text {
+    position: relative;
+    z-index: 1;
+  }
+  /* The amount pad's - and + (26px wide): wider hit areas, above the number box's. */
+  .bk-sell .rs-amount__pm {
+    z-index: 1;
+  }
+  .bk-sell .rs-amount__pm::after {
+    inset: min(0px, calc((36px - var(--rs-touch, 36px)) / 2)) calc((26px - var(--rs-touch, 36px)) / 2);
+  }
+  /* "-" sits at the scroll area's left edge, which would clip it: it grows into the number box instead. */
+  .bk-sell .rs-amount__pm:first-child::after {
+    left: -2px;
+    right: calc(28px - var(--rs-touch, 36px));
+  }
+}

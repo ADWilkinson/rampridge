@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Actors harness</title>
+    <style>
+      @font-face {
+        font-family: "RuneScape Plain 12";
+        src: url("/game/fonts/RuneScape-Plain-12.ttf") format("truetype");
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #1b1712;
+        color: #ff981f;
+        font-family: "RuneScape Plain 12", monospace;
+        font-size: 16px;
+        overflow: hidden;
+      }
+      #stage {
+        position: fixed;
+        inset: 0;
+      }
+      #labels {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+      .label {
+        position: absolute;
+        transform: translate(-50%, 0);
+        white-space: nowrap;
+        color: #ffff00;
+        text-shadow: 1px 1px 0 #000;
+      }
+      #hud {
+        position: fixed;
+        left: 8px;
+        top: 6px;
+        color: #ff981f;
+        text-shadow: 1px 1px 0 #000;
+        white-space: pre;
+      }
+      #preview-box {
+        position: fixed;
+        right: 24px;
+        top: 24px;
+        width: 180px;
+        height: 240px;
+        background: #3e3529;
+        border: 2px solid #5a4d3c;
+        box-shadow: inset 0 0 0 1px #000;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage"></div>
+    <div id="labels"></div>
+    <div id="hud"></div>
+    <script type="module" src="/src/game/osrs/dev/actors.ts"></script>
+  </body>
+</html>

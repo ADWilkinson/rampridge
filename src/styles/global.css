@@ -1,0 +1,185 @@
+/* Reset and page rules for a full-window game. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #000000;
+  color: var(--rs-white);
+  font-family: var(--rs-font-p12);
+  font-size: var(--rs-font-size);
+  line-height: 1;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Bitmap fonts: no subpixel smoothing, no synthetic bold. */
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  font-synthesis: none;
+  text-rendering: optimizeSpeed;
+}
+
+/*
+ * The game owns every touch: no double-tap or pinch zoom of the page (the
+ * world turns and zooms with two fingers), no long-press callouts, text
+ * selection or tap flashes outside text fields and marked copyable text.
+ * src/app/mobile.ts stops the page bouncing and pans from the keyboard.
+ */
+html,
+body,
+#root {
+  touch-action: pan-x pan-y;
+}
+
+#root {
+  position: fixed;
+  inset: 0;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#root input,
+#root textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+figure {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+  font-size: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  margin: 0;
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: inherit;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+canvas,
+svg {
+  display: block;
+}
+
+/* Game surfaces: no text selection, no long-press callouts, no tap flashes. */
+.rs-game,
+.rs-game * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.rs-game input,
+.rs-game textarea,
+.rs-selectable,
+.rs-selectable * {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Sprites and canvases stay crisp at every scale. */
+.rs-game img,
+.rs-game canvas,
+.rs-sprite,
+.rs-pixel {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/*
+ * Keyboard focus: a 1px yellow outline with a black halo, the same treatment
+ * the client gives a selected item. Mouse focus shows nothing.
+ */
+.rs-game :focus {
+  outline: none;
+}
+
+.rs-game :focus-visible {
+  outline: 1px solid var(--rs-focus);
+  outline-offset: 1px;
+  box-shadow: 0 0 0 2px #000000;
+}
+
+/* Interface containers focused programmatically on open draw no ring. */
+.rs-game [role="dialog"][tabindex="-1"]:focus-visible,
+.rs-game[role="dialog"][tabindex="-1"]:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.rs-visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* The in-game "reduced motion" setting adds this class to <html>. */
+html.rs-reduced-motion *,
+html.rs-reduced-motion *::before,
+html.rs-reduced-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}

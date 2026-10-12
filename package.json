@@ -1,0 +1,77 @@
+{
+  "name": "rampridge",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Varrock West Bank from Old School RuneScape, rebuilt as a live peer-to-peer USDC exchange on the Peer protocol (ZKP2P) on Base.",
+  "license": "MIT",
+  "homepage": "https://www.rampridge.xyz",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ADWilkinson/rampridge.git"
+  },
+  "keywords": [
+    "runescape",
+    "osrs",
+    "threejs",
+    "peer",
+    "zkp2p",
+    "usdc",
+    "base",
+    "p2p",
+    "onramp",
+    "offramp"
+  ],
+  "scripts": {
+    "dev": "vite --port 5173",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --port 5173",
+    "typecheck": "tsc -b --noEmit",
+    "lint": "oxlint src api shared scripts/dev-api.ts scripts/assets.ts scripts/assets.test.ts scripts/ops --deny-warnings",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:fork": "vitest run -c vitest.fork.config.ts",
+    "test:parity": "vitest run -c vitest.parity.config.ts",
+    "bake": "cd scripts/bake && bun install && bun run bake",
+    "setup:assets": "cd scripts/bake && bun install --frozen-lockfile && bun run setup",
+    "assets:lock": "bun scripts/assets.ts lock",
+    "check": "bun run typecheck && bun run lint && bun run test && bun run build",
+    "deploy:prod": "bash scripts/deploy.sh",
+    "ops:status": "node scripts/ops/status.mjs --watch 30",
+    "ops:matrix": "bun scripts/ops/peer-matrix.ts"
+  },
+  "dependencies": {
+    "@privy-io/react-auth": "3.48.1",
+    "@tanstack/react-query": "5.104.1",
+    "@vercel/analytics": "2.0.1",
+    "@vercel/node": "23.0.1",
+    "@vercel/og": "0.11.1",
+    "@zkp2p/cash": "0.7.2",
+    "@zkp2p/sdk": "0.14.7",
+    "buffer": "^6.0.3",
+    "firebase": "13.0.0",
+    "firebase-admin": "14.5.0",
+    "jose": "6.2.12",
+    "permissionless": "0.2.57",
+    "process": "^0.11.10",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "three": "0.186.1",
+    "viem": "2.56.5",
+    "zustand": "5.0.15"
+  },
+  "devDependencies": {
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "0.186.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "oxlint": "1.87.0",
+    "typescript": "5.9.3",
+    "vite": "8.3.4",
+    "vitest": "5.0.3"
+  },
+  "patchedDependencies": {
+    "@zkp2p/indexer-schema@0.22.0": "patches/@zkp2p%2Findexer-schema@0.22.0.patch"
+  }
+}

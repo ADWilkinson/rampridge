@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/ADWilkinson/rampridge/security/advisories/new
+    about: Report privately. Please don't open a public issue for security problems.
+  - name: Help with an order or a trade
+    url: https://x.com/andrewwilkinson
+    about: For a stuck order or a question about your own trade, message the RampRidge help account on X. We will never DM you first or ask you to send money.
+  - name: Peer protocol documentation
+    url: https://docs.peer.xyz
+    about: How the protocol, the PeerAuth extension and payment proofs work.

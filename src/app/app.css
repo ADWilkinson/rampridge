@@ -1,0 +1,101 @@
+/* Shell layout: the stage behind the title and design screens, overlays and shell-only bits. */
+
+.rr-stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+.rr-viewport {
+  position: absolute;
+  inset: 0;
+}
+
+/* Overlays let clicks through to the scene except on the windows inside them (.rs-window-host children). */
+.rr-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 95;
+  pointer-events: none;
+}
+.rr-overlay--top {
+  z-index: 110;
+}
+
+/*
+ * Privy's login window in the interface browns. The hex theme (walletStack.tsx) only sets Privy's main
+ * background; these replace its navy surfaces, grey-blue text and borders. html:root outranks the :root
+ * block Privy injects after this stylesheet.
+ */
+html:root {
+  --privy-color-background-2: #4f4537; /* icon tiles, hovered rows, the Google button */
+  --privy-color-background-hover: #4f4537;
+  --privy-color-background-clicked: #574c3d;
+  --privy-color-info-bg: #483e33;
+  --privy-color-foreground-2: #c9bba3; /* body text */
+  --privy-color-foreground-3: #a0927b; /* hints and placeholders */
+  --privy-color-foreground-4: #5d5447; /* row borders */
+  --privy-color-border-default: #5d5447;
+  --privy-color-border-hover: #6b6250;
+  --privy-color-icon-muted: #c9bba3;
+  --privy-color-icon-subtle: #a0927b;
+}
+
+/*
+ * A window open over the title (How it works, Terms): the logo, and on phones the stone box, would show past
+ * both edges of it. The footer links stay.
+ */
+.rr-title--covered .rs-title__logo,
+.rr-title--covered .rs-title__box {
+  visibility: hidden;
+}
+
+.rr-design-preview {
+  width: 100%;
+  height: 100%;
+}
+
+/* Error and unsupported-browser screens. */
+.rr-error {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: #000;
+  color: var(--rs-white);
+}
+.rr-error__box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 420px;
+  text-align: center;
+}
+.rr-error__title {
+  color: var(--rs-yellow);
+  text-shadow: 1px 1px 0 #000;
+}
+.rr-error__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  line-height: 1.25;
+}
+.rr-error__action {
+  margin-top: 6px;
+}
+
+/* Account tab: the shared account panel (the login method is its last line). */
+.rr-account {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.rr-ether {
+  display: block;
+}

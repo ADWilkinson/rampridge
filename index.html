@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <title>RampRidge: the Varrock bank, but it trades real USDC</title>
+    <meta name="description" content="Walk into Varrock West Bank and buy or sell USDC for Revolut, Venmo, Wise and more with real players. Every trade settles on Base through Peer." />
+    <link rel="canonical" href="https://www.rampridge.xyz/" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/game/ui/favicon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/game/ui/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/game/ui/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="RampRidge" />
+    <meta name="application-name" content="RampRidge" />
+    <!-- Link previews. A shared trade (/t/{id}) serves its own tags from api/share.ts. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="RampRidge" />
+    <meta property="og:title" content="RampRidge: the Varrock bank, but it trades real USDC" />
+    <meta property="og:description" content="Walk into Varrock West Bank and buy or sell USDC for Revolut, Venmo, Wise and more with real players. Every trade settles on Base through Peer." />
+    <meta property="og:url" content="https://www.rampridge.xyz/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://www.rampridge.xyz/og.png" />
+    <meta property="og:image:secure_url" content="https://www.rampridge.xyz/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content="Varrock West Bank from Old School RuneScape, full of players and merchants shouting USDC offers, under the RampRidge logo." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="RampRidge: the Varrock bank, but it trades real USDC" />
+    <meta name="twitter:description" content="Walk into Varrock West Bank and buy or sell USDC for Revolut, Venmo, Wise and more with real players. Every trade settles on Base through Peer." />
+    <meta name="twitter:image" content="https://www.rampridge.xyz/og.png" />
+    <meta name="twitter:image:alt" content="Varrock West Bank from Old School RuneScape, full of players and merchants shouting USDC offers, under the RampRidge logo." />
+    <!-- The world model and the title logo start downloading with the code instead of after it (about 0.2 s
+         sooner to the title on Fast 4G). Low priority so they never hold up the page's scripts and styles. -->
+    <link rel="preload" href="/game/world/varrock-west-bank.glb" as="fetch" crossorigin fetchpriority="low" />
+    <link rel="preload" href="/game/ui/logo.png" as="image" fetchpriority="low" />
+    <!-- The live loading bar's font (font-display: block), so its text shows the moment it replaces the one below. -->
+    <link rel="preload" href="/game/fonts/RuneScape-Bold-12.ttf" as="font" type="font/ttf" crossorigin />
+    <!-- Paints the loader before any script runs; React replaces #root's content with the live bar. -->
+    <style>
+      html,body{background:#000;margin:0}
+      .rr-boot{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;color:#fff;font:bold 13px/14px ui-monospace,monospace;text-align:center;text-shadow:1px 1px 0 #000}
+      .rr-boot p{margin:0}
+      .rr-boot__bar{display:grid;place-items:center;box-sizing:border-box;width:304px;max-width:100%;height:34px;border:1px solid #8c1111}
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="rr-boot" role="status" aria-live="polite" aria-busy="true">
+        <p>RampRidge is loading - please wait...</p>
+        <div class="rr-boot__bar">Loading - 0%</div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

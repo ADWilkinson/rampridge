@@ -1,0 +1,176 @@
+{
+  "generatedAt": "2026-10-11T21:13:40.959Z",
+  "scannedBlocks": {
+    "from": 52181185,
+    "to": 52481184
+  },
+  "total": 2932,
+  "perCurrency": {
+    "USD": {
+      "intents": 1929,
+      "underquoted": 0
+    },
+    "EUR": {
+      "intents": 686,
+      "underquoted": 11
+    },
+    "GBP": {
+      "intents": 107,
+      "underquoted": 3
+    },
+    "CNY": {
+      "intents": 119,
+      "underquoted": 0
+    },
+    "CAD": {
+      "intents": 21,
+      "underquoted": 0
+    },
+    "AUD": {
+      "intents": 23,
+      "underquoted": 0
+    },
+    "INR": {
+      "intents": 25,
+      "underquoted": 0
+    },
+    "CHF": {
+      "intents": 4,
+      "underquoted": 0
+    },
+    "PHP": {
+      "intents": 4,
+      "underquoted": 0
+    },
+    "UAH": {
+      "intents": 10,
+      "underquoted": 0
+    },
+    "TRY": {
+      "intents": 1,
+      "underquoted": 0
+    },
+    "ZAR": {
+      "intents": 2,
+      "underquoted": 0
+    },
+    "MYR": {
+      "intents": 1,
+      "underquoted": 0
+    }
+  },
+  "underquoted": [
+    {
+      "signalTxHash": "0xc016145c1a0b5ea76a4d4744847d5a63c007a22ca34573b5b4b62e24e28e5c46",
+      "intentHash": "0x1192bea4fe2b8f9de4123ccc9d611c8b2a9d9f94a675f37250a8930bdddc2918",
+      "currency": "GBP",
+      "amount": "1059120000",
+      "conversionRate": "755344059218974243",
+      "fulfilTxHash": "0x9239315518426e8d3c4634f9a404905a724e79cdd56dbca1f040b487d678bb10"
+    },
+    {
+      "signalTxHash": "0x0a405f9a7820bf4e7ef439a6fc6e5e5082eef57e4990d27f8d0b838a39b51587",
+      "intentHash": "0x1e480808bf886767e5d46e8484ef7457f10f858d84c337d6052c3b1577e37d17",
+      "currency": "EUR",
+      "amount": "327952500",
+      "conversionRate": "890372843628269338",
+      "fulfilTxHash": "0x3cf8bfe9bc2e8ff25e87da54d49ad3911f12ad955ae1bdd8499aae3fa390573d"
+    },
+    {
+      "signalTxHash": "0x9a021c0dc84d1669128fa13116965bc2b11357a79b70801cb85838ce52417dbb",
+      "intentHash": "0x042d0c7c67e78025de6b7f27e24390c36c3603ec4f7e53e65524bdbd01d5bf70",
+      "currency": "EUR",
+      "amount": "560960000",
+      "conversionRate": "918069024529378209",
+      "fulfilTxHash": "0x321cf14bb6d1169d0020f80ede83ef426037f3b3cbb840d7a5ddfaf782d82dfb"
+    },
+    {
+      "signalTxHash": "0xf87dcf7de0e04d7cb7f6b006e89748032badc25ef447df5a86ef3254f5b3d5e0",
+      "intentHash": "0x2f7fe3cdf5beb95cc1caee802398f2cb8cc30aa66e46bad3cb57f6f6f854fda0",
+      "currency": "EUR",
+      "amount": "111820000",
+      "conversionRate": "894294401717045252",
+      "fulfilTxHash": "0xebbfc5372b39ed8316f34e101d7867ebbbcea989d0a210c3d78dfc61fc7095b9"
+    },
+    {
+      "signalTxHash": "0x54c355e695f079da4b8f50c6ad56dff04b2bef60c22d9f960bd5f9756e5e51b8",
+      "intentHash": "0x16832cf460ef6666b898d6f68fad0dca20820811cecbb5a785771481ab7e9f01",
+      "currency": "EUR",
+      "amount": "1119840",
+      "conversionRate": "892984712101728819",
+      "fulfilTxHash": "0x6e4c2b6f949d1536864d88b50bb8d789de179d9b92c63f46d1fc5cbc8502df20"
+    },
+    {
+      "signalTxHash": "0x63a9e01b9518b04d6806807e5cc76b88d833236765d253b0140ce9f5edbd674e",
+      "intentHash": "0x2f4e3dfa1fe73cbfb26a4c50352d86992a52f072fb32a607c27063f8baed5e29",
+      "currency": "EUR",
+      "amount": "336141000",
+      "conversionRate": "892482618900996904",
+      "fulfilTxHash": "0xa32565066c5b1da6ae7d8709d2062b5f967d192c32a974585f543847c392d509"
+    },
+    {
+      "signalTxHash": "0x1be118661abf152d2aa2bb164799a58f68f1b400391f7ab1265663c20c70921a",
+      "intentHash": "0x0b357bac70adbb2829e3aec2250c637ecbf557847e8c707411a6910f5ba36625",
+      "currency": "EUR",
+      "amount": "1091424750",
+      "conversionRate": "893327735146193084",
+      "fulfilTxHash": "0xe92502d02c667e92a7018196a72828db171f38829d4583e4df67bc81f1b01917"
+    },
+    {
+      "signalTxHash": "0xd1d4beddafbbb85f575bc16b1d11b06b1c7141609887ddd2f18e504f573d9392",
+      "intentHash": "0x015b88409471c552bc604f884ab7b00278dd74822b84b6a3764f7759978a5fc6",
+      "currency": "EUR",
+      "amount": "1102618850",
+      "conversionRate": "893327735146193084",
+      "fulfilTxHash": "0x990e78842bdf0ade849c36e0b5759810e4d6c3c6434085c8ee0ebd0ac4ac439f"
+    },
+    {
+      "signalTxHash": "0x1ec3d741deb80755cb538862e11f6984da757b46b9a4b9fd37830007dd52a92b",
+      "intentHash": "0x1e0a3b8866c9e2e2a35525a9a8467156d3a09cf38a899d14f5d4aae8d5ae5846",
+      "currency": "EUR",
+      "amount": "5597050",
+      "conversionRate": "893327735146193084",
+      "fulfilTxHash": null
+    },
+    {
+      "signalTxHash": "0x953637cc04b03595213f6f321c713e02279369dfad394e28347d86910f47e0a9",
+      "intentHash": "0x1e0bf99f1d2f9fa117f03c175030451be1f9eb540a832fcfa326740b3eea429a",
+      "currency": "EUR",
+      "amount": "55958750",
+      "conversionRate": "893515312618670003",
+      "fulfilTxHash": "0x0014e823f341fb734be8f9fc10a4866cc412a52623fe172ded0e38a37f2c7d76"
+    },
+    {
+      "signalTxHash": "0x665b9523938247bc50d7b0173ece0ea6cb51a746bcf4f7f88b1b98fbafcc1a53",
+      "intentHash": "0x2eeea9eeae02ad321adf1833bb74917203a7d360ecf6e718b0755b7c48f653be",
+      "currency": "GBP",
+      "amount": "2318820000",
+      "conversionRate": "754694197911006461",
+      "fulfilTxHash": "0x87cbaafd1133f81ea0256fbf288d637e72c17aef118375a5bfc535420471ed33"
+    },
+    {
+      "signalTxHash": "0x43a45847c0149bf7a0ac1f2cdee52b89e752fac12b3cfc4e6d7c2058303b8ef3",
+      "intentHash": "0x2ca79263b88b22cd65e4a1cd42ec39a2b7557742900ee94283ea4c97257aee55",
+      "currency": "EUR",
+      "amount": "112079000",
+      "conversionRate": "892227803602815871",
+      "fulfilTxHash": null
+    },
+    {
+      "signalTxHash": "0xabb976d8d63b046c83d9939ec7ca38da3bba8a66e2721745cb557d7e9235b604",
+      "intentHash": "0x1d66b68d6b51045e2436d62762594e1fae5b217f770fe07eaae5dc0d398464e2",
+      "currency": "GBP",
+      "amount": "779980000",
+      "conversionRate": "756429652042360061",
+      "fulfilTxHash": "0x988b1dc1478bb13c712a50b4e69d6db8c8e588d4171303872629f3f9d1cfd599"
+    },
+    {
+      "signalTxHash": "0x978fc3622e444f2cd1e56e342e00c04edd891e1124e1492b606f93df22314df0",
+      "intentHash": "0x04c912bd3b14171536e3e1816d5f8cd59ff24ef66b456611848c903e828752f0",
+      "currency": "EUR",
+      "amount": "224008000",
+      "conversionRate": "892825256240848542",
+      "fulfilTxHash": "0x09657d2ccd41671b0773b90045f4fa735f8cc133236df997e5106f247c340cc9"
+    }
+  ]
+}

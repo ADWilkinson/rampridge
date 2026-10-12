@@ -1,0 +1,50 @@
+RampRidge
+Copyright (c) 2026 Andrew Wilkinson
+
+RampRidge's own code and documentation are licensed under the MIT License
+(see LICENSE). That license does not cover the material below, which keeps its
+own terms.
+
+Third-party code in this repository
+-----------------------------------
+
+- scripts/bake/vendor/rs-map-viewer
+  rs-map-viewer by dennisdev (https://github.com/dennisdev/rs-map-viewer,
+  commit d3c569b). BSD 2-Clause License: scripts/bake/vendor/rs-map-viewer/LICENSE.
+  Local changes are marked "RampRidge patch" in the source.
+
+- src/game/osrs (color.ts, model.ts, animation.ts)
+  Ports of parts of rs-map-viewer. BSD 2-Clause License: src/game/osrs/NOTICE.
+
+- scripts/bake/lib/synth.ts
+  A port of the sound effect synthesiser in osrscachereader by Dezinater
+  (https://github.com/Dezinater/osrscachereader, commit 8dbb297).
+  BSD 2-Clause License: scripts/bake/vendor/osrscachereader/LICENSE.
+
+- scripts/bake/vendor/cinzel
+  The Cinzel typeface (https://github.com/NDISCOVER/Cinzel), used to render
+  the RampRidge wordmark. SIL Open Font License 1.1:
+  scripts/bake/vendor/cinzel/OFL.txt.
+
+Dependencies installed by the package manager (package.json and
+scripts/bake/package.json) are distributed under their own licenses.
+
+Game assets
+-----------
+
+The Old School RuneScape art, models, animations, sounds, fonts and other game
+content are the property of Jagex Ltd. They are not included in this
+repository and are not covered by its license. The bake (scripts/bake) decodes
+them on your own machine from the game cache published by the OpenRS2 Archive
+(https://archive.openrs2.org), and fetches RuneStar's TrueType conversions of
+the game's fonts (https://github.com/RuneStar/fonts). RuneStar dedicates its
+conversion to the public domain under CC0 1.0; the glyph designs are Jagex's.
+
+A few small data files generated from the cache stay in the repository
+because the server and the build need them: the bank's collision grid and
+object placements (shared/collision.json, shared/world-meta.json) and the
+character designer's option counts (src/game/osrs/catalog.generated.ts).
+
+RuneScape and Old School RuneScape are trademarks of Jagex Ltd. RampRidge is an
+unofficial fan project and is not affiliated with, endorsed by or sponsored by
+Jagex.

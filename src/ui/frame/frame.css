@@ -1,0 +1,1187 @@
+/*
+ * Game frame (resizable classic). Pixel positions follow the fixed-mode
+ * sprites: the chatbox is CHAT_BACKGROUND (519x142) over the button strip
+ * (519x23); the side panel is SIDE_BACKGROUND_* around a 190x261 panel; the
+ * minimap is FIXED_MINIMAP_COVER (172x156) with its map hole at (25, 5).
+ */
+
+/* ---------- Layout -------------------------------------------------------- */
+
+/*
+ * Every layer keeps clear of the notch and home indicator (viewport-fit=cover
+ * in index.html). touch-action leaves panning (scroll areas) but stops a
+ * pinch that starts on the HUD from zooming the page; the 3D canvas sets its
+ * own touch-action: none.
+ */
+.rs-gameframe {
+  --rs-sa-t: env(safe-area-inset-top, 0px);
+  --rs-sa-r: env(safe-area-inset-right, 0px);
+  --rs-sa-b: env(safe-area-inset-bottom, 0px);
+  --rs-sa-l: env(safe-area-inset-left, 0px);
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+  touch-action: pan-x pan-y;
+}
+.rs-gameframe--contained {
+  position: absolute;
+  --rs-sa-t: 0px;
+  --rs-sa-r: 0px;
+  --rs-sa-b: 0px;
+  --rs-sa-l: 0px;
+}
+.rs-gameframe__viewport {
+  position: absolute;
+  inset: 0;
+}
+.rs-gameframe__mouseover {
+  position: absolute;
+  left: calc(4px + var(--rs-sa-l));
+  top: calc(4px + var(--rs-sa-t));
+  z-index: 15;
+}
+.rs-gameframe__minimap {
+  position: absolute;
+  top: var(--rs-sa-t);
+  right: var(--rs-sa-r);
+  z-index: 10;
+}
+.rs-gameframe__chat {
+  position: absolute;
+  left: var(--rs-sa-l);
+  bottom: var(--rs-sa-b);
+  z-index: 10;
+}
+.rs-gameframe__side {
+  position: absolute;
+  right: var(--rs-sa-r);
+  bottom: var(--rs-sa-b);
+  z-index: 11;
+}
+.rs-gameframe__interfaces {
+  position: absolute;
+  left: var(--rs-sa-l);
+  right: var(--rs-sa-r);
+  top: var(--rs-sa-t);
+  bottom: calc(165px + var(--rs-sa-b));
+  z-index: 20;
+  pointer-events: none;
+  touch-action: pan-x pan-y;
+}
+/* The layer is already inside the safe area. */
+.rs-gameframe__interfaces > .rs-window-host {
+  padding: 0;
+}
+
+/*
+ * Phones (both orientations): a one-line chat (36px) above a tab strip
+ * (46px) whose tabs open the side panel as a sheet.
+ */
+.rs-gameframe--mobile .rs-gameframe__chat {
+  right: var(--rs-sa-r);
+  bottom: calc(46px + var(--rs-sa-b));
+}
+/* The strip sits on the home indicator's black band. */
+.rs-gameframe--mobile .rs-gameframe__side {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 var(--rs-sa-r) var(--rs-sa-b) var(--rs-sa-l);
+  background: #000;
+}
+.rs-gameframe--mobile .rs-gameframe__interfaces {
+  bottom: calc(82px + var(--rs-sa-b));
+}
+/* The full chatbox (165px): interfaces refit above it instead of covering the question. */
+.rs-gameframe--mobile.rs-gameframe--chat-open .rs-gameframe__interfaces {
+  bottom: calc(211px + var(--rs-sa-b));
+}
+/* An open sheet is drawn over interfaces; a prompt or dialogue over the sheet. */
+.rs-gameframe--mobile.rs-gameframe--sheet-open .rs-gameframe__side {
+  z-index: 21;
+}
+.rs-gameframe--mobile.rs-gameframe--chat-covered .rs-gameframe__chat {
+  z-index: 22;
+}
+
+/*
+ * A phone held sideways: one 46px row along the bottom, the chat line on the
+ * left and the tab strip on the right. Interfaces take the full height left
+ * of the strip (the minimap sits above the strip), and the full chatbox is
+ * drawn over them instead of shrinking them. The sheet opens left of the
+ * minimap so it never covers the orbs.
+ */
+.rs-gameframe--compact {
+  --rs-strip-w: 264px;
+}
+.rs-gameframe--compact .rs-gameframe__chat {
+  right: calc(var(--rs-strip-w) + var(--rs-sa-r));
+  bottom: var(--rs-sa-b);
+}
+.rs-gameframe--compact .rs-gameframe__side {
+  left: auto;
+  right: var(--rs-sa-r);
+  bottom: var(--rs-sa-b);
+  width: var(--rs-strip-w);
+  padding: 0;
+  background: none;
+}
+.rs-gameframe--compact .rs-gameframe__interfaces,
+.rs-gameframe--compact.rs-gameframe--chat-open .rs-gameframe__interfaces {
+  right: calc(var(--rs-strip-w) + var(--rs-sa-r));
+  bottom: var(--rs-sa-b);
+}
+.rs-gameframe--compact.rs-gameframe--chat-open .rs-gameframe__chat {
+  z-index: 21;
+}
+.rs-gameframe--compact.rs-gameframe--chat-covered .rs-gameframe__chat {
+  z-index: 22;
+}
+.rs-gameframe--compact .rs-chat--collapsed {
+  height: 46px;
+}
+.rs-gameframe--compact .rs-side__sheet {
+  right: 205px;
+}
+
+/*
+ * An upright phone with an interface open: the interface layer reaches the
+ * top of the screen, where the minimap, compass and orbs would show through
+ * the torn top of a scroll and over its title. They step aside (keeping
+ * their layout, so nothing moves when the interface closes).
+ */
+.rs-gameframe--iface-open .rs-gameframe__minimap {
+  visibility: hidden;
+}
+
+/*
+ * Screen-record mode (desktop): the HUD steps aside, the 3D view and the
+ * overhead text stay. Hidden, not removed, so chat scroll and panel state
+ * survive and nothing reflows when it comes back.
+ */
+.rs-gameframe--hud-hidden .rs-gameframe__minimap,
+.rs-gameframe--hud-hidden .rs-gameframe__chat,
+.rs-gameframe--hud-hidden .rs-gameframe__side {
+  visibility: hidden;
+}
+.rs-gameframe__hud-hint {
+  position: absolute;
+  left: 50%;
+  top: calc(12px + var(--rs-sa-t));
+  z-index: 15;
+  transform: translateX(-50%);
+  color: var(--rs-yellow);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.rs-gameframe__hud-hint:empty {
+  display: none;
+}
+
+/*
+ * Big monitors (--rs-ui-zoom from styles/tokens.css): the HUD and interfaces
+ * draw at 2x with CSS zoom, sprites staying pixelated, and the 3D view stays
+ * at 1x. Menus and tooltips (kit.css) zoom the same way. Positions are in
+ * each layer's own CSS pixels, so the interface layer's 165px gap above the
+ * chatbox doubles with it. The minimap stays at 1x: the engine maps a click
+ * on it from screen pixels at 1:1 (src/game/overlay/minimap.ts), so a zoomed
+ * minimap would walk twice as far.
+ */
+.rs-gameframe__mouseover,
+.rs-gameframe__hud-hint,
+.rs-gameframe__chat,
+.rs-gameframe__side,
+.rs-gameframe__interfaces {
+  zoom: var(--rs-ui-zoom, 1);
+}
+
+/*
+ * Typing in the chatbox with the on-screen keyboard up (html.rr-keyboard,
+ * --rr-kb from src/app/mobile.ts): the chatbox sits on top of the keyboard,
+ * above every other layer, instead of behind it.
+ */
+.rr-keyboard .rs-gameframe--chat-focus .rs-gameframe__chat {
+  bottom: var(--rr-kb, 0px);
+  z-index: 30;
+}
+.rr-keyboard .rs-gameframe--compact.rs-gameframe--chat-focus .rs-gameframe__chat {
+  right: var(--rs-sa-r);
+}
+
+/* ---------- Mouseover ----------------------------------------------------- */
+
+.rs-mouseover {
+  color: var(--rs-white);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ---------- Minimap and orbs ---------------------------------------------- */
+
+.rs-minimap {
+  position: relative;
+  width: 201px;
+  height: 160px;
+}
+.rs-minimap__map {
+  position: absolute;
+  left: 54px;
+  top: 5px;
+  width: 145px;
+  height: 151px;
+  overflow: hidden;
+  background: #000;
+}
+.rs-minimap__canvas {
+  width: 145px;
+  height: 151px;
+  image-rendering: auto;
+}
+.rs-minimap__frame {
+  position: absolute;
+  left: 29px;
+  top: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.rs-minimap__frame-fallback {
+  display: block;
+  width: 172px;
+  height: 156px;
+}
+.rs-minimap:has(.rs-minimap__frame-fallback) .rs-minimap__map {
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 4px #4a4232,
+    0 0 0 5px #000;
+}
+.rs-minimap__compass {
+  position: absolute;
+  left: 29px;
+  top: 0;
+  z-index: 1;
+  width: 32px;
+  height: 33px;
+  border-radius: 50%;
+}
+/* The compass hole (FIXED_COMPASS_MASK, 32x33) under the frame. */
+.rs-minimap__disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #000;
+}
+/*
+ * The 51x51 COMPASS sprite at 1:1 with its middle pixel (25, 25) on the
+ * hole's (16, 16), turning about that pixel, as the client draws it.
+ */
+.rs-minimap__needle,
+.rs-minimap__compass-canvas {
+  position: absolute;
+  left: -9px;
+  top: -9px;
+  width: 51px;
+  height: 51px;
+}
+.rs-minimap__needle {
+  display: block;
+  transform-origin: 25.5px 25.5px;
+}
+.rs-minimap__needle .rs-sprite {
+  display: block;
+  image-rendering: pixelated;
+}
+.rs-minimap__needle-fallback {
+  display: grid;
+  justify-items: center;
+  align-items: start;
+  width: 51px;
+  height: 51px;
+  padding-top: 10px;
+  color: var(--rs-red);
+  background: radial-gradient(circle at 25.5px 25.5px, #d8cfb4 0 15px, #5a5141 16px);
+}
+.rs-minimap__compass:focus-visible {
+  z-index: 3;
+}
+
+.rs-orb {
+  position: absolute;
+  left: 0;
+  width: 57px;
+  height: 34px;
+  z-index: 3;
+}
+.rs-orb--usdc {
+  top: 37px;
+}
+.rs-orb--run {
+  top: 71px;
+}
+.rs-orb__frame {
+  position: absolute;
+  inset: 0;
+  background-image: var(
+    --spr-orbFrame,
+    radial-gradient(circle at 40px 17px, #000 0 12px, #4a4232 13px 15px, #000 16px, transparent 17px),
+    linear-gradient(#000, #000)
+  );
+  background-repeat: no-repeat;
+  background-size: auto, 30px 22px;
+  background-position: 0 0, 0 6px;
+}
+.rs-orb:hover .rs-orb__frame {
+  background-image: var(--spr-orbFrameHover, var(--spr-orbFrame, radial-gradient(circle at 40px 17px, #000 0 12px, #6b6250 13px 15px, #000 16px, transparent 17px), linear-gradient(#000, #000)));
+}
+.rs-orb__value {
+  position: absolute;
+  left: 2px;
+  width: 26px;
+  top: 15px;
+  text-align: center;
+  text-shadow: var(--rs-shadow);
+  white-space: nowrap;
+}
+.rs-orb__well {
+  position: absolute;
+  left: 27px;
+  top: 4px;
+  width: 26px;
+  height: 26px;
+}
+.rs-orb__well > span {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+.rs-orb__empty {
+  background-color: #111;
+  background-image: var(--spr-orbEmpty, none);
+}
+.rs-orb__fill {
+  background-repeat: no-repeat;
+}
+.rs-orb__fill[data-fill="orbFillRun"] {
+  background-color: #8f8f8f;
+}
+.rs-orb__fill[data-fill="orbFillRunActive"] {
+  background-color: #aa8a00;
+}
+.rs-orb__fill[data-fill="orbFillUsdc"] {
+  background-color: #555385;
+}
+.rs-orb__fill[data-fill="orbEmpty"] {
+  background-color: #111;
+}
+.rs-orb__icon {
+  display: grid;
+  place-items: center;
+}
+.rs-orb__icon > .rs-sprite {
+  width: 26px !important;
+  height: 26px !important;
+}
+.rs-orb__icon > .rs-orb__coins {
+  width: 36px !important;
+  height: 32px !important;
+  transform: scale(0.62);
+}
+.rs-orb__glyph {
+  color: var(--rs-white);
+  text-shadow: var(--rs-shadow);
+}
+
+/* ---------- Chatbox ------------------------------------------------------- */
+
+.rs-chat {
+  position: relative;
+  width: 519px;
+  height: 165px;
+}
+.rs-chat__area {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.rs-chat__messages {
+  position: absolute;
+  left: 7px;
+  top: 6px;
+  width: 505px;
+  height: 112px;
+}
+.rs-chat__list {
+  padding-left: 3px;
+}
+.rs-chat__lines {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.rs-chat__line {
+  min-height: 14px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.rs-chat__name,
+.rs-chat__game {
+  color: var(--rs-chat-game);
+}
+.rs-chat__public {
+  color: var(--rs-chat-public);
+}
+.rs-chat__trade {
+  color: var(--rs-chat-trade);
+}
+.rs-chat__news {
+  color: var(--rs-chat-news);
+}
+.rs-chat__private {
+  color: var(--rs-chat-private);
+  text-shadow: var(--rs-shadow);
+}
+.rs-chat__sep {
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  top: 120px;
+  height: 1px;
+  background: var(--rs-chat-separator);
+}
+.rs-chat__input {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 123px;
+  height: 15px;
+  cursor: text;
+}
+.rs-chat__line-text {
+  display: block;
+  height: 100%;
+  white-space: pre;
+  overflow: hidden;
+}
+.rs-chat__draft {
+  color: var(--rs-chat-input);
+}
+.rs-chat__input .rs-caret {
+  animation: none;
+}
+.rs-chat__input:focus-within .rs-caret {
+  animation: rs-blink 1.2s steps(1, end) infinite;
+}
+.rs-chat__field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  font-size: 16px;
+  border: 0;
+  padding: 0;
+  cursor: text;
+}
+.rs-chat__disabled {
+  /* Why chat is off: quiet, but 4.7:1 or better on the paper (#5a4a2c was 3.7:1). */
+  color: #463a24;
+}
+.rs-chat__buttons {
+  position: absolute;
+  left: 0;
+  top: 142px;
+  width: 519px;
+  height: 23px;
+  display: flex;
+  align-items: flex-start;
+  gap: 1px;
+  padding: 1px 0 0 5px;
+  background-color: #2e2820;
+  background-image: var(--spr-chatButtonsBar, none);
+}
+.rs-chattab {
+  width: 56px;
+  height: 22px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  color: var(--rs-white);
+  text-shadow: var(--rs-shadow);
+  background-color: #4b4339;
+  background-image: var(--spr-chatTab, none);
+  border-radius: 4px;
+}
+.rs-chattab:hover {
+  background-image: var(--spr-chatTabHover, var(--spr-chatTab, none));
+}
+.rs-chattab--selected {
+  background-color: #2d241a;
+  background-image: var(--spr-chatTabSelected, none);
+}
+.rs-chattab--selected:hover {
+  background-image: var(--spr-chatTabSelectedHover, var(--spr-chatTabSelected, none));
+}
+.rs-chattab--unread {
+  animation: rs-tabflash 1.2s steps(1, end) infinite;
+}
+@keyframes rs-tabflash {
+  0% { background-image: var(--spr-chatTab, none); background-color: #4b4339; }
+  50% { background-image: var(--spr-chatTabHover, none); background-color: #8a7552; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rs-chattab--unread {
+    animation: none;
+    background-color: #8a7552;
+    background-image: var(--spr-chatTabHover, none);
+  }
+}
+html.rs-reduced-motion .rs-chattab--unread {
+  animation: none;
+  background-color: #8a7552;
+  background-image: var(--spr-chatTabHover, none);
+}
+.rs-chattab__name {
+  line-height: 10px;
+}
+.rs-chattab__state {
+  line-height: 10px;
+  color: var(--rs-green);
+}
+
+/* Phone layout */
+.rs-chat--mobile {
+  width: 100%;
+}
+.rs-chat--mobile .rs-chat__area,
+.rs-chat--mobile .rs-chat__buttons {
+  width: 100%;
+}
+.rs-chat--mobile .rs-chat__messages {
+  width: calc(100% - 14px);
+}
+.rs-chat__collapse {
+  position: absolute;
+  right: 26px;
+  top: 4px;
+  z-index: 2;
+  min-width: 44px;
+  height: 22px;
+  color: var(--rs-chat-public);
+  background: rgba(176, 161, 131, 0.9);
+  border: 1px solid #5a4424;
+}
+.rs-chat--collapsed {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  height: 36px;
+  padding: 0 10px;
+  color: var(--rs-black);
+  background-color: var(--rs-parchment);
+  background-image: var(--spr-chatBackground, none);
+  background-size: 100% 600%;
+  background-position: center;
+  border-top: 2px solid #2e2820;
+  text-align: left;
+}
+.rs-chat__peek {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.rs-chat__peek-dot {
+  width: 9px;
+  height: 9px;
+  flex: none;
+  border-radius: 50%;
+  /* The client's bright red: a signal dot, not text, so it keeps it inside the parchment bar (kit.css darkens --rs-red there). */
+  background: #ff0000;
+  border: 1px solid #000;
+}
+
+/* ---------- Side panel ---------------------------------------------------- */
+
+.rs-side {
+  position: relative;
+  width: 249px;
+  height: 336px;
+}
+.rs-side--closed {
+  height: 75px;
+}
+.rs-side > span,
+.rs-side__body {
+  position: absolute;
+  background-repeat: no-repeat;
+}
+.rs-side__top {
+  left: 0;
+  top: 0;
+  width: 249px;
+  height: 38px;
+  background-image: var(--spr-sideTop, linear-gradient(to bottom, #000 0 2px, #5d5547 2px 36px, #000 36px));
+}
+.rs-side__bottom {
+  left: 3px;
+  top: 299px;
+  width: 246px;
+  height: 37px;
+  background-image: var(--spr-sideBottom, linear-gradient(to bottom, #000 0 1px, #5d5547 1px 36px, #000 36px));
+}
+.rs-side--closed .rs-side__bottom {
+  top: 38px;
+}
+.rs-side__left-top {
+  left: 0;
+  top: 38px;
+  width: 31px;
+  height: 133px;
+  background-image: var(--spr-sideLeftTop, linear-gradient(to right, transparent 0 3px, #000 3px 4px, #5d5547 4px 30px, #000 30px));
+}
+.rs-side__left-bottom {
+  left: 3px;
+  top: 171px;
+  width: 28px;
+  height: 128px;
+  background-image: var(--spr-sideLeftBottom, linear-gradient(to right, #000 0 1px, #5d5547 1px 27px, #000 27px));
+}
+.rs-side__right {
+  left: 221px;
+  top: 38px;
+  width: 28px;
+  height: 261px;
+  background-image: var(--spr-sideRight, linear-gradient(to right, #000 0 1px, #5d5547 1px 27px, #000 27px));
+}
+.rs-side__body {
+  left: 31px;
+  top: 38px;
+  width: 190px;
+  height: 261px;
+  background-color: var(--rs-panel-bg);
+  background-image: var(--spr-sideBackground, none);
+}
+.rs-side__tabs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.rs-side__tab {
+  position: absolute;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+}
+.rs-side__tab > * {
+  grid-area: 1 / 1;
+}
+.rs-side__highlight {
+  justify-self: start;
+  align-self: start;
+}
+.rs-side__highlight-fallback {
+  display: block;
+  width: 100%;
+  height: 36px;
+  border: 1px solid #000;
+  border-radius: 7px;
+  background: linear-gradient(#5a1d14, #3e1510);
+}
+.rs-side__icon-fallback {
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+}
+.rs-side__tab:focus-visible {
+  z-index: 1;
+}
+/* The original tabs the bank leaves out: dimmed, inert decoration on their stones. */
+.rs-side__decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.rs-side__stone {
+  position: absolute;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  opacity: 0.4;
+}
+
+/* Phone: a strip of tab icons that opens the panel as a sheet. */
+.rs-side--mobile {
+  width: 100%;
+  height: 46px;
+}
+.rs-side__strip {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  background-color: #3e3529;
+  background-image: var(--spr-tradeBacking, none);
+  border-top: 2px solid #000;
+}
+.rs-side__mtab {
+  width: 48px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #000;
+  border-radius: 6px;
+  background: linear-gradient(#5d5547, #463d34);
+}
+.rs-side__mtab--active {
+  background-color: #3e1510;
+  background-image: var(--spr-sideHighlightMiddle, linear-gradient(#5a1d14, #3e1510));
+  background-size: 100% 100%;
+}
+.rs-side__sheet {
+  position: absolute;
+  right: 4px;
+  bottom: calc(100% + 4px);
+  padding: 7px;
+  background-color: #3e3529;
+  border: 2px solid #000;
+  box-shadow: inset 0 0 0 2px #5d5547, inset 0 0 0 4px #000;
+}
+.rs-side__sheet-body {
+  position: relative;
+  width: 190px;
+  height: 261px;
+  background-color: var(--rs-panel-bg);
+  background-image: var(--spr-sideBackground, none);
+}
+
+/* ---------- Panels (190 x 261) -------------------------------------------- */
+
+.rs-panel {
+  position: relative;
+  width: 190px;
+  height: 261px;
+  color: var(--rs-orange);
+}
+.rs-panel__title {
+  padding-top: 6px;
+  margin-bottom: 6px;
+  text-align: center;
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+}
+.rs-panel__rule {
+  border: 0;
+  height: 1px;
+  margin: 6px 0;
+  background: #5d5547;
+  box-shadow: 0 1px 0 #1f1c16;
+}
+.rs-panel__notice {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 112px;
+  text-align: center;
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+}
+.rs-inventory .rs-grid {
+  position: absolute;
+  left: 14px;
+  top: 6px;
+}
+
+.rs-account {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+  padding: 0 10px;
+  /* An unverified wallet on a touch screen can need a few pixels more than the panel: it scrolls, rows never squash. */
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.rs-account::-webkit-scrollbar {
+  display: none;
+}
+.rs-account > * {
+  flex-shrink: 0;
+}
+.rs-account__row {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rs-account__link {
+  align-self: flex-start;
+}
+/* "Invite a friend" and "Get help" share a line; the gap keeps their touch areas (6px each side) apart. */
+.rs-account__links {
+  display: flex;
+  gap: 14px;
+}
+/*
+ * On touch screens each text button's hit area reaches 11px above and below
+ * its 14px line (kit.css), so the later of two stacked links ("Invite a
+ * friend" under "Change display name") would take taps on the lower half of
+ * the first. Stacked links split the 3px gap between them instead, as the
+ * dialogue options share their box. Spacing them 22px apart would push the
+ * panel past its height on phones once a wallet is connected.
+ */
+@media (pointer: coarse) {
+  .rs-account__link:has(+ .rs-account__link)::after {
+    bottom: -1.5px;
+  }
+  .rs-account__link + .rs-account__link::after,
+  .rs-account__link + .rs-account__links > .rs-textbtn::after {
+    top: -1.5px;
+  }
+}
+.rs-account__meta {
+  margin-top: 2px;
+}
+.rs-account__status {
+  margin-top: 4px;
+}
+/* Send USDC and Receive side by side under the address. */
+.rs-account__wallet {
+  display: flex;
+  gap: 6px;
+  margin: 2px 0 1px;
+}
+.rs-account__wallet .rs-btn {
+  flex: 1;
+  min-width: 0;
+  padding: 0 4px;
+}
+/*
+ * Touch: Send USDC and Receive are drawn 30px tall with 44px touch targets
+ * (nothing else to tap sits right above or below them), and the panel's
+ * spacing tightens a little, so an unverified wallet's Verify and Log out
+ * still fit the 261px panel.
+ */
+@media (pointer: coarse) {
+  .rs-account:has(.rs-account__wallet) {
+    gap: 2px;
+  }
+  .rs-account__wallet .rs-btn {
+    height: 30px;
+  }
+  .rs-account__wallet .rs-btn::after {
+    inset: -7px 0;
+  }
+  .rs-account:has(.rs-account__wallet) .rs-account__status {
+    margin-top: 2px;
+  }
+  .rs-account:has(.rs-account__wallet) .rs-account__actions {
+    margin-top: 4px;
+  }
+}
+.rs-account__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+.rs-account__method {
+  margin-top: 6px;
+  overflow-wrap: anywhere;
+}
+.rs-account__error {
+  margin-top: 6px;
+  color: var(--rs-stone-red);
+}
+
+.rs-emotes {
+  display: grid;
+  grid-template-columns: repeat(4, 46px);
+  grid-auto-rows: 48px;
+  justify-content: center;
+  align-content: start;
+  padding-top: 8px;
+}
+.rs-emote {
+  display: grid;
+  place-items: center;
+  overflow: visible;
+}
+.rs-emote:disabled {
+  filter: brightness(0.6);
+}
+.rs-emote__fallback {
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+  text-align: center;
+  width: 46px;
+  white-space: normal;
+}
+.rs-emote:hover .rs-emote__fallback {
+  color: var(--rs-white);
+}
+
+.rs-settings {
+  padding: 0 10px;
+}
+.rs-settings__label {
+  margin: 6px 0 2px;
+}
+.rs-settings__checks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 2px;
+}
+
+.rs-logout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 0 12px;
+  text-align: center;
+}
+.rs-logout__world {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ---------- World Switcher (in the logout tab) ----------------------------- */
+
+.rs-worlds {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 5px 6px;
+  box-sizing: border-box;
+}
+.rs-worlds__head {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 14px;
+  padding-bottom: 4px;
+}
+.rs-worlds__current {
+  font-size: calc(var(--rs-font-size, 16px) * 1.25);
+  line-height: 18px;
+}
+.rs-worlds__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.rs-worlds__cols {
+  display: flex;
+  justify-content: space-between;
+  /* Lines up with the rows; the scrollbar takes the right edge. */
+  padding: 0 22px 2px 6px;
+  line-height: 13px;
+}
+.rs-worlds__list,
+.rs-worlds__wait {
+  flex: 1;
+  min-height: 0;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid #2b261d;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+.rs-worlds__wait {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 8px;
+  text-align: center;
+}
+.rs-worlds__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.rs-worlds__rows li:nth-child(even) .rs-worlds__row {
+  background: rgba(255, 255, 255, 0.035);
+}
+.rs-worlds__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 20px;
+  padding: 0 6px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: var(--rs-white);
+  text-shadow: var(--rs-shadow);
+  cursor: pointer;
+}
+.rs-worlds__rows li .rs-worlds__row:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--rs-yellow);
+}
+.rs-worlds__rows li .rs-worlds__row--current {
+  background: rgba(255, 152, 31, 0.22);
+  box-shadow: inset 0 0 0 1px rgba(255, 152, 31, 0.45);
+  color: var(--rs-yellow);
+  cursor: default;
+}
+.rs-worlds__row--full {
+  color: var(--rs-grey-text, #9a9a9a);
+  cursor: not-allowed;
+}
+.rs-worlds__row:focus-visible {
+  outline: 1px solid var(--rs-yellow);
+  outline-offset: -2px;
+}
+.rs-worlds__id {
+  color: inherit;
+}
+.rs-worlds__count {
+  min-width: 34px;
+  text-align: right;
+}
+.rs-worlds__foot {
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+/* A finger needs the kit's 36px touch target (--rs-touch); the list scrolls past the fourth world. */
+@media (pointer: coarse) {
+  .rs-worlds__row {
+    height: var(--rs-touch, 36px);
+  }
+}
+
+/* ---------- Choose Option menu ------------------------------------------- */
+
+/* Drawn at --rs-ui-zoom on big monitors; ContextMenu places it in its own (zoomed) pixels. */
+.rs-menu {
+  position: fixed;
+  z-index: 900;
+  zoom: var(--rs-ui-zoom, 1);
+  padding: 1px;
+  background: var(--rs-menu-bg);
+  color: var(--rs-white);
+  min-width: 102px;
+}
+.rs-menu__header {
+  height: 16px;
+  line-height: 16px;
+  padding-left: 2px;
+  background: var(--rs-menu-header);
+  /* The original draws it in the menu's own #5d5447 (2.8:1 on black); a lighter stone of the same hue reads 5:1. */
+  color: #8a7e6a;
+  white-space: nowrap;
+}
+.rs-menu__list {
+  margin-top: 1px;
+  border: 1px solid #000;
+  padding: 1px 0 2px;
+}
+.rs-menu__row {
+  display: block;
+  width: 100%;
+  height: 15px;
+  line-height: 15px;
+  padding: 0 6px 0 2px;
+  text-align: left;
+  white-space: nowrap;
+  color: var(--rs-white);
+  text-shadow: var(--rs-shadow);
+}
+.rs-menu__row.is-active .rs-menu__verb {
+  color: var(--rs-yellow);
+}
+.rs-menu__row:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+@media (pointer: coarse) {
+  .rs-menu__row {
+    height: 36px;
+    line-height: 36px;
+    padding-right: 12px;
+  }
+}
+
+/* ---------- Touch: hit areas of at least 36px ----------------------------- */
+
+/*
+ * The minimap HUD keeps its natural size on phones so the compass and both
+ * orbs get 36px targets without overlapping: compass y 0-36, USDC orb
+ * y 36-72, run orb y 72-108 (the orbs sit flush, so the USDC area takes
+ * one pixel of the run orb's top edge).
+ */
+@media (pointer: coarse) {
+  .rs-chattab,
+  .rs-emote,
+  .rs-chat__collapse {
+    position: relative;
+  }
+  .rs-chat__collapse {
+    position: absolute;
+  }
+  .rs-chattab::after,
+  .rs-orb::after,
+  .rs-minimap__compass::after,
+  .rs-chat__collapse::after,
+  .rs-chat__input::after {
+    content: "";
+    position: absolute;
+    inset: -8px -1px;
+  }
+  /* Upward only (over the world above the chatbox), so it never reaches the first chat line below the button. */
+  .rs-chat__collapse::after {
+    inset: -14px -1px 0;
+  }
+  /* The input line is 18px between the messages and the tabs: its target reaches up over the last line. */
+  .rs-chat__input::after {
+    inset: -18px 0 0;
+  }
+  /* A tap on the line itself still lands on the field (the surest way to raise a phone keyboard). */
+  .rs-chat__field {
+    z-index: 1;
+  }
+  .rs-minimap__compass::after {
+    inset: 0 -2px -3px;
+  }
+  /* Above the run orb, whose own box would otherwise take the seam pixel. */
+  .rs-orb--usdc {
+    z-index: 4;
+  }
+  .rs-orb--usdc::after {
+    inset: -1px 0;
+  }
+  .rs-orb--run::after {
+    inset: 1px 0 -3px;
+  }
+  .rs-chat__input {
+    height: 18px;
+  }
+}
+
+/* ---------- World input blocker ------------------------------------------- */
+
+/* Covers the 3D view only: above the viewport, below every HUD layer. */
+.rs-gameframe > .rs-gameframe__blocker {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+}
+.rs-gameframe--blocking .rs-minimap__canvas {
+  pointer-events: none;
+}

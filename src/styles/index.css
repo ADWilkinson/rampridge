@@ -1,0 +1,4 @@
+/* Global styles: import once from the app entry (and the dev gallery). */
+@import "./fonts.css";
+@import "./tokens.css";
+@import "./global.css";

@@ -1,0 +1,1305 @@
+/*
+ * OSRS interface kit. Sprites come from CSS variables published by
+ * sprites.ts (`--spr-<name>`); every `var()` carries a fallback image (a
+ * gradient) so a missing sprite degrades to a flat stone/parchment fill.
+ */
+
+/* ---------- Text ---------------------------------------------------------- */
+
+.rs-p11 {
+  font-family: var(--rs-font-p11);
+  font-size: var(--rs-font-size);
+  line-height: 12px;
+}
+.rs-p12 {
+  font-family: var(--rs-font-p12);
+  font-size: var(--rs-font-size);
+  line-height: 14px;
+}
+.rs-b12 {
+  font-family: var(--rs-font-b12);
+  font-size: var(--rs-font-size);
+  line-height: 14px;
+}
+.rs-q8 {
+  font-family: var(--rs-font-q8);
+  font-size: var(--rs-font-size);
+  line-height: 18px;
+}
+.rs-quill {
+  font-family: var(--rs-font-quill);
+  font-size: 32px;
+  line-height: 30px;
+}
+.rs-shadow {
+  text-shadow: var(--rs-shadow);
+}
+.rs-c-orange { color: var(--rs-orange); }
+.rs-c-yellow { color: var(--rs-yellow); }
+.rs-c-white { color: var(--rs-white); }
+.rs-c-black { color: var(--rs-black); }
+.rs-c-red { color: var(--rs-red); }
+.rs-c-green { color: var(--rs-green); }
+.rs-c-cyan { color: var(--rs-cyan); }
+.rs-c-blue { color: var(--rs-chat-public); }
+.rs-c-darkred { color: var(--rs-dark-red); }
+.rs-c-grey { color: var(--rs-grey-text); }
+/* Errors and hints on stone (tokens.css): legible versions of red and grey. */
+.rs-c-stone-red { color: var(--rs-stone-red); }
+.rs-c-quiet { color: var(--rs-quiet); }
+
+.rs-sprite {
+  display: inline-block;
+  flex: none;
+  vertical-align: top;
+  image-rendering: pixelated;
+}
+
+/* ---------- Window -------------------------------------------------------- */
+
+/*
+ * Full-screen hosts keep windows clear of the notch and home indicator
+ * (GameFrame's interface layer is already inside them). useFitScale fits
+ * windows inside this padding. touch-action stops a pinch from zooming the
+ * page while scroll areas still pan.
+ */
+.rs-window-host {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  place-items: center;
+  padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+  pointer-events: none;
+  overflow: hidden;
+  touch-action: pan-x pan-y;
+}
+.rs-window-host > * {
+  pointer-events: auto;
+}
+/* A window too small to read sideways stays mounted (state, timers) but hidden behind UprightNotice. */
+.rs-fit-hidden {
+  visibility: hidden;
+}
+
+/* ---------- Turn upright notice ------------------------------------------- */
+
+.rs-upright {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 8px;
+}
+.rs-window-host > .rs-upright {
+  pointer-events: none;
+}
+.rs-upright__panel {
+  position: relative;
+  width: min(300px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 18px 16px;
+  text-align: center;
+  color: var(--rs-orange);
+  background-color: var(--rs-interface-bg);
+  background-image: var(--spr-tradeBacking, none);
+  background-size: 88px 60px;
+  pointer-events: auto;
+}
+.rs-upright__title {
+  color: var(--rs-yellow);
+  text-shadow: var(--rs-shadow);
+}
+.rs-upright__text {
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+}
+
+.rs-window {
+  position: relative;
+  flex: none;
+  color: var(--rs-orange);
+  background-color: var(--rs-interface-bg);
+  background-image: var(--spr-tradeBacking, none);
+  background-repeat: repeat;
+  background-size: 88px 60px;
+  transform-origin: center center;
+  outline: none;
+}
+.rs-window:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.rs-window--dragging {
+  cursor: grabbing;
+}
+
+.rs-frame {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.rs-frame > span {
+  position: absolute;
+  background-repeat: no-repeat;
+}
+
+/* Stone (V2) frame. Edges run between the 32px corners. */
+.rs-frame--stone .rs-frame__t {
+  left: 32px;
+  right: 32px;
+  top: 0;
+  height: 7px;
+  background-image: var(--spr-stoneTop, linear-gradient(to bottom, #1f1c16 0 1px, #6b6250 1px 5px, #2e2a22 5px 7px));
+  background-repeat: repeat-x;
+}
+.rs-frame--stone .rs-frame__b {
+  left: 32px;
+  right: 32px;
+  bottom: 0;
+  height: 7px;
+  background-image: var(--spr-stoneBottom, linear-gradient(to bottom, #2e2a22 0 2px, #6b6250 2px 6px, #1f1c16 6px 7px));
+  background-repeat: repeat-x;
+}
+.rs-frame--stone .rs-frame__l {
+  top: 32px;
+  bottom: 32px;
+  left: 0;
+  width: 7px;
+  background-image: var(--spr-stoneLeft, linear-gradient(to right, #1f1c16 0 1px, #6b6250 1px 5px, #2e2a22 5px 7px));
+  background-repeat: repeat-y;
+}
+.rs-frame--stone .rs-frame__r {
+  top: 32px;
+  bottom: 32px;
+  right: 0;
+  width: 7px;
+  background-image: var(--spr-stoneRight, linear-gradient(to right, #2e2a22 0 2px, #6b6250 2px 6px, #1f1c16 6px 7px));
+  background-repeat: repeat-y;
+}
+.rs-frame--stone .rs-frame__tl,
+.rs-frame--stone .rs-frame__tr,
+.rs-frame--stone .rs-frame__bl,
+.rs-frame--stone .rs-frame__br {
+  width: 32px;
+  height: 32px;
+}
+.rs-frame--stone .rs-frame__tl {
+  left: 0;
+  top: 0;
+  background-image: var(
+    --spr-stoneTopLeft,
+    linear-gradient(to bottom, #1f1c16 0 1px, #6b6250 1px 5px, #2e2a22 5px 7px, transparent 7px),
+    linear-gradient(to right, #1f1c16 0 1px, #6b6250 1px 5px, #2e2a22 5px 7px, transparent 7px)
+  );
+}
+.rs-frame--stone .rs-frame__tr {
+  right: 0;
+  top: 0;
+  background-image: var(
+    --spr-stoneTopRight,
+    linear-gradient(to bottom, #1f1c16 0 1px, #6b6250 1px 5px, #2e2a22 5px 7px, transparent 7px),
+    linear-gradient(to left, #1f1c16 0 1px, #2e2a22 1px 2px, #6b6250 2px 6px, #1f1c16 6px 7px, transparent 7px)
+  );
+}
+.rs-frame--stone .rs-frame__bl {
+  left: 0;
+  bottom: 0;
+  background-image: var(
+    --spr-stoneBottomLeft,
+    linear-gradient(to top, #1f1c16 0 1px, #2e2a22 1px 2px, #6b6250 2px 6px, #2e2a22 6px 7px, transparent 7px),
+    linear-gradient(to right, #1f1c16 0 1px, #6b6250 1px 5px, #2e2a22 5px 7px, transparent 7px)
+  );
+}
+.rs-frame--stone .rs-frame__br {
+  right: 0;
+  bottom: 0;
+  background-image: var(
+    --spr-stoneBottomRight,
+    linear-gradient(to top, #1f1c16 0 1px, #2e2a22 1px 2px, #6b6250 2px 6px, #2e2a22 6px 7px, transparent 7px),
+    linear-gradient(to left, #1f1c16 0 1px, #2e2a22 1px 2px, #6b6250 2px 6px, #1f1c16 6px 7px, transparent 7px)
+  );
+}
+/* Title divider: the 6px bar at y 31 with T-junction caps on both sides. */
+.rs-frame--stone .rs-frame__div {
+  left: 7px;
+  right: 7px;
+  top: 31px;
+  height: 6px;
+  background-image: var(--spr-stoneDivider, linear-gradient(to bottom, #1f1c16 0 1px, #6b6250 1px 4px, #2e2a22 4px 6px));
+  background-repeat: repeat-x;
+}
+.rs-frame--stone .rs-frame__divl {
+  left: 0;
+  top: 28px;
+  width: 11px;
+  height: 12px;
+  background-image: var(--spr-stoneDividerLeft, none);
+}
+.rs-frame--stone .rs-frame__divr {
+  right: 0;
+  top: 28px;
+  width: 11px;
+  height: 12px;
+  background-image: var(--spr-stoneDividerRight, none);
+}
+
+/* Steel (2007 trade/bank) frame. */
+.rs-frame--steel .rs-frame__t,
+.rs-frame--steel .rs-frame__b {
+  left: 25px;
+  right: 25px;
+  height: 6px;
+  background-image: var(--spr-steelHorizontal, linear-gradient(to bottom, #000 0 1px, #3b3b37 1px 5px, #000 5px 6px));
+  background-repeat: repeat-x;
+}
+.rs-frame--steel .rs-frame__t { top: 0; }
+.rs-frame--steel .rs-frame__b { bottom: 0; }
+.rs-frame--steel .rs-frame__l,
+.rs-frame--steel .rs-frame__r {
+  top: 30px;
+  bottom: 30px;
+  width: 6px;
+  background-image: var(--spr-steelVertical, linear-gradient(to right, #000 0 1px, #3b3b37 1px 5px, #000 5px 6px));
+  background-repeat: repeat-y;
+}
+.rs-frame--steel .rs-frame__l { left: 0; }
+.rs-frame--steel .rs-frame__r { right: 0; }
+.rs-frame--steel .rs-frame__tl,
+.rs-frame--steel .rs-frame__tr,
+.rs-frame--steel .rs-frame__bl,
+.rs-frame--steel .rs-frame__br {
+  width: 25px;
+  height: 30px;
+}
+.rs-frame--steel .rs-frame__tl { left: 0; top: 0; background-image: var(--spr-steelTopLeft, linear-gradient(to bottom, #000 0 1px, #3b3b37 1px 5px, #000 5px 6px, transparent 6px), linear-gradient(to right, #000 0 1px, #3b3b37 1px 5px, #000 5px 6px, transparent 6px)); }
+.rs-frame--steel .rs-frame__tr { right: 0; top: 0; background-image: var(--spr-steelTopRight, linear-gradient(to bottom, #000 0 1px, #3b3b37 1px 5px, #000 5px 6px, transparent 6px), linear-gradient(to left, #000 0 1px, #3b3b37 1px 5px, #000 5px 6px, transparent 6px)); }
+.rs-frame--steel .rs-frame__bl { left: 0; bottom: 0; background-image: var(--spr-steelBottomLeft, linear-gradient(to top, #000 0 1px, #3b3b37 1px 5px, #000 5px 6px, transparent 6px), linear-gradient(to right, #000 0 1px, #3b3b37 1px 5px, #000 5px 6px, transparent 6px)); }
+.rs-frame--steel .rs-frame__br { right: 0; bottom: 0; background-image: var(--spr-steelBottomRight, linear-gradient(to top, #000 0 1px, #3b3b37 1px 5px, #000 5px 6px, transparent 6px), linear-gradient(to left, #000 0 1px, #3b3b37 1px 5px, #000 5px 6px, transparent 6px)); }
+.rs-frame--steel .rs-frame__div {
+  left: 6px;
+  right: 6px;
+  top: 30px;
+  height: 6px;
+  background-image: var(--spr-steelHorizontal, linear-gradient(to bottom, #000 0 1px, #3b3b37 1px 5px, #000 5px 6px));
+  background-repeat: repeat-x;
+}
+
+.rs-window__title {
+  position: absolute;
+  left: 34px;
+  right: 34px;
+  top: 7px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rs-window__title > h2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rs-window--draggable .rs-window__title {
+  cursor: grab;
+}
+.rs-window > .rs-window__close {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+}
+.rs-window--steel > .rs-window__close {
+  top: 6px;
+  right: 6px;
+}
+.rs-window__body {
+  position: absolute;
+  inset: 7px;
+  overflow: hidden;
+}
+.rs-window--titled .rs-window__body {
+  top: 37px;
+}
+.rs-window--steel .rs-window__body {
+  inset: 6px;
+}
+.rs-window--steel.rs-window--titled .rs-window__body {
+  top: 36px;
+}
+.rs-window__pad {
+  padding: 6px 8px;
+}
+
+/* ---------- Close button --------------------------------------------------- */
+
+.rs-close {
+  width: 21px;
+  height: 21px;
+  background-image: var(--spr-closeButton, none);
+  background-color: transparent;
+  background-repeat: no-repeat;
+  display: grid;
+  place-items: center;
+}
+.rs-close:hover,
+.rs-close.is-hover {
+  background-image: var(--spr-closeButtonHover, var(--spr-closeButton, none));
+}
+.rs-close__x {
+  display: none;
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+}
+.rs-close--parchment {
+  width: 23px;
+  height: 23px;
+  background-image: var(--spr-closeButtonParchment, none);
+}
+.rs-close--parchment:hover,
+.rs-close--parchment.is-hover {
+  background-image: var(--spr-closeButtonParchmentHover, var(--spr-closeButtonParchment, none));
+}
+/* Fallback: a framed X when the sprite is missing. */
+.rs-close--fallback {
+  background-color: #3e3529;
+  border: 1px solid #000;
+  box-shadow: inset 1px 1px 0 #6b6250, inset -1px -1px 0 #2e2a22;
+}
+.rs-close--fallback .rs-close__x {
+  display: block;
+}
+.rs-close--fallback:hover .rs-close__x {
+  color: var(--rs-white);
+}
+
+/* ---------- Nine-slice (buttons) ------------------------------------------ */
+
+.rs-nine {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 6px 1fr 6px;
+  grid-template-rows: 6px 1fr 6px;
+  pointer-events: none;
+}
+.rs-nine > span {
+  background-repeat: repeat;
+}
+
+/* ---------- Stone button -------------------------------------------------- */
+
+.rs-btn {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  min-width: 72px;
+  height: 26px;
+  padding: 0 10px;
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+  white-space: nowrap;
+  isolation: isolate;
+}
+.rs-btn > .rs-nine {
+  z-index: -1;
+}
+.rs-btn__label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.rs-btn:hover:not(:disabled),
+.rs-btn.is-hover {
+  color: var(--rs-white);
+}
+.rs-btn:hover:not(:disabled) > .rs-nine,
+.rs-btn.is-hover > .rs-nine {
+  filter: brightness(1.18);
+}
+.rs-btn:active:not(:disabled) .rs-btn__label,
+.rs-btn.is-active .rs-btn__label {
+  transform: translate(1px, 1px);
+}
+.rs-btn:disabled,
+.rs-btn[aria-disabled="true"] {
+  color: var(--rs-grey-text);
+  cursor: default;
+}
+.rs-btn:disabled > .rs-nine,
+.rs-btn[aria-disabled="true"] > .rs-nine {
+  filter: saturate(0.4) brightness(0.75);
+}
+.rs-btn--big {
+  height: 36px;
+  min-width: 120px;
+}
+.rs-btn--wide {
+  width: 100%;
+}
+
+/* ---------- Text button --------------------------------------------------- */
+
+.rs-textbtn {
+  display: inline;
+  padding: 0;
+  text-shadow: var(--rs-shadow);
+  color: var(--tb-color, var(--rs-orange));
+}
+.rs-textbtn:hover:not(:disabled),
+.rs-textbtn.is-hover {
+  color: var(--tb-hover, var(--rs-white));
+}
+.rs-textbtn:disabled {
+  color: var(--rs-grey-text);
+}
+.rs-textbtn--orange { --tb-color: var(--rs-orange); --tb-hover: var(--rs-white); }
+.rs-textbtn--yellow { --tb-color: var(--rs-yellow); --tb-hover: var(--rs-white); }
+.rs-textbtn--white { --tb-color: var(--rs-white); --tb-hover: var(--rs-yellow); }
+.rs-textbtn--blue { --tb-color: var(--rs-chat-public); --tb-hover: var(--rs-white); text-shadow: none; }
+.rs-textbtn--black { --tb-color: var(--rs-black); --tb-hover: var(--rs-white); text-shadow: none; }
+
+/* ---------- Item slots ---------------------------------------------------- */
+
+.rs-slot {
+  position: relative;
+  width: 36px;
+  height: 32px;
+  display: block;
+  flex: none;
+}
+.rs-slot__icon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+.rs-slot__icon img {
+  max-width: 36px;
+  max-height: 32px;
+}
+.rs-slot--selected .rs-slot__icon {
+  filter: drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff);
+}
+.rs-slot--placeholder .rs-slot__icon {
+  opacity: 0.5;
+}
+.rs-slot__count {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--rs-font-p11);
+  font-size: var(--rs-font-size);
+  line-height: 10px;
+  text-shadow: var(--rs-shadow);
+  pointer-events: none;
+  white-space: nowrap;
+}
+.rs-slot__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+button.rs-slot:disabled {
+  cursor: default;
+}
+
+.rs-grid {
+  display: grid;
+  justify-content: start;
+}
+
+/* ---------- Tabs ---------------------------------------------------------- */
+
+.rs-tabs {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+}
+.rs-tab {
+  position: relative;
+  width: 79px;
+  height: 20px;
+  margin-right: -6px;
+  background-color: transparent;
+  background-image: var(--spr-tab, linear-gradient(#585142, #3e372c));
+  background-repeat: no-repeat;
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+  display: grid;
+  place-items: center;
+  padding: 2px 10px 0 6px;
+  white-space: nowrap;
+}
+.rs-tab[aria-selected="true"] {
+  background-image: var(--spr-tabActive, linear-gradient(#6b6250, #484235));
+  color: var(--rs-white);
+  z-index: 1;
+}
+.rs-tab:hover:not([aria-selected="true"]):not(:disabled) {
+  color: var(--rs-white);
+}
+.rs-tab:disabled {
+  color: var(--rs-grey-text);
+}
+
+/* ---------- Scroll area --------------------------------------------------- */
+
+.rs-scroll {
+  position: relative;
+  display: flex;
+  min-height: 0;
+}
+.rs-scroll__content {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  overscroll-behavior: contain;
+}
+.rs-scroll__content::-webkit-scrollbar {
+  display: none;
+}
+.rs-scrollbar {
+  position: relative;
+  flex: none;
+  width: 16px;
+  display: flex;
+  flex-direction: column;
+}
+.rs-scrollbar__arrow {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  background-repeat: no-repeat;
+}
+.rs-scrollbar__up {
+  background-image: var(--spr-scrollUp, linear-gradient(#6b6250, #3e3529));
+}
+.rs-scrollbar__down {
+  background-image: var(--spr-scrollDown, linear-gradient(#6b6250, #3e3529));
+}
+.rs-scrollbar__track {
+  position: relative;
+  flex: 1;
+  background-color: var(--rs-scroll-track);
+  background-image: var(--spr-scrollTrack, none);
+  background-repeat: repeat-y;
+  touch-action: none;
+}
+.rs-scrollbar__thumb {
+  position: absolute;
+  left: 0;
+  width: 16px;
+  min-height: 10px;
+  display: flex;
+  flex-direction: column;
+  touch-action: none;
+}
+.rs-scrollbar__thumb > span {
+  display: block;
+  width: 16px;
+  flex: none;
+  background-repeat: repeat-y;
+}
+.rs-scrollbar__thumb-top {
+  height: 5px;
+  background-image: var(--spr-scrollThumbTop, linear-gradient(#7b705c, #554a37));
+}
+.rs-scrollbar__thumb-mid {
+  flex: 1 !important;
+  background-image: var(--spr-scrollThumbMiddle, linear-gradient(to right, #3a3326, #6b604c 30%, #554a37 70%, #2e281e));
+}
+.rs-scrollbar__thumb-bottom {
+  height: 5px;
+  background-image: var(--spr-scrollThumbBottom, linear-gradient(#554a37, #2e281e));
+}
+.rs-scroll--parchment .rs-scrollbar__up { background-image: var(--spr-parchmentScrollUp, linear-gradient(#c9b48a, #95794f)); }
+.rs-scroll--parchment .rs-scrollbar__down { background-image: var(--spr-parchmentScrollDown, linear-gradient(#c9b48a, #95794f)); }
+.rs-scroll--parchment .rs-scrollbar__track { background-color: #95794f; background-image: var(--spr-parchmentTrack, none); }
+.rs-scroll--parchment .rs-scrollbar__thumb-top { background-image: var(--spr-parchmentThumbTop, linear-gradient(#8a6d42, #6d5634)); }
+.rs-scroll--parchment .rs-scrollbar__thumb-mid { background-image: var(--spr-parchmentThumbMiddle, linear-gradient(to right, #4f3d22, #8a6d42 40%, #6d5634)); }
+.rs-scroll--parchment .rs-scrollbar__thumb-bottom { background-image: var(--spr-parchmentThumbBottom, linear-gradient(#6d5634, #4f3d22)); }
+
+/* ---------- Chat-area surfaces (dialogue, prompts) ------------------------ */
+
+/*
+ * Parchment surfaces draw red, dark red, blue and purple text in the darker
+ * paper inks (tokens.css), so every class and component that uses those
+ * tokens stays legible on the paper without knowing where it sits.
+ */
+.rs-chatarea,
+.rs-scrollpaper,
+.rs-chat--collapsed {
+  --rs-red: var(--rs-paper-red);
+  --rs-dark-red: var(--rs-paper-red);
+  --rs-chat-public: var(--rs-paper-blue);
+  --rs-chat-input: var(--rs-paper-blue);
+  --rs-chat-news: var(--rs-paper-red);
+  --rs-chat-trade: var(--rs-paper-purple);
+}
+
+/* Links on the scroll darken on hover rather than turning white, which the paper all but erases. */
+.rs-scrollpaper .rs-textbtn--blue,
+.rs-scrollpaper .rs-textbtn--black {
+  --tb-hover: var(--rs-paper-red);
+}
+
+.rs-chatarea {
+  position: relative;
+  width: 519px;
+  height: 142px;
+  background-color: var(--rs-parchment);
+  background-image: var(--spr-chatBackground, linear-gradient(#c3b491, #a7977a));
+  background-size: 100% 100%;
+  color: var(--rs-black);
+}
+
+.rs-dialogue {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: stretch;
+  color: var(--rs-black);
+  padding: 6px 8px;
+}
+.rs-dialogue__head {
+  flex: none;
+  width: 96px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.rs-dialogue__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2px 6px 0;
+}
+.rs-dialogue__name {
+  color: var(--rs-dark-red);
+  margin-bottom: 6px;
+}
+.rs-dialogue__text {
+  text-wrap-style: pretty;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+.rs-dialogue__continue {
+  margin-top: 4px;
+  margin-bottom: 2px;
+}
+.rs-dialogue--options .rs-dialogue__main {
+  justify-content: flex-start;
+}
+.rs-dialogue__title {
+  color: var(--rs-dark-red);
+  margin: 2px 0 4px;
+}
+.rs-dialogue__options {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+}
+.rs-dialogue__option {
+  color: var(--rs-black);
+  padding: 1px 6px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rs-dialogue__option:hover,
+.rs-dialogue__option.is-hover {
+  color: var(--rs-white);
+}
+
+.rs-prompt {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--rs-black);
+  cursor: text;
+}
+.rs-prompt__value {
+  color: var(--rs-chat-input);
+  min-height: 14px;
+  white-space: pre;
+}
+.rs-prompt__hint {
+  /* Quieter than the black prompt yet 4.7:1 or better on the chatbox paper (#5a4a2c was 3.7:1). */
+  color: #463a24;
+}
+.rs-prompt__input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: text;
+  font-size: 16px;
+}
+/* Touch: OK and Cancel above the invisible input that catches taps on the rest of the prompt. */
+.rs-prompt__actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 12px;
+  margin-top: 2px;
+  cursor: default;
+}
+.rs-prompt__actions .rs-btn {
+  min-width: 88px;
+}
+.rs-caret {
+  animation: rs-blink 1.2s steps(1, end) infinite;
+}
+@keyframes rs-blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* ---------- Progress bar -------------------------------------------------- */
+
+.rs-progress {
+  position: relative;
+  height: 15px;
+  background: var(--rs-bar-track);
+  border: 1px solid #000;
+  overflow: hidden;
+}
+.rs-progress__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--rs-progress);
+  transition: width 0.6s steps(6, end);
+}
+.rs-progress--complete .rs-progress__fill { background: var(--rs-complete); }
+.rs-progress--aborted .rs-progress__fill { background: var(--rs-aborted); }
+.rs-progress__label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--rs-white);
+  text-shadow: var(--rs-shadow);
+}
+
+/* ---------- Amount entry -------------------------------------------------- */
+
+.rs-amount {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  color: var(--rs-orange);
+}
+.rs-amount__row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.rs-amount__label {
+  text-shadow: var(--rs-shadow);
+  margin-right: 4px;
+}
+.rs-amount__steps .rs-btn {
+  min-width: 0;
+  flex: 1;
+  padding: 0 4px;
+}
+.rs-amount__pm {
+  min-width: 26px !important;
+  width: 26px;
+  padding: 0 !important;
+}
+.rs-amount__inline-prompt {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  margin-top: 4px;
+}
+/* Room for the prompt's OK and Cancel. */
+@media (any-pointer: coarse) {
+  .rs-amount__inline-prompt {
+    height: 104px;
+  }
+}
+
+.rs-numbox {
+  position: relative;
+  height: 22px;
+  min-width: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  color: var(--rs-white);
+  text-shadow: var(--rs-shadow);
+  background-image: var(--spr-geTextLeft, linear-gradient(#000, #000)), var(--spr-geTextRight, linear-gradient(#000, #000)), var(--spr-geTextMiddle, linear-gradient(#1c1914, #2b2620));
+  background-repeat: no-repeat, no-repeat, repeat-x;
+  background-position: left top, right top, left top;
+  background-size: 4px 100%, 4px 100%, 4px 100%;
+  white-space: nowrap;
+}
+.rs-numbox:hover:not(:disabled) {
+  color: var(--rs-yellow);
+}
+.rs-numbox:disabled {
+  color: var(--rs-grey-text);
+}
+
+/* ---------- Checkbox and toggles ------------------------------------------ */
+
+.rs-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+  cursor: pointer;
+  min-height: 16px;
+}
+.rs-check input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+}
+.rs-check__box {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  background-image: var(--spr-checkbox, linear-gradient(#3d3830, #3d3830));
+}
+.rs-check:hover .rs-check__box {
+  background-image: var(--spr-checkboxHover, var(--spr-checkbox, linear-gradient(#4d473c, #4d473c)));
+}
+.rs-check input:checked + .rs-check__box {
+  background-image: var(--spr-checkboxChecked, linear-gradient(#3d3830, #3d3830));
+}
+.rs-check:hover input:checked + .rs-check__box {
+  background-image: var(--spr-checkboxCheckedHover, var(--spr-checkboxChecked, linear-gradient(#4d473c, #4d473c)));
+}
+.rs-check__tick {
+  display: none;
+  color: var(--rs-green);
+  line-height: 16px;
+  text-align: center;
+  width: 16px;
+}
+.rs-check--fallback .rs-check__box {
+  border: 1px solid #000;
+  box-shadow: inset 1px 1px 0 #2e2a22, inset -1px -1px 0 #6b6250;
+}
+.rs-check--fallback input:checked + .rs-check__box .rs-check__tick {
+  display: block;
+}
+.rs-check input:focus-visible + .rs-check__box {
+  outline: 1px solid var(--rs-focus);
+  outline-offset: 1px;
+}
+.rs-check--disabled {
+  color: var(--rs-grey-text);
+  cursor: default;
+}
+.rs-check--disabled .rs-check__box {
+  filter: brightness(0.7);
+}
+
+.rs-toggle {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  background-image: var(--spr-optionBox, linear-gradient(#5a5650, #44423c));
+  background-repeat: no-repeat;
+}
+.rs-toggle[aria-pressed="true"] {
+  background-image: var(--spr-optionBoxActive, linear-gradient(#8f2a24, #6b1714));
+}
+.rs-toggle:hover:not(:disabled) {
+  filter: brightness(1.15);
+}
+.rs-toggle:disabled {
+  filter: saturate(0.3) brightness(0.7);
+}
+.rs-toggle__fallback {
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+  font-size: 16px;
+}
+
+.rs-slider {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.rs-slider__icon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+}
+.rs-slider__mute {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 20px;
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+  background: linear-gradient(#5a5650, #3e3b35);
+  border: 1px solid #000;
+  border-radius: 3px;
+  box-shadow: inset 1px 1px 0 #77736b;
+}
+.rs-slider__icon:hover .rs-slider__mute {
+  color: var(--rs-white);
+}
+.rs-slider__track {
+  display: flex;
+  align-items: center;
+}
+.rs-slider__seg {
+  height: 14px;
+  background-repeat: no-repeat;
+}
+.rs-slider__seg--fallback {
+  background: #3b3529;
+  border-top: 1px solid #6b6250;
+  border-bottom: 1px solid #1f1c16;
+  position: relative;
+}
+.rs-slider__seg--fallback.rs-slider__seg--on::after {
+  content: "";
+  position: absolute;
+  left: calc(50% - 5px);
+  top: 1px;
+  width: 10px;
+  height: 10px;
+  background: #3a6ecf;
+  border: 1px solid #000;
+}
+
+/* ---------- Tooltip ------------------------------------------------------- */
+
+/* A cursor tooltip (portalled to <body>) draws at --rs-ui-zoom on big monitors, like the HUD. */
+.rs-tooltip {
+  position: fixed;
+  z-index: 1000;
+  zoom: var(--rs-ui-zoom, 1);
+  max-width: 260px;
+  padding: 2px 4px 3px;
+  background: var(--rs-tooltip-bg);
+  color: var(--rs-tooltip-text);
+  border: 1px solid #000;
+  pointer-events: none;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+/* Inline inside an interface, which is already zoomed. */
+.rs-tooltip--static {
+  position: relative;
+  display: inline-block;
+  zoom: 1;
+}
+
+/* ---------- QR, countdown, misc ------------------------------------------- */
+
+.rs-qr {
+  display: block;
+  shape-rendering: crispEdges;
+  background: #ffffff;
+}
+.rs-countdown {
+  font-variant-numeric: tabular-nums;
+}
+.rs-countdown--warn {
+  color: var(--rs-red);
+}
+.rs-countdown--expired {
+  color: var(--rs-red);
+}
+
+/* ---------- Parchment scroll ---------------------------------------------- */
+
+.rs-scrollpaper {
+  position: relative;
+  color: var(--rs-black);
+}
+.rs-scrollpaper--css {
+  padding: 22px 0;
+  filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.55));
+}
+.rs-scrollpaper__roll {
+  position: absolute;
+  left: -10px;
+  right: -10px;
+  height: 22px;
+  border: 1px solid #2a1d0c;
+  border-radius: 11px / 11px;
+  background:
+    linear-gradient(to bottom, #6a4a22 0, #b48a50 30%, #dcc08a 48%, #a57c43 70%, #5a3d1a 100%);
+}
+.rs-scrollpaper__roll::before,
+.rs-scrollpaper__roll::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  width: 9px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #3c2810, #7c5a2c 50%, #3c2810);
+  border: 1px solid #2a1d0c;
+}
+.rs-scrollpaper__roll::before { left: 2px; }
+.rs-scrollpaper__roll::after { right: 2px; }
+.rs-scrollpaper__roll--top { top: 0; }
+.rs-scrollpaper__roll--bottom { bottom: 0; }
+.rs-scrollpaper__sheet {
+  position: relative;
+  /* No one-word last lines on the paper (inherited; browsers without it wrap as before). */
+  text-wrap-style: pretty;
+}
+.rs-scrollpaper--css .rs-scrollpaper__sheet {
+  background-color: var(--rs-parchment-light);
+  background-image: var(--spr-chatBackground, linear-gradient(#d8c9a3, #c3b28a));
+  background-size: 100% 100%;
+  border-left: 1px solid #5a4424;
+  border-right: 1px solid #5a4424;
+  padding: 14px 22px 16px;
+}
+/*
+ * The scroll sprite (306x289) has curled ends left and right and torn edges
+ * top and bottom. Drawn as three bands so the torn edges keep their own 26px
+ * and 31px however tall the scroll is: stretched as one picture, a tall
+ * scroll (the Payment scroll on a phone) stretched the tears 60px deep, and
+ * the title and close button sat over see-through gaps. Widths still stretch.
+ */
+.rs-scrollpaper--art .rs-scrollpaper__sheet {
+  /*
+   * The curled ends stretch with the width: each takes the outer 8.5% of the
+   * art (26 of 306 px), so the side padding is a share of the width plus a
+   * gutter, keeping text, rules and buttons on the flat paper at any size
+   * (56px on a 420px scroll, 90px on the 760px Payment scroll, 50px on a phone).
+   */
+  padding: 34px calc(10% + 14px) 40px;
+  filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.5));
+}
+/*
+ * The sprite is a dark parchment (average #745d36): black text on it measured
+ * 3.4:1 and dark red under 2:1. The art sits on a layer behind the text and is
+ * lightened there, so the paper keeps its grain, curls and torn edges while
+ * every scroll text colour reads at 4.5:1 or better.
+ */
+.rs-scrollpaper--art .rs-scrollpaper__sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border-image-source: var(--spr-parchmentScroll, none);
+  border-image-slice: 26 0 31 0 fill;
+  border-image-width: 26px 0 31px 0;
+  border-image-repeat: stretch;
+  filter: var(--rs-scroll-paper-filter);
+}
+.rs-scrollpaper__title {
+  text-align: center;
+  color: var(--rs-dark-red);
+  margin-bottom: 8px;
+}
+.rs-scrollpaper__sheet > .rs-scrollpaper__close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+.rs-scrollpaper--art .rs-scrollpaper__sheet > .rs-scrollpaper__close {
+  top: 22px;
+  right: 40px;
+}
+
+.rs-pleasewait {
+  display: inline-block;
+}
+.rs-pleasewait__dots {
+  display: inline-block;
+  width: 1.2em;
+  text-align: left;
+}
+
+.rs-clickblocker {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: transparent;
+}
+.rs-clickblocker--dim {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* ---------- Arrow buttons (character design) ------------------------------ */
+
+.rs-arrowbtn {
+  position: relative;
+  width: 43px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.rs-arrowbtn > * {
+  grid-area: 1 / 1;
+}
+.rs-arrowbtn__hover {
+  opacity: 0;
+}
+.rs-arrowbtn:hover:not(:disabled) .rs-arrowbtn__hover {
+  opacity: 1;
+}
+.rs-arrowbtn:disabled {
+  filter: brightness(0.55) saturate(0.5);
+}
+.rs-arrowbtn__fallback {
+  display: grid;
+  place-items: center;
+  width: 43px;
+  height: 29px;
+  color: var(--rs-orange);
+  text-shadow: var(--rs-shadow);
+  background: linear-gradient(#77705f, #4f493d);
+  border: 1px solid #000;
+  border-radius: 4px;
+}
+.rs-arrowbtn:hover:not(:disabled) .rs-arrowbtn__fallback {
+  color: var(--rs-white);
+}
+
+/* ---------- Touch: hit areas of at least 36px ----------------------------- */
+
+/*
+ * --rs-touch is the unscaled size a hit area needs to measure 36px on screen.
+ * Window and ParchmentScroll publish their fit scale as --rs-fit-scale, so in
+ * a window scaled to 0.75 the areas grow to 48px before the scale applies.
+ * Outside a scaled container it is 36px.
+ */
+@media (pointer: coarse) {
+  .rs-window,
+  .rs-scrollpaper {
+    --rs-touch: calc(36px / var(--rs-fit-scale, 1));
+  }
+  .rs-btn {
+    height: 36px;
+  }
+  .rs-textbtn,
+  .rs-dialogue__option,
+  .rs-close,
+  .rs-arrowbtn,
+  .rs-tab,
+  .rs-slot,
+  .rs-numbox,
+  .rs-check {
+    position: relative;
+  }
+  .rs-btn::after,
+  .rs-textbtn::after,
+  .rs-dialogue__option::after,
+  .rs-close::after,
+  .rs-arrowbtn::after,
+  .rs-tab::after,
+  .rs-slot::after,
+  .rs-numbox::after,
+  .rs-check::after {
+    content: "";
+    position: absolute;
+  }
+  .rs-btn::after,
+  .rs-check::after {
+    inset: min(0px, calc((36px - var(--rs-touch, 36px)) / 2)) 0;
+  }
+  .rs-textbtn::after,
+  .rs-dialogue__option::after {
+    inset: calc((14px - var(--rs-touch, 36px)) / 2) -6px;
+  }
+  .rs-close::after {
+    inset: calc((21px - var(--rs-touch, 36px)) / 2);
+  }
+  .rs-arrowbtn::after {
+    inset: calc((29px - var(--rs-touch, 36px)) / 2) min(0px, calc((43px - var(--rs-touch, 36px)) / 2));
+  }
+  .rs-tab::after {
+    inset: calc((20px - var(--rs-touch, 36px)) / 2) 0;
+  }
+  .rs-slot::after {
+    inset: calc((32px - var(--rs-touch, 36px)) / 2) min(-3px, calc((36px - var(--rs-touch, 36px)) / 2));
+  }
+  .rs-numbox::after {
+    inset: calc((22px - var(--rs-touch, 36px)) / 2) -8px;
+  }
+  .rs-check {
+    min-height: 36px;
+  }
+
+  /*
+   * Dialogue options: full-width rows sharing the options area, so the whole
+   * box is tappable with no gaps between rows. Their own box is the target:
+   * the ::after area would be clipped by the overflow kept for the ellipsis.
+   */
+  .rs-dialogue__options {
+    align-items: stretch;
+  }
+  .rs-dialogue__option {
+    flex: 1 1 0;
+    width: 100%;
+    min-height: 0;
+  }
+  .rs-dialogue__option::after {
+    content: none;
+  }
+
+  /* Volume bar: the track picks the notch under the finger anywhere in a 36px band. */
+  .rs-slider__track,
+  .rs-slider__icon {
+    position: relative;
+  }
+  .rs-slider__track::after,
+  .rs-slider__icon::after {
+    content: "";
+    position: absolute;
+  }
+  .rs-slider__track::after {
+    inset: calc((16px - var(--rs-touch, 36px)) / 2) 0;
+  }
+  .rs-slider__icon::after {
+    inset: calc((32px - var(--rs-touch, 36px)) / 2);
+  }
+}

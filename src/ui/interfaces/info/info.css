@@ -1,0 +1,122 @@
+/* How it works and Terms: black text on the parchment scroll. */
+
+.info-scroll a:focus-visible,
+.info-scroll button:focus-visible {
+  outline-offset: 1px;
+}
+
+/* ---------- How it works ------------------------------------------------- */
+
+.info-howto__tabs {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: -2px 0 10px;
+}
+.info-howto__tab {
+  color: var(--rs-black);
+  padding: 1px 2px 2px;
+  border-bottom: 1px solid transparent;
+}
+/* White would all but erase the word on the paper: hover darkens it instead (selected also underlines). */
+.info-howto__tab:hover {
+  color: var(--rs-dark-red);
+}
+.info-howto__tab.is-selected {
+  color: var(--rs-dark-red);
+  border-bottom-color: var(--rs-dark-red);
+  cursor: default;
+}
+/*
+ * Touch: the page tabs are only 18px tall. Each gets a hit area of at least
+ * 36px on screen (the kit's --rs-touch, which allows for the scroll's fit
+ * scale) reaching halfway into the 20px gap, without moving anything.
+ */
+@media (pointer: coarse) {
+  .info-howto__tab {
+    position: relative;
+  }
+  .info-howto__tab::after {
+    content: "";
+    position: absolute;
+    top: calc(50% - var(--rs-touch, 36px) / 2);
+    height: var(--rs-touch, 36px);
+    left: -10px;
+    right: -10px;
+  }
+}
+
+.info-pages {
+  display: grid;
+  align-items: start;
+}
+.info-pages > .info-steps {
+  grid-area: 1 / 1;
+}
+.info-steps.is-hidden {
+  visibility: hidden;
+}
+.info-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.info-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.info-step__icon {
+  flex: none;
+  width: 40px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+}
+.info-step__text {
+  flex: 1;
+  min-width: 0;
+}
+.info-step__lead {
+  color: var(--rs-black);
+}
+.info-step__num {
+  color: var(--rs-dark-red);
+}
+
+/* Payment apps stacked like a deck of cards, the last one on top. */
+.info-fan {
+  position: relative;
+  width: 40px;
+  height: 36px;
+}
+.info-fan > * {
+  position: absolute;
+}
+.info-fan > :nth-child(1) {
+  left: 0;
+  top: 0;
+}
+.info-fan > :nth-child(2) {
+  left: 4px;
+  top: 2px;
+}
+.info-fan > :nth-child(3) {
+  left: 8px;
+  top: 4px;
+}
+
+.info-foot {
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* ---------- Terms -------------------------------------------------------- */
+
+.info-terms__section + .info-terms__section {
+  margin-top: 11px;
+}
+.info-terms__heading {
+  color: var(--rs-dark-red);
+  margin-bottom: 3px;
+}

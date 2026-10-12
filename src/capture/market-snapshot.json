@@ -1,0 +1,664 @@
+{
+ "frozenAt": "2026-10-11T15:56:41.587Z",
+ "source": "GET https://www.rampridge.xyz/api/market",
+ "currencies": [
+  {
+   "currency": "USD",
+   "liquidity": "38067.791178",
+   "depositCount": 42,
+   "bestRate": "1",
+   "platforms": [
+    "wise",
+    "zelle",
+    "revolut",
+    "chime",
+    "xmoney",
+    "cashapp"
+   ]
+  },
+  {
+   "currency": "EUR",
+   "liquidity": "20037.619914",
+   "depositCount": 30,
+   "bestRate": "0.892737",
+   "platforms": [
+    "revolut",
+    "wise"
+   ]
+  },
+  {
+   "currency": "GBP",
+   "liquidity": "17463.699871",
+   "depositCount": 13,
+   "bestRate": "0.755344",
+   "platforms": [
+    "revolut",
+    "wise"
+   ]
+  },
+  {
+   "currency": "CHF",
+   "liquidity": "16048.562339",
+   "depositCount": 9,
+   "bestRate": "0.846466",
+   "platforms": [
+    "revolut",
+    "wise"
+   ]
+  },
+  {
+   "currency": "AUD",
+   "liquidity": "15656.519654",
+   "depositCount": 8,
+   "bestRate": "1.460366",
+   "platforms": [
+    "revolut",
+    "wise"
+   ]
+  },
+  {
+   "currency": "CAD",
+   "liquidity": "13280.870597",
+   "depositCount": 8,
+   "bestRate": "1.454188",
+   "platforms": [
+    "revolut",
+    "wise"
+   ]
+  },
+  {
+   "currency": "NZD",
+   "liquidity": "13028.268316",
+   "depositCount": 6,
+   "bestRate": "1.817145",
+   "platforms": [
+    "revolut",
+    "wise"
+   ]
+  },
+  {
+   "currency": "SGD",
+   "liquidity": "10206.911679",
+   "depositCount": 4,
+   "bestRate": "1.319115",
+   "platforms": [
+    "revolut",
+    "wise"
+   ]
+  },
+  {
+   "currency": "MXN",
+   "liquidity": "6972.278041",
+   "depositCount": 3,
+   "bestRate": "18.9211",
+   "platforms": [
+    "revolut",
+    "wise"
+   ]
+  },
+  {
+   "currency": "TRY",
+   "liquidity": "6972.278041",
+   "depositCount": 3,
+   "bestRate": "50.698956",
+   "platforms": [
+    "revolut",
+    "wise"
+   ]
+  },
+  {
+   "currency": "ZAR",
+   "liquidity": "6972.278041",
+   "depositCount": 3,
+   "bestRate": "17.004483",
+   "platforms": [
+    "revolut",
+    "wise"
+   ]
+  },
+  {
+   "currency": "JPY",
+   "liquidity": "3613.0061",
+   "depositCount": 2,
+   "bestRate": "160.942729",
+   "platforms": [
+    "wise",
+    "revolut"
+   ]
+  },
+  {
+   "currency": "IDR",
+   "liquidity": "782.442893",
+   "depositCount": 2,
+   "bestRate": "18425.760286",
+   "platforms": [
+    "wise"
+   ]
+  },
+  {
+   "currency": "PHP",
+   "liquidity": "782.442893",
+   "depositCount": 2,
+   "bestRate": "64.649558",
+   "platforms": [
+    "wise"
+   ]
+  },
+  {
+   "currency": "INR",
+   "liquidity": "520.11603",
+   "depositCount": 2,
+   "bestRate": "96.936668",
+   "platforms": [
+    "wise",
+    "upi"
+   ]
+  },
+  {
+   "currency": "CNY",
+   "liquidity": "269.12",
+   "depositCount": 2,
+   "bestRate": "6.839444",
+   "platforms": [
+    "alipay"
+   ]
+  }
+ ],
+ "books": [
+  {
+   "platform": "wise",
+   "currency": "USD",
+   "liquidity": "22254.67622",
+   "depositCount": 16,
+   "best": {
+    "depositIdOnContract": "4377",
+    "platform": "wise",
+    "currency": "USD",
+    "rate": "1.01",
+    "available": "6680.662833",
+    "min": "101",
+    "max": "3000"
+   }
+  },
+  {
+   "platform": "zelle",
+   "currency": "USD",
+   "liquidity": "13835.656301",
+   "depositCount": 10,
+   "best": {
+    "depositIdOnContract": "6503",
+    "platform": "zelle",
+    "currency": "USD",
+    "rate": "1",
+    "available": "1190.74123",
+    "min": "1",
+    "max": "1190.74123"
+   }
+  },
+  {
+   "platform": "revolut",
+   "currency": "USD",
+   "liquidity": "11631.353441",
+   "depositCount": 16,
+   "best": {
+    "depositIdOnContract": "6508",
+    "platform": "revolut",
+    "currency": "USD",
+    "rate": "1",
+    "available": "179.738566",
+    "min": "1",
+    "max": "179.738566"
+   }
+  },
+  {
+   "platform": "chime",
+   "currency": "USD",
+   "liquidity": "8536.912281",
+   "depositCount": 5,
+   "best": {
+    "depositIdOnContract": "1300",
+    "platform": "chime",
+    "currency": "USD",
+    "rate": "1.045",
+    "available": "1109.298312",
+    "min": "150",
+    "max": "1109.298312"
+   }
+  },
+  {
+   "platform": "xmoney",
+   "currency": "USD",
+   "liquidity": "941.613973",
+   "depositCount": 2,
+   "best": {
+    "depositIdOnContract": "6081",
+    "platform": "xmoney",
+    "currency": "USD",
+    "rate": "1.02",
+    "available": "77.450981",
+    "min": "50",
+    "max": "77.450981"
+   }
+  },
+  {
+   "platform": "cashapp",
+   "currency": "USD",
+   "liquidity": "683.879884",
+   "depositCount": 2,
+   "best": {
+    "depositIdOnContract": "4657",
+    "platform": "cashapp",
+    "currency": "USD",
+    "rate": "1.031031",
+    "available": "154.397963",
+    "min": "101",
+    "max": "154.397963"
+   }
+  },
+  {
+   "platform": "revolut",
+   "currency": "EUR",
+   "liquidity": "12322.579306",
+   "depositCount": 20,
+   "best": {
+    "depositIdOnContract": "6508",
+    "platform": "revolut",
+    "currency": "EUR",
+    "rate": "0.892737",
+    "available": "179.738566",
+    "min": "1",
+    "max": "179.738566"
+   }
+  },
+  {
+   "platform": "wise",
+   "currency": "EUR",
+   "liquidity": "8785.382958",
+   "depositCount": 11,
+   "best": {
+    "depositIdOnContract": "6456",
+    "platform": "wise",
+    "currency": "EUR",
+    "rate": "0.9079",
+    "available": "198.24",
+    "min": "198.24",
+    "max": "198.24"
+   }
+  },
+  {
+   "platform": "revolut",
+   "currency": "GBP",
+   "liquidity": "10895.198348",
+   "depositCount": 8,
+   "best": {
+    "depositIdOnContract": "6508",
+    "platform": "revolut",
+    "currency": "GBP",
+    "rate": "0.755344",
+    "available": "179.738566",
+    "min": "1",
+    "max": "179.738566"
+   }
+  },
+  {
+   "platform": "wise",
+   "currency": "GBP",
+   "liquidity": "7638.843873",
+   "depositCount": 6,
+   "best": {
+    "depositIdOnContract": "4321",
+    "platform": "wise",
+    "currency": "GBP",
+    "rate": "0.77045",
+    "available": "1070.34235",
+    "min": "50",
+    "max": "1070.34235"
+   }
+  },
+  {
+   "platform": "revolut",
+   "currency": "CHF",
+   "liquidity": "9566.623064",
+   "depositCount": 4,
+   "best": {
+    "depositIdOnContract": "1987",
+    "platform": "revolut",
+    "currency": "CHF",
+    "rate": "0.846466",
+    "available": "1564.348581",
+    "min": "100",
+    "max": "500"
+   }
+  },
+  {
+   "platform": "wise",
+   "currency": "CHF",
+   "liquidity": "6481.939275",
+   "depositCount": 5,
+   "best": {
+    "depositIdOnContract": "1258",
+    "platform": "wise",
+    "currency": "CHF",
+    "rate": "0.854795",
+    "available": "167.864437",
+    "min": "101",
+    "max": "167.864437"
+   }
+  },
+  {
+   "platform": "revolut",
+   "currency": "AUD",
+   "liquidity": "9011.191785",
+   "depositCount": 3,
+   "best": {
+    "depositIdOnContract": "4321",
+    "platform": "revolut",
+    "currency": "AUD",
+    "rate": "1.460366",
+    "available": "1070.34235",
+    "min": "50",
+    "max": "1070.34235"
+   }
+  },
+  {
+   "platform": "wise",
+   "currency": "AUD",
+   "liquidity": "7715.670219",
+   "depositCount": 6,
+   "best": {
+    "depositIdOnContract": "4321",
+    "platform": "wise",
+    "currency": "AUD",
+    "rate": "1.460366",
+    "available": "1070.34235",
+    "min": "50",
+    "max": "1070.34235"
+   }
+  },
+  {
+   "platform": "revolut",
+   "currency": "CAD",
+   "liquidity": "9011.191785",
+   "depositCount": 3,
+   "best": {
+    "depositIdOnContract": "4321",
+    "platform": "revolut",
+    "currency": "CAD",
+    "rate": "1.454188",
+    "available": "1070.34235",
+    "min": "50",
+    "max": "1070.34235"
+   }
+  },
+  {
+   "platform": "wise",
+   "currency": "CAD",
+   "liquidity": "5340.021162",
+   "depositCount": 6,
+   "best": {
+    "depositIdOnContract": "4321",
+    "platform": "wise",
+    "currency": "CAD",
+    "rate": "1.454188",
+    "available": "1070.34235",
+    "min": "50",
+    "max": "1070.34235"
+   }
+  },
+  {
+   "platform": "revolut",
+   "currency": "NZD",
+   "liquidity": "9011.191785",
+   "depositCount": 3,
+   "best": {
+    "depositIdOnContract": "4321",
+    "platform": "revolut",
+    "currency": "NZD",
+    "rate": "1.817145",
+    "available": "1070.34235",
+    "min": "50",
+    "max": "1070.34235"
+   }
+  },
+  {
+   "platform": "wise",
+   "currency": "NZD",
+   "liquidity": "5087.418881",
+   "depositCount": 4,
+   "best": {
+    "depositIdOnContract": "4321",
+    "platform": "wise",
+    "currency": "NZD",
+    "rate": "1.817145",
+    "available": "1070.34235",
+    "min": "50",
+    "max": "1070.34235"
+   }
+  },
+  {
+   "platform": "revolut",
+   "currency": "SGD",
+   "liquidity": "6189.835148",
+   "depositCount": 1,
+   "best": {
+    "depositIdOnContract": "4467",
+    "platform": "revolut",
+    "currency": "SGD",
+    "rate": "1.370343",
+    "available": "6189.835148",
+    "min": "200",
+    "max": "3000"
+   }
+  },
+  {
+   "platform": "wise",
+   "currency": "SGD",
+   "liquidity": "4017.076531",
+   "depositCount": 3,
+   "best": {
+    "depositIdOnContract": "4488",
+    "platform": "wise",
+    "currency": "SGD",
+    "rate": "1.319115",
+    "available": "515.07603",
+    "min": "1",
+    "max": "515.07603"
+   }
+  },
+  {
+   "platform": "revolut",
+   "currency": "MXN",
+   "liquidity": "6189.835148",
+   "depositCount": 1,
+   "best": {
+    "depositIdOnContract": "4467",
+    "platform": "revolut",
+    "currency": "MXN",
+    "rate": "19.6559",
+    "available": "6189.835148",
+    "min": "200",
+    "max": "3000"
+   }
+  },
+  {
+   "platform": "wise",
+   "currency": "MXN",
+   "liquidity": "782.442893",
+   "depositCount": 2,
+   "best": {
+    "depositIdOnContract": "4488",
+    "platform": "wise",
+    "currency": "MXN",
+    "rate": "18.9211",
+    "available": "515.07603",
+    "min": "1",
+    "max": "515.07603"
+   }
+  },
+  {
+   "platform": "revolut",
+   "currency": "TRY",
+   "liquidity": "6189.835148",
+   "depositCount": 1,
+   "best": {
+    "depositIdOnContract": "4467",
+    "platform": "revolut",
+    "currency": "TRY",
+    "rate": "52.667848",
+    "available": "6189.835148",
+    "min": "200",
+    "max": "3000"
+   }
+  },
+  {
+   "platform": "wise",
+   "currency": "TRY",
+   "liquidity": "782.442893",
+   "depositCount": 2,
+   "best": {
+    "depositIdOnContract": "4488",
+    "platform": "wise",
+    "currency": "TRY",
+    "rate": "50.698956",
+    "available": "515.07603",
+    "min": "1",
+    "max": "515.07603"
+   }
+  },
+  {
+   "platform": "revolut",
+   "currency": "ZAR",
+   "liquidity": "6189.835148",
+   "depositCount": 1,
+   "best": {
+    "depositIdOnContract": "4467",
+    "platform": "revolut",
+    "currency": "ZAR",
+    "rate": "17.664851",
+    "available": "6189.835148",
+    "min": "200",
+    "max": "3000"
+   }
+  },
+  {
+   "platform": "wise",
+   "currency": "ZAR",
+   "liquidity": "782.442893",
+   "depositCount": 2,
+   "best": {
+    "depositIdOnContract": "4488",
+    "platform": "wise",
+    "currency": "ZAR",
+    "rate": "17.004483",
+    "available": "515.07603",
+    "min": "1",
+    "max": "515.07603"
+   }
+  },
+  {
+   "platform": "wise",
+   "currency": "JPY",
+   "liquidity": "3234.633638",
+   "depositCount": 1,
+   "best": {
+    "depositIdOnContract": "2830",
+    "platform": "wise",
+    "currency": "JPY",
+    "rate": "181",
+    "available": "3234.633638",
+    "min": "400",
+    "max": "3234.633638"
+   }
+  },
+  {
+   "platform": "revolut",
+   "currency": "JPY",
+   "liquidity": "378.372462",
+   "depositCount": 1,
+   "best": {
+    "depositIdOnContract": "4124",
+    "platform": "revolut",
+    "currency": "JPY",
+    "rate": "160.942729",
+    "available": "378.372462",
+    "min": "200",
+    "max": "378.372462"
+   }
+  },
+  {
+   "platform": "wise",
+   "currency": "IDR",
+   "liquidity": "782.442893",
+   "depositCount": 2,
+   "best": {
+    "depositIdOnContract": "4488",
+    "platform": "wise",
+    "currency": "IDR",
+    "rate": "18425.760286",
+    "available": "515.07603",
+    "min": "1",
+    "max": "515.07603"
+   }
+  },
+  {
+   "platform": "wise",
+   "currency": "PHP",
+   "liquidity": "782.442893",
+   "depositCount": 2,
+   "best": {
+    "depositIdOnContract": "4488",
+    "platform": "wise",
+    "currency": "PHP",
+    "rate": "64.649558",
+    "available": "515.07603",
+    "min": "1",
+    "max": "515.07603"
+   }
+  },
+  {
+   "platform": "wise",
+   "currency": "INR",
+   "liquidity": "515.07603",
+   "depositCount": 1,
+   "best": {
+    "depositIdOnContract": "4488",
+    "platform": "wise",
+    "currency": "INR",
+    "rate": "99.394635",
+    "available": "515.07603",
+    "min": "1",
+    "max": "515.07603"
+   }
+  },
+  {
+   "platform": "upi",
+   "currency": "INR",
+   "liquidity": "5.04",
+   "depositCount": 1,
+   "best": {
+    "depositIdOnContract": "6127",
+    "platform": "upi",
+    "currency": "INR",
+    "rate": "96.936668",
+    "available": "5.04",
+    "min": "1",
+    "max": "5.04"
+   }
+  },
+  {
+   "platform": "alipay",
+   "currency": "CNY",
+   "liquidity": "269.12",
+   "depositCount": 2,
+   "best": {
+    "depositIdOnContract": "6513",
+    "platform": "alipay",
+    "currency": "CNY",
+    "rate": "6.839444",
+    "available": "258.22",
+    "min": "25.82",
+    "max": "258.22"
+   }
+  }
+ ]
+}

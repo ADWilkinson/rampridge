@@ -1,0 +1,120 @@
+/*
+ * Colour and type tokens taken from the original client. Hex values are the
+ * colours the 2007 client draws with (interface text, chat, menus, stacks);
+ * the stone and parchment tones are the averages of the sprites they stand in
+ * for when a sprite has not loaded.
+ */
+
+:root {
+  /* Text colours used by interfaces. */
+  --rs-orange: #ff981f; /* interface titles and labels */
+  --rs-yellow: #ffff00;
+  --rs-cyan: #00ffff;
+  --rs-green: #00ff00;
+  --rs-red: #ff0000;
+  --rs-white: #ffffff;
+  --rs-black: #000000;
+  --rs-grey-text: #9f9f9f; /* disabled interface text */
+  --rs-dark-red: #800000; /* dialogue names, "Select an Option", book titles */
+
+  /* Menu target colours (src/game/types.ts TargetKind). */
+  --rs-target-npc: #ffff00;
+  --rs-target-object: #00ffff;
+  --rs-target-player: #ffffff;
+  --rs-target-item: #ff9040;
+  --rs-target-tile: #ffffff;
+
+  /* Chatbox (opaque parchment) colours. */
+  --rs-chat-game: #000000;
+  --rs-chat-name: #000000;
+  --rs-chat-public: #0000ff;
+  --rs-chat-private: #00ffff;
+  --rs-chat-trade: #800080;
+  --rs-chat-news: #ef1020;
+  --rs-chat-input: #0000ff;
+  --rs-chat-separator: #807660;
+
+  /* Item stack counts. */
+  --rs-stack-units: #ffff00;
+  --rs-stack-thousands: #ffffff;
+  --rs-stack-millions: #00ff80;
+
+  /* Choose Option menu. */
+  --rs-menu-bg: #5d5447;
+  --rs-menu-header: #000000;
+
+  /* Grand Exchange offer bar. */
+  --rs-progress: #d88020;
+  --rs-complete: #005f00;
+  --rs-aborted: #8f0000;
+  --rs-bar-track: #2b2620;
+
+  /* Examine / hover tooltip. */
+  --rs-tooltip-bg: #ffffa0;
+  --rs-tooltip-text: #000000;
+
+  /* Surfaces (fallbacks for the stone and parchment sprites). */
+  --rs-interface-bg: #483e33;
+  --rs-stone: #484234;
+  --rs-stone-dark: #2e2a22;
+  --rs-stone-light: #6b6250;
+  --rs-panel-bg: #463d34;
+  --rs-button-grey: #50504c;
+  --rs-button-red: #811e1c;
+  --rs-parchment: #b0a183;
+  --rs-parchment-light: #d8c9a3;
+  --rs-parchment-dark: #8a7552;
+  /* Lightens the dark scroll sprite behind its text (ParchmentScroll). */
+  --rs-scroll-paper-filter: brightness(1.75) saturate(0.7);
+  /*
+   * Text on parchment (scrolls, the chatbox, dialogue): the client's red, blue
+   * and purple are too light to read on the paper (#ff0000 measures 2:1), so
+   * kit.css redefines the text tokens inside parchment to these, each 4.5:1 or
+   * better on the darkest paper text sits on (#bda273).
+   */
+  --rs-paper-red: #780000;
+  --rs-paper-blue: #0000c8;
+  --rs-paper-purple: #6a006a;
+  /*
+   * Small text on the brown stone: the client's red (#ff0000) and disabled grey
+   * (#9f9f9f) measure 2.5:1 and 3.8:1 on its lighter patches (#494034, #4b423a).
+   * These read at 4.5:1 or better there, for errors and quiet hints on stone.
+   */
+  --rs-stone-red: #ff9484;
+  --rs-quiet: #b8b8b8;
+  --rs-scroll-track: #262019;
+  --rs-scroll-thumb: #554a37;
+  --rs-title-stone: #3f4049;
+  --rs-loading-red: #8c1111; /* the client loader's bar: Color(140, 17, 17) */
+
+  /* Focus ring: a yellow 1px outline over a black 1px halo, like a selected item. */
+  --rs-focus: #ffff00;
+
+  /* Type. Every RS face is pixel-exact at 16px. */
+  --rs-font-size: 16px;
+  --rs-font-p11: "RS Plain 11", ui-monospace, monospace;
+  --rs-font-p12: "RS Plain 12", ui-monospace, monospace;
+  --rs-font-b12: "RS Bold 12", ui-monospace, monospace;
+  --rs-font-q8: "RS Quill 8", serif;
+  --rs-font-quill: "RS Quill", serif;
+  --rs-shadow: 1px 1px 0 #000000;
+
+  /* Layout. */
+  --rs-chat-width: 519px;
+  --rs-chat-height: 165px;
+  --rs-side-width: 249px;
+  --rs-side-height: 336px;
+  --rs-touch: 36px;
+}
+
+/*
+ * Interface zoom (UI_ZOOM_QUERY in src/ui/kit/layout.ts): on monitors of
+ * 2200x1200 CSS pixels and up the HUD, interfaces, menus, tooltips and the
+ * title and loading screens draw at 2x (CSS zoom), the 3D view stays at 1x.
+ * frameLayout.test.ts keeps this query in step with layout.ts.
+ */
+@media (min-width: 2200px) and (min-height: 1200px) {
+  :root {
+    --rs-ui-zoom: 2;
+  }
+}

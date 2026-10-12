@@ -1,0 +1,35 @@
+/*
+ * RuneScape bitmap fonts, converted to TrueType (public/game/fonts). Every
+ * face has 16 units per em except Quill (32), so they render pixel-exact at
+ * 16px (Quill at 32px) and at whole multiples of that size.
+ */
+
+@font-face {
+  font-family: "RS Plain 11";
+  src: url("/game/fonts/RuneScape-Plain-11.ttf") format("truetype");
+  font-display: block;
+}
+
+@font-face {
+  font-family: "RS Plain 12";
+  src: url("/game/fonts/RuneScape-Plain-12.ttf") format("truetype");
+  font-display: block;
+}
+
+@font-face {
+  font-family: "RS Bold 12";
+  src: url("/game/fonts/RuneScape-Bold-12.ttf") format("truetype");
+  font-display: block;
+}
+
+@font-face {
+  font-family: "RS Quill 8";
+  src: url("/game/fonts/RuneScape-Quill-8.ttf") format("truetype");
+  font-display: block;
+}
+
+@font-face {
+  font-family: "RS Quill";
+  src: url("/game/fonts/RuneScape-Quill.ttf") format("truetype");
+  font-display: block;
+}
