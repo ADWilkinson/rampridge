@@ -40,6 +40,8 @@ describe("referrerClass", () => {
   it("prefers the campaign source over the referrer", () => {
     expect(classify("https://t.co/", "?utm_source=github")).toBe("github");
     expect(classify("", "?utm_source=X&utm_medium=social")).toBe("x");
+    expect(classify("", "?utm_source=x-article")).toBe("x");
+    expect(classify("", "?utm_source=xmoney")).toBe("other");
     expect(classify("", "?utm_source=peer_zh")).toBe("peer");
     expect(classify("", "?utm_source=threejs-forum")).toBe("threejs");
     expect(classify("", "?utm_source=javascriptweekly")).toBe("newsletter");

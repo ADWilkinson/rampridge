@@ -61,7 +61,7 @@ const HOSTS: readonly [ReferrerClass, (host: string) => boolean][] = [
 
 /** The `utm_source` names links are tagged with, by class. Any other value is read as a host. */
 const SOURCES: readonly [ReferrerClass, RegExp][] = [
-  ["x", /^(x|twitter)$/],
+  ["x", /^(x|twitter)($|[-_])/],
   ["github", /^github$/],
   ["peer", /^peer/],
   ["reddit", /^reddit$/],
