@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { useGame } from "@/ui/interfaces/context";
 import { HELP_HANDLE, HELP_SAFETY_LINE, HelpLink } from "@/ui/interfaces/shared/help";
 import { ParchmentScroll } from "@/ui/kit";
-import { PEER_TERMS_URL } from "./links";
+import { MAKER_URL, PEER_TERMS_URL } from "./links";
 import "./info.css";
 
 const TERMS: readonly { heading: string; body: ReactNode }[] = [
@@ -59,6 +59,12 @@ export function TermsScroll({ onClose }: { onClose: () => void }) {
           <p className="rs-p12">{t.body}</p>
         </section>
       ))}
+      <p className="info-foot rs-p12">
+        Made by Andrew Wilkinson ·{" "}
+        <a className="rs-textbtn rs-textbtn--blue rs-p12" href={MAKER_URL} target="_blank" rel="noopener">
+          andrewwilkinson.io
+        </a>
+      </p>
     </ParchmentScroll>
   );
 }

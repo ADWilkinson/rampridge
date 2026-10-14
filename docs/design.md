@@ -189,7 +189,9 @@ bright red on parchment), every text colour at least 4.5:1 on the paper.
   transaction, beside an unconfirmed transaction the player can release
   ("Nothing is pending"), and among the sell dialogue's recovery options.
 - The Account tab has a "Get help" link; the Terms name the account and repeat
-  the never-DM line.
+  the never-DM line. The Terms also say RampRidge has no token, and end with
+  "Made by Andrew Wilkinson · andrewwilkinson.io" (`MAKER_URL` in
+  `src/ui/interfaces/info/links.ts`, tagged `utm_source=rampridge`).
 
 ### Verify payment
 
