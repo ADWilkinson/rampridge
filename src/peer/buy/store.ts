@@ -28,7 +28,7 @@
 import type { BuyerTeePaymentProofInput, PeerExtensionSdk, PeerMetadataMessage, Zkp2pClient } from "@zkp2p/sdk";
 import type { Address, Hex } from "viem";
 import { createStore, type StoreApi } from "zustand/vanilla";
-import { track } from "@/lib/telemetry";
+import { track, type FunnelEvent } from "@/lib/telemetry";
 import type { TxSender } from "@/wallet/types";
 import { createPeerClient } from "../client";
 import {
@@ -107,6 +107,10 @@ export interface BuyDeps {
   onFocus(run: () => void): () => void;
   /** Logs a failed transaction step with its redacted technical detail (`technicalDetail`). */
   warn(message: string, detail: string): void;
+  /** Counts a funnel step in launch telemetry. */
+  track(event: FunnelEvent): void;
+  /** Sends a failed transaction step's redacted detail to launch telemetry. */
+  reportFailure(error: unknown, context: string, detail: string): void;
 }
 
 function everyInterval(ms: number, run: () => void): () => void {
@@ -145,6 +149,8 @@ const defaultDeps: BuyDeps = {
   every: everyInterval,
   onFocus: onWindowFocus,
   warn: (message, detail) => console.warn(message, detail),
+  track,
+  reportFailure,
 };
 
 type TxAction = "signal" | "fulfill" | "cancel";
@@ -409,7 +415,7 @@ export function createBuyStore(overrides: Partial<BuyDeps> = {}): StoreApi<BuyFl
     const report = (action: TxAction, error: unknown): string => {
       const detail = technicalDetail(error);
       deps.warn(`[buy] ${action} failed`, detail);
-      if (toBuyError(error, { stage: action }).code !== "user_rejected") reportFailure(error, `buy.${action}`, detail);
+      if (toBuyError(error, { stage: action }).code !== "user_rejected") deps.reportFailure(error, `buy.${action}`, detail);
       return detail;
     };
 
@@ -704,7 +710,7 @@ export function createBuyStore(overrides: Partial<BuyDeps> = {}): StoreApi<BuyFl
     ): BuyOrder | null => {
       const order = orderFromSignal(quote, owner, signal, recipientId);
       deps.storage.save(order);
-      track("signal_ok");
+      deps.track("signal_ok");
       if (epoch !== ownerEpoch) return null;
       set({
         step: "awaitingPayment",
@@ -798,7 +804,7 @@ export function createBuyStore(overrides: Partial<BuyDeps> = {}): StoreApi<BuyFl
         return landSignal(unresolved.quote, unresolved.owner, outcome.signal, unresolved.epoch);
       }
       // A send the chain settled without an intent failed; one still unknown is counted once it settles.
-      if (outcome.kind === "reverted" || outcome.kind === "lapsed") track("signal_fail");
+      if (outcome.kind === "reverted" || outcome.kind === "lapsed") deps.track("signal_fail");
       if (unresolved.epoch !== ownerEpoch) return null;
       if (outcome.kind === "reverted") {
         set({ selectedQuote: unresolved.quote, notice: null });
@@ -916,7 +922,7 @@ export function createBuyStore(overrides: Partial<BuyDeps> = {}): StoreApi<BuyFl
         }
         // Nothing reached the chain, so the same quote can be retried at once, with no chain wait.
         const mapped = { ...toBuyError(error, { stage: "signal", platform: quote.platform }), detail };
-        if (mapped.code !== "user_rejected") track("signal_fail");
+        if (mapped.code !== "user_rejected") deps.track("signal_fail");
         if (mapped.code === "active_intent" && (await adoptExisting(owner, epoch, reader))) return null;
         if (epoch !== ownerEpoch) return null;
         if (mapped.code === "active_intent") {
@@ -990,7 +996,7 @@ export function createBuyStore(overrides: Partial<BuyDeps> = {}): StoreApi<BuyFl
     };
 
     const complete = async (order: BuyOrder, txHash: Hex, released: bigint | null, epoch: number, paidFiat: bigint | null) => {
-      track("fulfil_ok");
+      deps.track("fulfil_ok");
       forgetStored(order.owner, order.intentHash);
       if (epoch !== ownerEpoch) return;
       set({ order: { ...order, status: "fulfilled" } });
@@ -1052,7 +1058,7 @@ export function createBuyStore(overrides: Partial<BuyDeps> = {}): StoreApi<BuyFl
               lookupPayee: deps.fetchPayeeHandle,
             });
             if (settled.kind === "fulfilled") {
-              track("fulfil_ok");
+              deps.track("fulfil_ok");
               forgetStored(order.owner, order.intentHash);
               if (epoch !== ownerEpoch) return;
               endCapture();
@@ -1078,7 +1084,7 @@ export function createBuyStore(overrides: Partial<BuyDeps> = {}): StoreApi<BuyFl
             // Fall through to the mapped error.
           }
         }
-        if (mapped.code !== "user_rejected") track("fulfil_fail");
+        if (mapped.code !== "user_rejected") deps.track("fulfil_fail");
         if (epoch !== ownerEpoch) return;
         if (mapped.code === "tx_pending") {
           // The release was sent and may still land: never re-prove or resend it from here. "Check again"
@@ -1238,7 +1244,7 @@ export function createBuyStore(overrides: Partial<BuyDeps> = {}): StoreApi<BuyFl
             nearby: result.nearby,
             quotesExpireAt: result.expiresAt,
           });
-          track("quote");
+          deps.track("quote");
         } catch (error) {
           if (run !== runId) return;
           fail(error, { stage: "quote" }, "idle", () => get().requestQuotes(input));
@@ -1328,7 +1334,7 @@ export function createBuyStore(overrides: Partial<BuyDeps> = {}): StoreApi<BuyFl
         const key = current.intentHash.toLowerCase();
         if (!verifyCounted.has(key)) {
           verifyCounted.add(key);
-          track("verify_start");
+          deps.track("verify_start");
         }
         // The player says they paid: remember it with the order, so a reload never shows
         // "send exactly" again for an order that may already be paid.
