@@ -4,7 +4,7 @@ import type { DialogueScript } from "./script";
 /**
  * The banker's "Talk-to" conversation: the original greeting and options,
  * each handing over to the matching bank interface, plus a two-page
- * explanation of how Peer settles trades.
+ * explanation of how Peer settles trades that offers a practice trade.
  */
 export function bankerScript(npcName: string): DialogueScript {
   return {
@@ -39,6 +39,7 @@ export function bankerScript(npcName: string): DialogueScript {
         kind: "options",
         options: [
           { label: "Show me how it works", action: { type: "open", target: { id: "how-it-works" } } },
+          { label: "I'd like to try a practice trade.", action: { type: "open", target: { id: "practice" } } },
           { label: "I'd like to ask something else.", action: { type: "goto", node: "menu" } },
           { label: "Nothing, thanks.", action: { type: "close" } },
         ],

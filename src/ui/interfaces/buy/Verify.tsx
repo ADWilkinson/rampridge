@@ -11,6 +11,7 @@ import { useBuyOrderEvents } from "./events";
 import { useEnterKey, useWindowFocus } from "./hooks";
 import { addExtensionLabel, extensionsPage, paidClaimed, paymentRowAmount, paymentRowDate, peerAuthVersionText, rowMatchesOrder, verifySite } from "./model";
 import { BuyErrorPanel, FeeWaivedNote, HelpLine, LoginButton, VERIFY_ON_COMPUTER_TEXT, Waiting, usdcItem } from "./parts";
+import { PracticeNote, usePractice } from "./practiceContext";
 
 /**
  * Proving the payment with the Peer extension: install, connect, capture,
@@ -22,6 +23,7 @@ export function VerifyInterface() {
   const buy = useBuy();
   useBuyOrderEvents();
   const mobile = useIsMobile();
+  const practice = usePractice();
   // Peer web titles its prove step by what it needs first: "Install PeerAuth Extension", "Update Extension".
   const prompt = buy.step === "verifying" && buy.order?.status === "active" ? buy.verifying : null;
   const title = prompt === "needsInstall" ? "Install the Peer extension" : prompt === "needsUpdate" ? "Update the Peer extension" : "Verify payment";
@@ -30,11 +32,12 @@ export function VerifyInterface() {
     <Window
       title={title}
       width={mobile ? 374 : 456}
-      height={mobile ? 520 : tall ? 392 : 340}
+      height={mobile ? 520 : tall ? 392 : practice ? 360 : 340}
       onClose={game.close}
       className={cx("rb-verify", mobile && "rb-verify--mobile")}
       bodyClassName="rb-verify__body"
     >
+      {practice && <PracticeNote className="rb-verify__practice" />}
       <VerifyBody buy={buy} />
     </Window>
   );
@@ -42,6 +45,7 @@ export function VerifyInterface() {
 
 function VerifyBody({ buy }: { buy: BuyFlowStore }) {
   const game = useGame();
+  const practice = usePractice();
   const order = buy.order;
   // While an open offer is on screen the store looks for the extension (Peer web's version poll): at
   // once, every few seconds and on focus while it is missing or too old. A fresh install injects itself
@@ -115,7 +119,14 @@ function VerifyBody({ buy }: { buy: BuyFlowStore }) {
   if (buy.step === "fulfilling") {
     return (
       <Panel header={header}>
-        <Waiting text="Verifying your payment" detail="The proof is being checked and your USDC released. This can take a minute. Keep this tab open." />
+        <Waiting
+          text="Verifying your payment"
+          detail={
+            practice
+              ? "In a real trade, Peer checks the proof and the contract releases the USDC to your wallet."
+              : "The proof is being checked and your USDC released. This can take a minute. Keep this tab open."
+          }
+        />
       </Panel>
     );
   }
@@ -162,7 +173,14 @@ function VerifyBody({ buy }: { buy: BuyFlowStore }) {
       case "capturing":
         return (
           <Panel header={header}>
-            <Waiting text="Waiting for your payments" detail={`Log in to ${site} in the tab the extension opened. Your recent payments will appear here.`} />
+            <Waiting
+              text="Waiting for your payments"
+              detail={
+                practice
+                  ? `In a real trade, you log in to ${site} in the tab the extension opens, and your recent payments appear here.`
+                  : `Log in to ${site} in the tab the extension opened. Your recent payments will appear here.`
+              }
+            />
             <BackToPayment buy={buy} label="Stop and go back" />
           </Panel>
         );
@@ -302,6 +320,7 @@ function BackToPayment({ buy, label = "Back to payment" }: { buy: BuyFlowStore; 
 function Ready({ buy, order, header }: { buy: BuyFlowStore; order: BuyOrder; header: ReactNode }) {
   const game = useGame();
   const deps = useBuyDeps();
+  const practice = usePractice();
   const platform = BUY_PLATFORMS[order.platform];
   const expired = deps.now() >= order.expiresAt;
   const methods = platform.verifyMethods;
@@ -309,7 +328,11 @@ function Ready({ buy, order, header }: { buy: BuyFlowStore; order: BuyOrder; hea
   useEnterKey(chosen && buy.pending === null ? () => void buy.startVerification() : null);
   return (
     <Panel header={header}>
-      <p className="rs-p12 rs-c-orange rs-shadow">Once you have paid, prove it with the Peer extension. It opens {verifySite(platform)} in a new tab.</p>
+      <p className="rs-p12 rs-c-orange rs-shadow">
+        {practice
+          ? `In a real trade, the Peer extension opens ${verifySite(platform)} in a new tab and reads your recent payments. Here the payments are made up.`
+          : `Once you have paid, prove it with the Peer extension. It opens ${verifySite(platform)} in a new tab.`}
+      </p>
       {peerAuthVersionText(platform) && <p className="rs-p11 rs-c-yellow rs-shadow">{peerAuthVersionText(platform)}</p>}
       {methods.length > 1 && (
         <div className="rb-verify__methods">
@@ -420,6 +443,7 @@ function SelectPayment({ buy, order, header }: { buy: BuyFlowStore; order: BuyOr
 
 function Completed({ buy, order }: { buy: BuyFlowStore; order: BuyOrder }) {
   const game = useGame();
+  const practice = usePractice();
   const usdc = buy.completion?.usdcReceived ?? order.usdcExpected;
   // The purchase's share link, once its announcement is saved (no release transaction: nothing was announced).
   const completion = buy.completion;
@@ -440,17 +464,27 @@ function Completed({ buy, order }: { buy: BuyFlowStore; order: BuyOrder }) {
         <span className="rb-itembox rb-itembox--big">
           <ItemSlot item={usdcItem(usdc)} />
         </span>
-        <p className="rs-p12 rs-c-white rs-shadow">You bought {formatUsdc(usdc)} USDC.</p>
-        <p className="rs-p12 rs-c-orange rs-shadow">
-          It's in your wallet. You paid {formatFiat(buy.completion?.fiatSent ?? order.fiatToSend, order.currency)} on {BUY_PLATFORMS[order.platform].name}.
-        </p>
-        <FeeWaivedNote order={order} />
+        {practice ? (
+          <>
+            <p className="rs-p12 rs-c-white rs-shadow">A real trade would bring you {formatUsdc(usdc)} USDC.</p>
+            <p className="rs-p12 rs-c-orange rs-shadow">Nothing was paid and no USDC moved.</p>
+            <p className="rs-p12 rs-c-orange rs-shadow">To buy for real, log in and talk to a banker.</p>
+          </>
+        ) : (
+          <>
+            <p className="rs-p12 rs-c-white rs-shadow">You bought {formatUsdc(usdc)} USDC.</p>
+            <p className="rs-p12 rs-c-orange rs-shadow">
+              It's in your wallet. You paid {formatFiat(buy.completion?.fiatSent ?? order.fiatToSend, order.currency)} on {BUY_PLATFORMS[order.platform].name}.
+            </p>
+            <FeeWaivedNote order={order} />
+          </>
+        )}
         <div className="rb-buttons">
           <StoneButton size="big" onClick={collect}>
             Collect
           </StoneButton>
         </div>
-        <ShareButton subject={{ kind: "bought", usdc: usdcFromUnits(usdc), platform: order.platform }} shareId={shareId} />
+        {!practice && <ShareButton subject={{ kind: "bought", usdc: usdcFromUnits(usdc), platform: order.platform }} shareId={shareId} />}
       </div>
     </Panel>
   );

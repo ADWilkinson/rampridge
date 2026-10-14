@@ -44,6 +44,7 @@ const MODULE_OF: Partial<Record<InterfaceId, string>> = {
   trade: "buy",
   payment: "buy",
   verify: "buy",
+  practice: "buy",
 };
 
 /** The interfaces a player can open from the title or right after entering (no wallet code or Peer SDK). */

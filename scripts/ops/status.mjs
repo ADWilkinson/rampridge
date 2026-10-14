@@ -53,6 +53,8 @@ const FUNNEL = [
   ["deposit_ok", "sell_start"],
   ["deposit_fail", "sell_start"],
   ["share_click", "play"],
+  ["practice_start", "play"],
+  ["practice_done", "practice_start"],
   ["send_ok", "login"],
   ["send_fail", "login"],
   ["send_unconfirmed", "login"],

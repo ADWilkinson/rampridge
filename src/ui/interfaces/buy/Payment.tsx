@@ -25,6 +25,7 @@ import {
   type ChecklistItem,
 } from "./model";
 import { BuyErrorPanel, DismissOfferPrompt, FeeWaivedNote, HelpLine, LoginButton, VERIFY_ON_COMPUTER_TEXT } from "./parts";
+import { PracticeNote, usePractice } from "./practiceContext";
 
 const ORDER_STEPS = new Set(["awaitingPayment", "verifying", "selectPayment", "fulfilling", "error"]);
 
@@ -45,6 +46,7 @@ export function PaymentInterface() {
   const buy = useBuy();
   useBuyOrderEvents();
   const mobile = useIsMobile();
+  const practice = usePractice();
   const order = buy.order;
   const verifyFailed = useVerificationError(buy);
   // The steps spread the rules and the payment side by side on a wide scroll; every other state is a short note.
@@ -144,6 +146,7 @@ export function PaymentInterface() {
 
   return (
     <ParchmentScroll title="Payment" onClose={game.close} width={mobile ? 380 : wide ? 760 : 480} className={cx("rb-pay", mobile && "rb-pay--mobile")} ariaLabel="Payment">
+      {practice && <PracticeNote tone="parchment" className="rb-pay__practice" />}
       {body}
     </ParchmentScroll>
   );
@@ -342,6 +345,7 @@ function Instructions({ buy, order, mobile, onCompact }: { buy: BuyFlowStore; or
   const now = useNow(deps.now, 1000);
   const expired = now >= order.expiresAt;
   const needsComputer = useNeedsComputer();
+  const practice = usePractice();
   const [confirmCancel, setConfirmCancel] = useState(false);
   const [confirmDismiss, setConfirmDismiss] = useState(false);
   // A player who said they paid (persisted on the order, so it survives a reload) sees Verify first;
@@ -359,8 +363,9 @@ function Instructions({ buy, order, mobile, onCompact }: { buy: BuyFlowStore; or
   // gets the QR only, as on Peer's web app (supportsSendingPaymentOnWeb: false).
   const qrOnly = platform.payOnWeb === false && !phone;
   // Phones open the app; computers open the web page. An app-only link gets a browser fallback beside it.
-  const link = qrOnly ? null : mobile ? (info.deepLink ?? info.webLink) : (info.webLink ?? info.deepLink);
-  const browserLink = mobile && info.webLink && info.webLink !== link ? info.webLink : null;
+  // A practice order has no seller to pay, so it never gets a link.
+  const link = qrOnly || practice ? null : mobile ? (info.deepLink ?? info.webLink) : (info.webLink ?? info.deepLink);
+  const browserLink = mobile && !practice && info.webLink && info.webLink !== link ? info.webLink : null;
   // Alipay pays by the seller's account code from Curator; without it there is nothing to pay with.
   const unpayable = missingPayLink(platform, info);
   const versionText = peerAuthVersionText(platform);
@@ -431,7 +436,7 @@ function Instructions({ buy, order, mobile, onCompact }: { buy: BuyFlowStore; or
   const payable = !info.needsMethodChoice && !expired && !unpayable;
   const revealed = payable && Boolean(info.payee) && acknowledged;
   const checklist = paymentChecklist(info);
-  const showQr = Boolean(info.qrValue) && !mobile;
+  const showQr = Boolean(info.qrValue) && !mobile && !practice;
 
   const recovering = buy.recovering && (
     <p className="rs-p11 rb-ink-muted rb-pay__checking">
@@ -605,7 +610,9 @@ function Instructions({ buy, order, mobile, onCompact }: { buy: BuyFlowStore; or
                 )}
               </div>
               <p className="rb-pay__callout rb-pay__safety rs-b12" role="note">
-                Pay exactly this amount, to this handle, from your own account.
+                {practice
+                  ? `In a real trade, you send exactly this amount to the seller's handle with ${info.platformName}. Here there is no seller: don't send money.`
+                  : "Pay exactly this amount, to this handle, from your own account."}
               </p>
             </>
           )}
@@ -614,9 +621,17 @@ function Instructions({ buy, order, mobile, onCompact }: { buy: BuyFlowStore; or
 
       {buy.step !== "error" && payable && (
         <Step n={3} title="Prove your payment">
-          <VerifyOnComputer />
-          <ExtensionHeadsUp buy={buy} order={order} quiet={!needsComputer} />
-          {versionText && buy.extension !== "needs_update" && <p className="rs-p11 rb-ink-muted">{versionText}</p>}
+          {practice ? (
+            <p className="rs-p12 rb-ink">
+              In a real trade, PeerAuth, the Peer extension, proves your payment privately from Chrome or Brave on a computer. Here it is simulated: press I have paid.
+            </p>
+          ) : (
+            <>
+              <VerifyOnComputer />
+              <ExtensionHeadsUp buy={buy} order={order} quiet={!needsComputer} />
+              {versionText && buy.extension !== "needs_update" && <p className="rs-p11 rb-ink-muted">{versionText}</p>}
+            </>
+          )}
         </Step>
       )}
 

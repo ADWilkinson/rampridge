@@ -183,6 +183,13 @@ docs/         design.md (product spec), runbook.md (operations)
   signs a second leg to the same wallet and the app waives its own fee
   (`duplicatesReferrerLeg` in `src/peer/buy/chain.ts`). All transactions carry
   ERC-8021 codes `rampridge` + `peer-ref-TOFIAT`.
+- Practice trade (`{ id: "practice" }`, `src/ui/interfaces/buy/Practice.tsx`):
+  the real buy store and interfaces on the simulated client, wallet and
+  extension in `src/ui/interfaces/buy/simulated.ts`, so nothing reaches Peer,
+  the chain, Privy or the world. Payment and Verify opened from it carry
+  `practice: true`; `usePractice()` hides what only a real order has (pay
+  link, QR, help, Share, announcement). The store's telemetry is injected, so
+  practice never counts as a quote or fulfilment.
 - Wallets: Privy. The production client's allowed origins include
   https://www.rampridge.xyz and http://localhost:5173, so login works on the
   dev server. Embedded users get a sponsored Coinbase Smart Wallet on Base

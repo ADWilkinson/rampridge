@@ -96,6 +96,10 @@ describe("banker dialogue", () => {
     expect(explanation).toMatch(/Sellers lock USDC/);
   });
 
+  it("offers a practice trade after the explanation", () => {
+    expect(opened(follow(script, "What is this place?", "I'd like to try a practice trade.").action)).toEqual({ id: "practice" });
+  });
+
   it("can return to the main options after the explanation", () => {
     expect(follow(script, "What is this place?", "I'd like to ask something else.", "Nothing, thanks.").action).toEqual({ type: "close" });
   });
@@ -127,7 +131,7 @@ describe("merchant dialogue", () => {
 });
 
 describe("intro dialogue", () => {
-  it("covers the welcome, where to trade, the safety rule and logging in in two pages, then ends with two options", () => {
+  it("covers the welcome, where to trade, the safety rule and logging in in two pages, then ends with three options", () => {
     const script = introScript({ loggedIn: false });
     const { seen } = follow(script, "Got it");
     const text = seen
@@ -141,7 +145,7 @@ describe("intro dialogue", () => {
     expect(text).toMatch(/Never send money to anyone outside the bank interfaces/);
     expect(text).toMatch(/Log in with your email or wallet/);
     const last = script.nodes[seen[seen.length - 1]!];
-    expect(last?.kind === "options" && last.options.map((o) => o.label)).toEqual(["Show me how it works", "Got it"]);
+    expect(last?.kind === "options" && last.options.map((o) => o.label)).toEqual(["Show me how it works", "Try a practice trade", "Got it"]);
     expect(seen.filter((id) => script.nodes[id]?.kind === "npc")).toHaveLength(2);
   });
 
@@ -156,9 +160,10 @@ describe("intro dialogue", () => {
     expect(after).toMatch(/Log in/);
   });
 
-  it("opens How it works or closes", () => {
+  it("opens How it works or a practice trade, or closes", () => {
     const script = introScript({ loggedIn: true });
     expect(opened(follow(script, "Show me how it works").action)).toEqual({ id: "how-it-works" });
+    expect(opened(follow(script, "Try a practice trade").action)).toEqual({ id: "practice" });
     expect(follow(script, "Got it").action).toEqual({ type: "close" });
   });
 

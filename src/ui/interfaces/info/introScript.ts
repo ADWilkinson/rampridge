@@ -45,6 +45,7 @@ export function introScript({ loggedIn }: { loggedIn: boolean }): DialogueScript
         kind: "options",
         options: [
           { label: "Show me how it works", action: { type: "open", target: { id: "how-it-works" } } },
+          { label: "Try a practice trade", action: { type: "open", target: { id: "practice" } } },
           { label: "Got it", action: { type: "close" } },
         ],
       },

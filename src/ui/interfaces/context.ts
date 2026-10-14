@@ -44,10 +44,16 @@ export type OpenInterface =
   | { id: "exchange"; side?: "buy" | "sell"; platform?: string; currency?: string }
   /** Two-screen trade window against a merchant or a player's stall. */
   | { id: "trade"; target: TradeTarget }
-  /** Instructions for the active buy order. */
-  | { id: "payment" }
-  /** Peer extension verification of the active buy order. */
-  | { id: "verify" }
+  /** Instructions for the active buy order (the practice order's with `practice`). */
+  | { id: "payment"; practice?: true }
+  /** Peer extension verification of the active buy order (the practice order's with `practice`). */
+  | { id: "verify"; practice?: true }
+  /**
+   * A practice trade: the trade window, Payment scroll and Verify on a
+   * simulated seller, wallet and extension. No money moves, nothing reaches
+   * the chain and nothing is written to the world.
+   */
+  | { id: "practice" }
   /** Create a sell order (deposit). */
   | { id: "sell"; platform?: string; currency?: string }
   /** Completed and cancelled orders. */

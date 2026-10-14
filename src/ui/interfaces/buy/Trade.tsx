@@ -28,6 +28,7 @@ import {
   txInFlight,
 } from "./model";
 import { BuyErrorPanel, BuyNotice, ComputerAck, ComputerNotice, CurrencyIcon, DismissOfferPrompt, GasNote, LoginButton, Waiting, usdcItem } from "./parts";
+import { PracticeNote, usePractice } from "./practiceContext";
 
 interface Market {
   platform: BuyPlatformId;
@@ -64,6 +65,7 @@ export function TradeInterface({ open }: InterfaceProps<"trade">) {
   useBuyOrderEvents();
   const mobile = useIsMobile();
   const needsComputer = useNeedsComputer();
+  const practice = usePractice();
   const market = resolveMarket(target);
 
   const opened = useRef(false);
@@ -86,9 +88,10 @@ export function TradeInterface({ open }: InterfaceProps<"trade">) {
   // A browser that can't prove payments gets the "verify on a computer" notice (and, on the second screen, its tick);
   // a platform with a notice before ordering (UPI, Alipay) gets room for it on the second screen.
   const notice = market && BUY_PLATFORMS[market.platform].buyNotice ? 48 : 0;
-  const height = mobile ? 560 : (needsComputer ? 408 : 348) + notice;
+  const height = mobile ? 560 : (needsComputer ? 408 : practice ? 372 : 348) + notice;
   return (
     <Window title={`Trading with: ${target.name}`} width={width} height={height} variant="steel" onClose={decline} className={cx("rb-trade", mobile && "rb-trade--mobile")} closeLabel="Decline trade">
+      {practice && <PracticeNote className="rb-trade__practice" />}
       {market ? (
         <TradeBody target={target} market={market} buy={buy} onDecline={decline} />
       ) : (
@@ -443,6 +446,7 @@ function ConfirmScreen({
   onAccept: () => void;
 }) {
   const game = useGame();
+  const practice = usePractice();
   const quote = buy.selectedQuote;
   const signalling = buy.step === "signaling" || buy.pending === "signal";
   const ackMissing = needsComputer && !computerAck;
@@ -459,7 +463,7 @@ function ConfirmScreen({
       <div className="rb-trade__center">
         <Waiting
           text="Placing your offer"
-          detail={buy.notice ?? (game.sender?.sponsored ? "Approve it if your wallet asks." : "Confirm the transaction in your wallet.")}
+          detail={practice ? undefined : (buy.notice ?? (game.sender?.sponsored ? "Approve it if your wallet asks." : "Confirm the transaction in your wallet."))}
         />
       </div>
     );

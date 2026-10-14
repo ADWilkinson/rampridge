@@ -50,6 +50,9 @@ original interfaces rebuilt in React.
   real offer. Pay the seller directly, prove the payment with PeerAuth in
   Chrome or Brave on a computer, and the contract releases the USDC to your
   wallet.
+- **Practise first.** A practice trade walks the trade window, the payment
+  scroll, the proof and the Congratulations screen on a simulated seller,
+  wallet and extension, with no login and no money. Every window says so.
 - **Sell USDC for fiat.** Deposit USDC at the bank with your payout handle.
   Orders are priced at the live oracle rate, with an optional spread of -5% to
   +5%, and appear in the bank as items with their fills. Advertise one as a

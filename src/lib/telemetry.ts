@@ -42,6 +42,8 @@ export const FUNNEL_EVENTS = [
   "send_ok",
   "send_fail",
   "send_unconfirmed",
+  "practice_start",
+  "practice_done",
 ] as const;
 export type FunnelEvent = (typeof FUNNEL_EVENTS)[number];
 

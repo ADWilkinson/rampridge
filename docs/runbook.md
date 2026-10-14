@@ -199,6 +199,7 @@ the default branch filter (main) hides every log line.
 | `deposit_ok / sell_start` | sell orders listed | `deposit_fail` > 0: read the `deposit` errors |
 | `send_ok` | USDC sent off the platform from Send | `send_unconfirmed` > 0: a send whose outcome was lost; the window settles it from the chain, read the `send` errors if it persists |
 | `gas_fail` | smart-wallet sends the paymaster refused | any: see Gas sponsorship |
+| `practice_start`, `practice_done / practice_start` | practice trades opened and finished (simulated: no wallet, chain or money, and never counted as a quote, signal or fulfilment) | `practice_done` far below `practice_start`: a step of the practice confuses people |
 | `client_error` | distinct browser errors per page | a jump after a deploy: roll back |
 
 `Browsers` and `Sources` split today's page views by browser family and by

@@ -5,6 +5,7 @@ import { formatUsdc } from "@/peer/format";
 import { useGame, type GameContextValue } from "../context";
 import { useBuyDeps } from "./deps";
 import { watchErrorOrigin } from "./origin";
+import { usePractice } from "./practiceContext";
 
 /**
  * Game-world side effects of the buy flow, fired once per order however many
@@ -15,11 +16,14 @@ import { watchErrorOrigin } from "./origin";
  * - an older order that blocked a new one (one this app can't show) is
  *   cancelled: "Your older order has been cancelled."
  * Completions are remembered in localStorage so a refresh never repeats them.
+ * A practice trade celebrates in the player's own view only: no
+ * announcement, nothing remembered.
  */
 export function useBuyOrderEvents(store?: StoreApi<BuyFlowStore>): void {
   const deps = useBuyDeps();
   const api = store ?? deps.store;
   const game = useGame();
+  const practice = usePractice();
   const gameRef = useRef(game);
   gameRef.current = game;
 
@@ -27,7 +31,7 @@ export function useBuyOrderEvents(store?: StoreApi<BuyFlowStore>): void {
     // Mounted by the shell for the whole session, so every error's origin is seen (origin.ts).
     watchErrorOrigin(api);
     const onCompleted = (state: BuyFlowState) => {
-      if (state.step === "completed" && state.completion) celebrateOnce(state.completion, gameRef.current);
+      if (state.step === "completed" && state.completion) celebrateOnce(state.completion, gameRef.current, practice);
     };
     onCompleted(api.getState());
     return api.subscribe((state, prev) => {
@@ -42,7 +46,7 @@ export function useBuyOrderEvents(store?: StoreApi<BuyFlowStore>): void {
       if (olderCancelledNow(state, prev)) gameRef.current.message("Your older order has been cancelled.");
       if (prev.step !== "completed") onCompleted(state);
     });
-  }, [api]);
+  }, [api, practice]);
 }
 
 /** A signal this session sent just landed (not an adopted or resumed order, which carry a notice). */
@@ -78,13 +82,17 @@ function remember(key: string): void {
   }
 }
 
-function celebrateOnce(completion: BuyCompletion, game: GameContextValue): void {
+function celebrateOnce(completion: BuyCompletion, game: GameContextValue, practice: boolean): void {
   const key = completion.intentHash.toLowerCase();
   if (celebrated.has(key) || readCelebrated().includes(key)) return;
   celebrated.add(key);
-  remember(key);
+  if (!practice) remember(key);
   game.celebrate();
   game.playSound("coins");
+  if (practice) {
+    game.message("Trade complete. No money moved.");
+    return;
+  }
   game.message(`You bought ${formatUsdc(completion.usdcReceived)} USDC.`);
   // Without the release transaction (only the intent hash was recoverable) there is nothing to verify.
   if (completion.fulfillTxHash.toLowerCase() === key) return;

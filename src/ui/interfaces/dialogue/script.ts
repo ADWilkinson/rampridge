@@ -68,6 +68,7 @@ const INTERFACE_IDS: Record<InterfaceId, true> = {
   trade: true,
   payment: true,
   verify: true,
+  practice: true,
   sell: true,
   collection: true,
   send: true,

@@ -751,6 +751,9 @@ button.rb-slot:hover {
 .rb-trade__computer {
   padding: 0 8px;
 }
+.rb-trade__practice {
+  margin: 2px 0 -2px;
+}
 p.rb-trade__computer {
   margin-bottom: 4px;
 }
@@ -810,6 +813,10 @@ p.rb-trade__computer {
   flex-direction: column;
   gap: 12px;
   line-height: 16px;
+}
+/* Above the hero's "Send", which sits close under the scroll's title. */
+.rb-pay__practice {
+  margin: -6px 0 6px;
 }
 .rb-pay__notice,
 .rb-pay__checking {
@@ -1225,6 +1232,9 @@ p.rb-trade__computer {
   display: flex;
   flex-direction: column;
 }
+.rb-verify__practice {
+  margin: 4px 0 0;
+}
 .rb-verify__panel {
   flex: 1;
   display: flex;
@@ -1328,6 +1338,11 @@ p.rb-trade__computer {
 .rb-payrow__match {
   grid-area: match;
 }
+/* "Practice trade: no money moves." on every practice window. */
+.rb-practice {
+  text-align: center;
+}
+
 .rb-done {
   display: flex;
   flex-direction: column;

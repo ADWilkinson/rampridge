@@ -9,6 +9,7 @@ import { PlatformIcon } from "../shared/PlatformIcon";
 import { useGame } from "../context";
 import { useBuyDeps } from "./deps";
 import { errorActions, errorText, feeWaived, usdcStack } from "./model";
+import { usePractice } from "./practiceContext";
 
 /** USDC drawn as the coins item: whole dollars as the stack, exact cents on examine. */
 export function usdcItem(usdc: bigint, name = "USDC"): ItemData {
@@ -140,9 +141,12 @@ export function HelpLine({
   safety?: boolean;
   className?: string;
 }) {
+  const practice = usePractice();
   const parchment = tone === "parchment";
   const linkClass = parchment ? "rb-help__ink" : undefined;
   const linkTone = parchment ? "black" : "yellow";
+  // A practice order has nobody to ask about it.
+  if (practice) return null;
   const copy = order ? <CopyOrderDetails order={order} platformName={BUY_PLATFORMS[order.platform]?.name} tone={linkTone} className={linkClass} /> : null;
   return (
     <div className={cx("rb-help", parchment && "rb-help--parchment", className)}>

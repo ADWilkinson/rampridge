@@ -253,6 +253,32 @@ red "prove this payment ... on a computer, within 6 hours" notice as the
 Exchange, and the second screen's Accept waits for "I will verify on a
 computer".
 
+### Practice trade (no login, no money)
+
+A curious visitor can walk the whole buy without a wallet: the first-visit
+welcome offers "Try a practice trade", and the banker offers "I'd like to try
+a practice trade." after "What is this place?". It opens the real trade
+window against "Practice seller", then the real Payment scroll and Verify,
+through to Congratulations and the fireworks.
+
+- Every practice window says "Practice trade: no money moves." Chat lines it
+  posts start "Practice:".
+- It runs the real buy store on the simulated Peer client, wallet and
+  extension in `src/ui/interfaces/buy/simulated.ts` (`practiceRuntime.ts`):
+  no Peer API, chain, Privy, paymaster or world writes, no stored order.
+- It trades Revolut in the visitor's currency when Revolut sells it (else
+  USD), at the live best Revolut rate from the merchants' book
+  (`GET /api/market`), with Peer's 0.95% and RampRidge's 0.5% fees, the same
+  structure live quotes carry.
+- The payee is `@practice-seller`. The scroll shows no QR code or pay link and
+  says there is no seller to pay; the extension step is described, not run,
+  and the "payments" it lists are made up. No help line, no Share, no world
+  announcement, and the completion says "A real trade would bring you ...
+  USDC. Nothing was paid and no USDC moved."
+- Telemetry counts `practice_start` and `practice_done` only, never a quote,
+  signal or fulfilment. Closing the window, or opening any other interface,
+  ends the practice.
+
 ### Send and Receive (USDC on and off the platform)
 
 RampRidge is only peer-to-peer: USDC a player buys lands in their own wallet,
@@ -323,7 +349,7 @@ Banker "Talk-to" uses the original chat-head dialogue box: "Good day, how
 may I help you?" with options "I'd like to access my bank account, please."
 (Bank), "I'd like to buy some coins." (Exchange buy), "I'd like to sell my
 coins." (Sell), "What is this place?" (explains Peer in two short lines,
-links "How it works").
+links "How it works" and the practice trade).
 
 Every dialogue line shows the speaker's **chathead**, drawn from the real
 character model: head and shoulders, facing front, held still. NPC lines

@@ -1,20 +1,23 @@
 /**
  * Buying USDC: the Grand Exchange, the trade window (merchants and player
- * stalls), the Payment scroll and Peer verification. The shell renders the
- * component registered for the open interface id.
+ * stalls), the Payment scroll and Peer verification, plus the practice trade
+ * that walks the same windows with no money. The shell renders the component
+ * registered for the open interface id.
  */
 import "./buy.css";
 import type { InterfaceModule } from "../context";
 import { ExchangeInterface } from "./Exchange";
 import { PaymentInterface } from "./Payment";
+import { PracticeInterface, practiceAware } from "./Practice";
 import { TradeInterface } from "./Trade";
 import { VerifyInterface } from "./Verify";
 
 export const interfaces: InterfaceModule["interfaces"] = {
   exchange: ExchangeInterface,
   trade: TradeInterface,
-  payment: PaymentInterface,
-  verify: VerifyInterface,
+  payment: practiceAware(PaymentInterface),
+  verify: practiceAware(VerifyInterface),
+  practice: PracticeInterface,
 };
 
 /**
