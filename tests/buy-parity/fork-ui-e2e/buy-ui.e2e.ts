@@ -211,6 +211,8 @@ async function assertReleased(
   };
 }
 
+type ChainBefore = Awaited<ReturnType<typeof chainBefore>>;
+
 async function chainBefore(ctx: Ctx, depositId: string) {
   const d = await fork.deposit(BigInt(depositId));
   return {
@@ -221,15 +223,28 @@ async function chainBefore(ctx: Ctx, depositId: string) {
   };
 }
 
+/**
+ * The deposit read before signalling, net of any expired intents the signal pruned to make
+ * room: their USDC went back to remainingDeposits and out of outstandingIntentAmount in the
+ * same transaction, so from here on the deposit moves by exactly this order.
+ */
+async function prunedBySignal(ctx: Ctx, before: ChainBefore, order: NonNullable<StoreSnapshot["order"]>): Promise<ChainBefore> {
+  expect(order.signalTxHash, "signal transaction recorded").toBeTruthy();
+  const pruned = await fork.prunedAtSignal(order.signalTxHash!, BigInt(order.depositId), order.intentHash);
+  if (pruned > 0n) ctx.rec.note(`signal pruned ${pruned} of expired intents from deposit ${order.depositId}`);
+  return { ...before, remaining: before.remaining + pruned, outstanding: before.outstanding - pruned };
+}
+
 /** Signal through the UI, with the deposit read right before. */
 async function placeOrder(ctx: Ctx) {
   const quoted = await requestQuote(ctx.page, ctx.rec, { decreaseBy10: 8 });
   const quote = quoted.quotes[0]!;
   expect(quote.platform).toBe("revolut");
   expect(getAddress(quote.escrow)).toBe(getAddress(ESCROW));
-  const before = await chainBefore(ctx, quote.depositId);
+  const read = await chainBefore(ctx, quote.depositId);
   const placed = await confirmOffer(ctx.page, ctx.rec);
   const order = placed.order!;
+  const before = await prunedBySignal(ctx, read, order);
   // The intent on chain is the one the scroll describes.
   const onchain = await fork.intent(order.intentHash);
   expect(getAddress(onchain.owner)).toBe(getAddress(ctx.buyer));
@@ -603,7 +618,7 @@ describe("RampRidge buy, full UI on a Base fork", () => {
       await ctx.page.click("Accept");
       await ctx.page.waitFor(`document.body.innerText.includes('Are you sure you want to make this trade?') || window.__e2e.state().step === 'error'`, 60_000, "trade confirm");
       await ctx.rec.shot(ctx.page, "trade-confirm");
-      const before2 = await chainBefore(ctx, first.order.depositId);
+      const read2 = await chainBefore(ctx, first.order.depositId);
       await ctx.page.click("Accept");
       await ctx.page.waitFor(
         `(window.__e2e.state().step === 'awaitingPayment' && document.body.innerText.includes('Before you pay')) || window.__e2e.state().step === 'error'`,
@@ -615,6 +630,7 @@ describe("RampRidge buy, full UI on a Base fork", () => {
       expect(second.depositId).toBe(first.order.depositId);
       expect(second.payeeHandle).toBe(first.scroll.payee);
       expect(second.intentHash).not.toBe(first.order.intentHash);
+      const before2 = await prunedBySignal(ctx, read2, second);
 
       // The player claims the first order's payment for this one: it is listed (right payee, right amount)...
       const list = await paidAndCapture(ctx.page, ctx.rec);

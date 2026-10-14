@@ -199,6 +199,29 @@ export class Fork {
     return this.client.getTransactionReceipt({ hash });
   }
 
+  /**
+   * USDC a signal returned to its deposit by pruning expired intents. EscrowV2.lockFunds
+   * prunes them only when the deposit's remaining liquidity is short of the new intent, in
+   * the same transaction (FundsUnlocked, plus IntentPruned from the orchestrator), and
+   * Curator quotes that liquidity. A live deposit can hold an expired intent for hours
+   * (deposit 4513 on 14 Oct 2026: 10 USDC, which broke every balance check by exactly that).
+   */
+  async prunedAtSignal(signalTx: Hash, depositId: bigint, intentHash: Hex): Promise<bigint> {
+    const ev = events((await this.receipt(signalTx)).logs);
+    const same = (h: Hex) => h.toLowerCase() === intentHash.toLowerCase();
+    if (!ev.locked.some((e) => e.args.depositId === depositId && same(e.args.intentHash))) {
+      throw new Error(`signal ${signalTx} did not lock ${intentHash} on deposit ${depositId}`);
+    }
+    const prunedHashes = new Set(ev.pruned.map((e) => e.args.intentHash.toLowerCase()));
+    let pruned = 0n;
+    for (const e of ev.released) {
+      if (e.args.depositId !== depositId || same(e.args.intentHash)) continue;
+      if (!prunedHashes.has(e.args.intentHash.toLowerCase())) throw new Error(`signal ${signalTx} unlocked ${e.args.intentHash} without pruning it`);
+      pruned += e.args.amount;
+    }
+    return pruned;
+  }
+
   async latestTimestamp(): Promise<number> {
     return Number((await this.client.getBlock({ blockTag: "latest" })).timestamp);
   }
@@ -218,6 +241,7 @@ const EVENTS = parseAbi([
   "event IntentPruned(bytes32 indexed intentHash)",
   "event FundsUnlockedAndTransferred(uint256 indexed depositId, bytes32 indexed intentHash, uint256 unlockedAmount, uint256 transferredAmount, address to)",
   "event FundsUnlocked(uint256 indexed depositId, bytes32 indexed intentHash, uint256 amount)",
+  "event FundsLocked(uint256 indexed depositId, bytes32 indexed intentHash, uint256 amount, uint256 expiryTime)",
 ]);
 
 export function events(logs: readonly Log[]) {
@@ -229,6 +253,7 @@ export function events(logs: readonly Log[]) {
     pruned: parseEventLogs({ abi: EVENTS, logs: from(ORCHESTRATOR), eventName: "IntentPruned" }),
     unlocked: parseEventLogs({ abi: EVENTS, logs: from(ESCROW), eventName: "FundsUnlockedAndTransferred" }),
     released: parseEventLogs({ abi: EVENTS, logs: from(ESCROW), eventName: "FundsUnlocked" }),
+    locked: parseEventLogs({ abi: EVENTS, logs: from(ESCROW), eventName: "FundsLocked" }),
     transfers: parseEventLogs({ abi: erc20Abi, logs: from(USDC), eventName: "Transfer" }),
   };
 }
