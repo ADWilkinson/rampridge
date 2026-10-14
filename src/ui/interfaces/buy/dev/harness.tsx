@@ -40,7 +40,7 @@ import {
   type MarketOptions,
   type SellMode,
   type Timing,
-} from "./fakes";
+} from "../simulated";
 
 void ensureSprites();
 

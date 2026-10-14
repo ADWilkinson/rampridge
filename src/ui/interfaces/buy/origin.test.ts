@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { createStore } from "zustand/vanilla";
 import { createBuyStore, memoryOrderStorage, type BuyError, type BuyFlowStore, type BuyStep } from "@/peer/buy";
 import { resolveVerifyMethod } from "@/peer/platforms";
-import { fakeChain, fakeExtension, fakeMarket, revolutRows } from "./dev/fakes";
+import { fakeChain, fakeExtension, fakeMarket, revolutRows } from "./simulated";
 import { buySlotTarget, buySlotView, isVerificationError } from "./model";
 import { errorOrigin, watchErrorOrigin } from "./origin";
 

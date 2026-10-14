@@ -39,7 +39,7 @@ import { BankDepsProvider } from "@/ui/interfaces/bank/deps";
 import { FakeWorld, USDC, createFakeCashClient, createFakePublicClient, createFakeSender } from "@/ui/interfaces/bank/dev/fakes";
 import { interfaces as buyInterfaces } from "@/ui/interfaces/buy";
 import { BuyUiDepsProvider, type BuyUiDeps } from "@/ui/interfaces/buy/deps";
-import { BUYER, fakeChain, fakeCash, fakeExtension, revolutRows, type Timing } from "@/ui/interfaces/buy/dev/fakes";
+import { BUYER, fakeChain, fakeCash, fakeExtension, revolutRows, type Timing } from "@/ui/interfaces/buy/simulated";
 import { CROWD, LIQUID, LOCAL, captureMerchants } from "./fixtures";
 import { DEMO_HANDLE, captureMarket } from "./market";
 import { BEATS, type BeatId, type Director } from "./scenes";

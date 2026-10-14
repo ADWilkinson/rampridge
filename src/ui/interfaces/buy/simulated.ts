@@ -1,8 +1,10 @@
 /**
- * Dev-harness fakes for the buy interfaces: a Peer SDK client, wallet sender,
- * Peer extension, Curator market and Peer Cash client that answer like the
- * real ones (receipts carry real OrchestratorV3 / EscrowV2 events), so the
- * real buy store runs every step. Dev only; nothing in the app imports this.
+ * Simulated stand-ins for the buy interfaces: a Peer SDK client, wallet
+ * sender, Peer extension, Curator market and Peer Cash client that answer
+ * like the real ones (receipts carry real OrchestratorV3 / EscrowV2 events),
+ * so the real buy store runs every step without a network, a wallet or the
+ * chain. The dev harness and the capture harness drive them through every
+ * scenario; in the app, only the practice trade (practiceRuntime.ts) uses them.
  */
 
 import type { CashClient, CashOrder } from "@zkp2p/cash";
@@ -369,7 +371,15 @@ function isSignalCall(data: Hex | undefined): boolean {
   }
 }
 
-export function fakeChain(options: ChainOptions, timing: Timing, now: () => number) {
+/** Who the simulated chain signals for: defaults to the harness buyer and intent. */
+export interface ChainIds {
+  buyer?: Address;
+  intentHash?: Hex;
+}
+
+export function fakeChain(options: ChainOptions, timing: Timing, now: () => number, ids: ChainIds = {}) {
+  const buyer = ids.buyer ?? BUYER;
+  const intentHash = ids.intentHash ?? INTENT_HASH;
   let lastSignal: PreparedSignal | null = null;
   let lockExpiry = 0n;
   let fulfilled = false;
@@ -380,7 +390,7 @@ export function fakeChain(options: ChainOptions, timing: Timing, now: () => numb
     signalIntent: {
       prepare: async (params: SignalPrepareParams) => {
         if (options.signal === "blocked") {
-          const data = encodeErrorResult({ abi: PEER_ABIS.orchestrator, errorName: "AccountHasActiveIntent", args: [BUYER, OLDER_INTENT] } as never);
+          const data = encodeErrorResult({ abi: PEER_ABIS.orchestrator, errorName: "AccountHasActiveIntent", args: [buyer, OLDER_INTENT] } as never);
           throw Object.assign(new Error("execution reverted"), { data });
         }
         lastSignal = { depositId: params.depositId, amount: params.amount, conversionRate: params.conversionRate };
@@ -441,18 +451,18 @@ export function fakeChain(options: ChainOptions, timing: Timing, now: () => numb
       return receipt(
         [
           log(ORCHESTRATOR, eventAbi(PEER_ABIS.orchestrator, "IntentSignaled"), {
-            intentHash: INTENT_HASH,
+            intentHash,
             escrow: ESCROW,
             depositId: signal.depositId,
             paymentMethod: METHOD_HASH,
-            owner: BUYER,
-            to: BUYER,
+            owner: buyer,
+            to: buyer,
             amount: signal.amount,
             fiatCurrency: CURRENCY_HASH,
             conversionRate: signal.conversionRate,
             timestamp: signaledAt,
           }),
-          log(ESCROW, eventAbi(PEER_ABIS.escrow, "FundsLocked"), { depositId: signal.depositId, intentHash: INTENT_HASH, amount: signal.amount, expiryTime: lockExpiry }),
+          log(ESCROW, eventAbi(PEER_ABIS.escrow, "FundsLocked"), { depositId: signal.depositId, intentHash, amount: signal.amount, expiryTime: lockExpiry }),
         ],
         `0x${"5a".repeat(32)}`,
       );
@@ -464,7 +474,7 @@ export function fakeChain(options: ChainOptions, timing: Timing, now: () => numb
       // Peer's 0.95% and RampRidge's 0.5% (the fixtures' default fees) come off the gross.
       const net = lastSignal ? (lastSignal.amount * 9_855n) / 10_000n : 125_400_000n;
       return receipt(
-        [log(ORCHESTRATOR, eventAbi(PEER_ABIS.orchestrator, "IntentFulfilled"), { intentHash: INTENT_HASH, fundsTransferredTo: BUYER, amount: net, isManualRelease: false })],
+        [log(ORCHESTRATOR, eventAbi(PEER_ABIS.orchestrator, "IntentFulfilled"), { intentHash, fundsTransferredTo: buyer, amount: net, isManualRelease: false })],
         FULFIL_TX,
       );
     }
@@ -477,12 +487,12 @@ export function fakeChain(options: ChainOptions, timing: Timing, now: () => numb
   };
 
   const sender: TxSender = {
-    address: BUYER,
+    address: buyer,
     kind: "smart",
     sponsored: true,
     sendCalls,
     signMessage: async () => "0x",
-    walletClient: { account: { address: BUYER } } as unknown as WalletClient,
+    walletClient: { account: { address: buyer } } as unknown as WalletClient,
   };
 
   return { client, sender, zero: zeroAddress };

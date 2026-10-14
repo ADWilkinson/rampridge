@@ -7,7 +7,7 @@ import type { Address } from "viem";
 import { RATE_ONE, tryParseAmount } from "@/peer/format";
 import type { BuyQuote, BuyQuoteResult, GetBuyQuotesParams, PlatformPrice } from "@/peer/market";
 import { platformsForCurrency, type BuyPlatformId, type FiatCode } from "@/peer/platforms";
-import { fixtureQuote } from "@/ui/interfaces/buy/dev/fakes";
+import { fixtureQuote } from "@/ui/interfaces/buy/simulated";
 import { BOOKS, liveRate } from "./fixtures";
 
 const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));

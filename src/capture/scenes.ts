@@ -11,7 +11,7 @@ import type { LiveMerchant } from "@/app/merchants";
 import type { createBuyStore } from "@/peer/buy";
 import type { SideTabId } from "@/ui/frame";
 import type { OpenInterface } from "@/ui/interfaces/context";
-import type { Timing } from "@/ui/interfaces/buy/dev/fakes";
+import type { Timing } from "@/ui/interfaces/buy/simulated";
 import type { TxSender } from "@/wallet/types";
 import { CHAT, CROWD } from "./fixtures";
 
