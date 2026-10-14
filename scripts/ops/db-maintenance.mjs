@@ -114,6 +114,7 @@ try {
     const paths = [
       ...Object.keys(ops.metrics ?? {}).filter(old).map((d) => `ops/metrics/${d}`),
       ...Object.keys(ops.agents ?? {}).filter(old).map((d) => `ops/agents/${d}`),
+      ...Object.keys(ops.referrers ?? {}).filter(old).map((d) => `ops/referrers/${d}`),
     ];
     await removeAll(paths, "old metric day(s)");
   }

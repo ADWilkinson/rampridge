@@ -31,6 +31,7 @@ function fakeHost(overrides: Partial<TelemetryHost> = {}) {
     random: () => 0,
     build: () => "index-abc123",
     path: () => "/",
+    referrer: () => "x",
     ...overrides,
   };
   const runTimers = () => {
@@ -54,7 +55,16 @@ describe("funnel events", () => {
     expect(timers).toHaveLength(1);
     expect(timers[0]?.ms).toBe(FLUSH_DELAY_MS);
     runTimers();
-    expect(sent).toEqual([{ v: 1, b: "index-abc123", e: { page_view: 1, play: 2 } }]);
+    expect(sent).toEqual([{ v: 1, b: "index-abc123", e: { page_view: 1, play: 2 }, r: "x" }]);
+  });
+
+  it("names where the visit came from only in the batch that counts the page view", () => {
+    const { telemetry, sent } = setup();
+    telemetry.track("page_view", { once: true });
+    telemetry.flush();
+    telemetry.track("play");
+    telemetry.flush();
+    expect(sent.map((batch) => batch.r)).toEqual(["x", undefined]);
   });
 
   it("counts a once event a single time per page", () => {
@@ -64,7 +74,7 @@ describe("funnel events", () => {
     telemetry.flush();
     telemetry.track("page_view", { once: true });
     telemetry.flush();
-    expect(sent).toEqual([{ v: 1, b: "index-abc123", e: { page_view: 1 } }]);
+    expect(sent).toEqual([{ v: 1, b: "index-abc123", e: { page_view: 1 }, r: "x" }]);
   });
 
   it("sends nothing when disabled or empty", () => {
@@ -183,12 +193,12 @@ describe("installTelemetry", () => {
 
   type Listener = (event: unknown) => void;
 
-  async function boot(env: { prod: boolean; host: string; webdriver?: boolean; flag?: string }) {
+  async function boot(env: { prod: boolean; host: string; webdriver?: boolean; flag?: string; referrer?: string; search?: string }) {
     const listeners: Record<string, Listener> = {};
     const beacons: Array<{ url: string; body: LogBatch }> = [];
     vi.stubGlobal("window", {
       addEventListener: (type: string, fn: Listener) => (listeners[type] = fn),
-      location: { hostname: env.host, pathname: "/" },
+      location: { hostname: env.host, pathname: "/", search: env.search ?? "" },
       setTimeout: () => 0,
       clearTimeout: () => undefined,
     });
@@ -196,6 +206,7 @@ describe("installTelemetry", () => {
       querySelectorAll: () => [{ getAttribute: () => "/assets/index-B3x9aQ1z.js" }],
       addEventListener: (type: string, fn: Listener) => (listeners[`document:${type}`] = fn),
       visibilityState: "hidden",
+      referrer: env.referrer ?? "",
     });
     vi.stubGlobal("navigator", {
       webdriver: env.webdriver ?? false,
@@ -208,11 +219,17 @@ describe("installTelemetry", () => {
     return { mod, listeners, beacons };
   }
 
-  it("is on for the production build on www.rampridge.xyz and counts the page view", async () => {
-    const { listeners, beacons, mod } = await boot({ prod: true, host: "www.rampridge.xyz" });
+  it("is on for the production build on www.rampridge.xyz and counts the page view with its source", async () => {
+    const { listeners, beacons, mod } = await boot({ prod: true, host: "www.rampridge.xyz", referrer: "https://t.co/" });
     mod.installTelemetry();
     listeners.pagehide?.({});
-    expect(beacons).toEqual([{ url: "/api/log", body: { v: 1, b: "index-B3x9aQ1z", e: { page_view: 1 } } }]);
+    expect(beacons).toEqual([{ url: "/api/log", body: { v: 1, b: "index-B3x9aQ1z", e: { page_view: 1 }, r: "x" } }]);
+  });
+
+  it("counts a visit through a shared trade link as share", async () => {
+    const { listeners, beacons } = await boot({ prod: true, host: "www.rampridge.xyz", referrer: "https://t.co/", search: "?from=share&world=302" });
+    listeners.pagehide?.({});
+    expect(beacons[0]?.body.r).toBe("share");
   });
 
   it("reports uncaught errors and rejections, skipping resource load failures", async () => {

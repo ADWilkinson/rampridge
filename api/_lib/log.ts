@@ -5,7 +5,9 @@
  * - Funnel counters: `ops/metrics/{yyyy-mm-dd}/{event}` += n, atomically with
  *   ServerValue.increment, plus `client_error` for every error received.
  *   Page views also count the coarse browser family under
- *   `ops/agents/{yyyy-mm-dd}/{uaClass}`. No per-player data is kept.
+ *   `ops/agents/{yyyy-mm-dd}/{uaClass}` and where the visit came from under
+ *   `ops/referrers/{yyyy-mm-dd}/{class}` (shared/referrer.ts). No per-player
+ *   data is kept.
  * - Client errors: scrubbed (logScrub.ts), printed with console.error so they
  *   show in Vercel logs (`[client-error]`), and stored under
  *   `ops/errors/{yyyy-mm-dd}/{key}` up to ERRORS_PER_DAY a day.
@@ -18,6 +20,7 @@
 
 import { createHash } from "node:crypto";
 import { ServerValue } from "firebase-admin/database";
+import { isReferrerClass, type ReferrerClass } from "../../shared/referrer.js";
 import type { Db } from "./db.js";
 import type { ApiDeps } from "./deps.js";
 import { assertSameSite, badRequest, clientIp, rateLimited, readJson, withErrors } from "./http.js";
@@ -62,6 +65,8 @@ export interface LogBatch {
   b?: string;
   /** Funnel counts since the last batch. */
   e?: Partial<Record<FunnelEvent, number>>;
+  /** Where the visit came from, with the page view. */
+  r?: ReferrerClass;
   /** Client errors since the last batch. */
   x?: ClientErrorReport[];
 }
@@ -111,6 +116,7 @@ const PATH_MAX = 120;
 export const logBucketPath = (ipHash: string) => `ratelimits/ip/log-${ipHash}`;
 export const metricsPath = (day: string) => `ops/metrics/${day}`;
 export const agentsPath = (day: string) => `ops/agents/${day}`;
+export const referrersPath = (day: string) => `ops/referrers/${day}`;
 export const errorsPath = (day: string) => `ops/errors/${day}`;
 export const errorCountPath = (day: string) => `ops/errorCount/${day}`;
 
@@ -125,6 +131,8 @@ export function isTelemetryOff(env: Readonly<Record<string, string | undefined>>
 
 export interface ParsedBatch {
   build: string;
+  /** Null when the batch names none or an unknown class. */
+  referrer: ReferrerClass | null;
   events: Array<[FunnelEvent, number]>;
   errors: ClientErrorReport[];
 }
@@ -141,6 +149,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 export function parseLogBatch(value: unknown): ParsedBatch {
   if (!isRecord(value) || value.v !== 1) throw badRequest("Unsupported telemetry batch.");
   const build = typeof value.b === "string" && /^[\w.-]{1,64}$/.test(value.b) ? value.b : "unknown";
+  const referrer = isReferrerClass(value.r) ? value.r : null;
 
   const events: Array<[FunnelEvent, number]> = [];
   if (value.e !== undefined) {
@@ -167,7 +176,7 @@ export function parseLogBatch(value: unknown): ParsedBatch {
       errors.push(report);
     }
   }
-  return { build, events, errors };
+  return { build, referrer, events, errors };
 }
 
 /** Only the pathname, length-capped; anything that is not a plain path becomes "/". */
@@ -264,7 +273,10 @@ export function createLogHandler(deps: ApiDeps, options: LogHandlerOptions = {})
 
     for (const [event, count] of batch.events) {
       updates[`${metricsPath(day)}/${event}`] = increment(count);
-      if (event === "page_view") updates[`${agentsPath(day)}/${ua}`] = increment(count);
+      if (event === "page_view") {
+        updates[`${agentsPath(day)}/${ua}`] = increment(count);
+        if (batch.referrer) updates[`${referrersPath(day)}/${batch.referrer}`] = increment(count);
+      }
     }
 
     if (batch.errors.length > 0) {

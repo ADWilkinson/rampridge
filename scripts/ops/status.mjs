@@ -122,7 +122,7 @@ async function snapshot() {
         db.ref(`worlds/${world}/chat`).orderByChild("t").startAt(now - 10 * 60_000).get().then((s) => s.numChildren()),
         db.ref(`worlds/${world}/events`).orderByChild("t").startAt(now - 60 * 60_000).get().then((s) => Object.keys(s.val() ?? {})),
       ]);
-    const [healthResult, deployment, worldReads, stalls, metricsToday, metricsYesterday, agents, errorCount, errorsToday, errorsYesterday, moderation] =
+    const [healthResult, deployment, worldReads, stalls, metricsToday, metricsYesterday, agents, referrers, errorCount, errorsToday, errorsYesterday, moderation] =
       await Promise.all([
         health(),
         servingDeployment(),
@@ -131,6 +131,7 @@ async function snapshot() {
         safe("metrics", read(db, `ops/metrics/${today}`)),
         safe("metrics", read(db, `ops/metrics/${yesterday}`)),
         safe("agents", read(db, `ops/agents/${today}`)),
+        safe("referrers", read(db, `ops/referrers/${today}`)),
         safe("errors", read(db, `ops/errorCount/${today}`)),
         safe("errors", db.ref(`ops/errors/${today}`).orderByKey().limitToLast(errorLimit).get().then((s) => s.val())),
         safe("errors", db.ref(`ops/errors/${yesterday}`).orderByKey().limitToLast(errorLimit).get().then((s) => s.val())),
@@ -172,6 +173,7 @@ async function snapshot() {
       },
       metrics: { today: metricsToday ?? {}, yesterday: metricsYesterday ?? {} },
       agents: agents ?? {},
+      referrers: referrers ?? {},
       errorsStoredToday: errorCount ?? 0,
       errors,
       warnings,
@@ -235,6 +237,11 @@ function render(s) {
     const total = agents.reduce((sum, [, n]) => sum + (n ?? 0), 0);
     lines.push("");
     lines.push(`Browsers  ${agents.map(([k, n]) => `${k} ${fmt(n)} (${pct(n, total)})`).join(", ")}`);
+  }
+  const sources = Object.entries(s.referrers).sort((a, b) => b[1] - a[1]);
+  if (sources.length) {
+    const total = sources.reduce((sum, [, n]) => sum + (n ?? 0), 0);
+    lines.push(`Sources   ${sources.map(([k, n]) => `${k} ${fmt(n)} (${pct(n, total)})`).join(", ")}`);
   }
 
   lines.push("");

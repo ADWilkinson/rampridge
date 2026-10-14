@@ -16,6 +16,7 @@ import {
   MAX_EVENT_COUNT,
   metricsPath,
   parseLogBatch,
+  referrersPath,
 } from "./log";
 import type { StoredClientError } from "./log";
 import { MemoryDb } from "./memoryDb";
@@ -99,6 +100,23 @@ describe("funnel counters", () => {
     expect(db.read(agentsPath(today()))).toEqual({ "ios-inapp": 1, "mac-chrome": 1 });
     // Nothing keyed by IP, pid or address anywhere under ops/.
     expect(JSON.stringify(db.read("ops"))).not.toMatch(/203\.0\.113|198\.51/);
+  });
+
+  it("counts page views by where the visit came from, only with a known class", async () => {
+    await handler(beacon({ v: 1, e: { page_view: 1 }, r: "x" }));
+    await handler(beacon({ v: 1, e: { page_view: 1 }, r: "x" }, { ip: "198.51.100.2" }));
+    await handler(beacon({ v: 1, e: { page_view: 1 }, r: "github" }, { ip: "198.51.100.3" }));
+    await handler(beacon({ v: 1, e: { page_view: 1 }, r: "https://t.co/abc" }, { ip: "198.51.100.4" }));
+    await handler(beacon({ v: 1, e: { page_view: 1 } }, { ip: "198.51.100.5" }));
+    await handler(beacon({ v: 1, e: { play: 1 }, r: "x" }, { ip: "198.51.100.6" }));
+    expect(db.read(referrersPath(today()))).toEqual({ x: 2, github: 1 });
+    expect(metrics()).toEqual({ page_view: 5, play: 1 });
+  });
+
+  it("keeps automation out of the referrer counts", async () => {
+    const headless = CHROME_MAC.replace("Chrome/", "HeadlessChrome/");
+    await handler(beacon({ v: 1, e: { page_view: 1 }, r: "x" }, { ua: headless }));
+    expect(db.read(referrersPath(today()))).toBeNull();
   });
 
   it("drops unknown events and bad counts, and caps counts", async () => {

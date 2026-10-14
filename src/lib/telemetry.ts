@@ -4,7 +4,8 @@
  *
  * - `installTelemetry()` once at startup: listens for uncaught errors and
  *   unhandled rejections, flushes when the page is hidden, and counts the
- *   page view.
+ *   page view with where the visit came from (a coarse class from
+ *   shared/referrer.ts, never the referring URL).
  * - `track(event)` counts a funnel step. Counts carry no player, wallet or
  *   payment data; the server keeps one number per event per day.
  * - `report(error, context)` sends a handled error worth seeing (a failed
@@ -18,6 +19,7 @@
  * Telemetry must never break the game: every path swallows its own errors.
  */
 
+import { referrerClass, type ReferrerClass } from "@shared/referrer";
 import { runningEntry } from "@/app/update";
 
 /** Funnel steps. Mirrors FUNNEL_EVENTS in api/_lib/log.ts (a test keeps them equal). */
@@ -68,6 +70,8 @@ export interface LogBatch {
   v: 1;
   b: string;
   e?: Partial<Record<FunnelEvent, number>>;
+  /** Where the visit came from; sent with the page view only. */
+  r?: ReferrerClass;
   x?: ErrorItem[];
 }
 
@@ -87,6 +91,8 @@ export interface TelemetryHost {
   random(): number;
   build(): string;
   path(): string;
+  /** Where this page's visit came from. */
+  referrer(): ReferrerClass;
 }
 
 export interface Telemetry {
@@ -160,6 +166,7 @@ export function createTelemetry(host: TelemetryHost, options: TelemetryOptions =
     if (events.size === 0 && errors.length === 0) return;
     const batch: LogBatch = { v: 1, b: host.build() };
     if (events.size > 0) batch.e = Object.fromEntries(events);
+    if (events.has("page_view")) batch.r = host.referrer();
     if (errors.length > 0) batch.x = errors.splice(0, MAX_ERRORS_PER_BATCH);
     events.clear();
     try {
@@ -221,6 +228,8 @@ export function buildId(entry: string | null): string {
 
 function browserHost(): TelemetryHost {
   const build = buildId(runningEntry(document));
+  // Read at startup, before the shell takes ?from=share out of the address bar.
+  const source = referrerClass({ referrer: document.referrer, search: window.location.search, host: window.location.hostname });
   return {
     send(body) {
       try {
@@ -242,6 +251,7 @@ function browserHost(): TelemetryHost {
     random: Math.random,
     build: () => build,
     path: () => window.location.pathname,
+    referrer: () => source,
   };
 }
 
@@ -266,7 +276,7 @@ function current(): Telemetry {
 }
 
 function nullHost(): TelemetryHost {
-  return { send: () => false, schedule: () => null, cancel: () => undefined, random: () => 1, build: () => "dev", path: () => "/" };
+  return { send: () => false, schedule: () => null, cancel: () => undefined, random: () => 1, build: () => "dev", path: () => "/", referrer: () => "direct" };
 }
 
 /**

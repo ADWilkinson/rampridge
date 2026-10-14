@@ -201,6 +201,15 @@ the default branch filter (main) hides every log line.
 | `gas_fail` | smart-wallet sends the paymaster refused | any: see Gas sponsorship |
 | `client_error` | distinct browser errors per page | a jump after a deploy: roll back |
 
+`Browsers` and `Sources` split today's page views by browser family and by
+where the visit came from. A source is one coarse class from
+`shared/referrer.ts` (`x`, `github`, `peer`, `search`, `newsletter`, `share`
+for a trade link, `direct` when no referrer or campaign arrived, and so on),
+read from `?from=share`, then `utm_source`, then the referring host. Only the
+class is stored, under `ops/referrers/{day}`, never the URL. Messaging apps and
+many in-app browsers send no referrer, so their visits read as `direct`: tag
+links posted there with `?utm_source=telegram` (or the outlet's name).
+
 Errors are grouped by fingerprint under "Top groups". The record names the
 context (`buy.signal`, `deposit`, `sponsorship`, `boundary`), browser family,
 build and path. Messages are scrubbed of addresses, tokens and payee handles
