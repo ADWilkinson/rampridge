@@ -357,6 +357,9 @@ sponsored by Jagex. This repository does not contain the game's art, models,
 sounds or fonts: the bake decodes them on your own machine from the public
 game cache.
 
+RampRidge has no token and will not launch one. Coins using the name were
+launched by third parties and are not part of this project.
+
 Trades are between people and settle through the Peer protocol's smart
 contracts; use of the protocol is subject to [Peer's terms](https://peer.xyz/tos).
 The software is provided as is, without warranty of any kind. Nothing here is

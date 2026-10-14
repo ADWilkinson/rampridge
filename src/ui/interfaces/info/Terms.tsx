@@ -24,6 +24,10 @@ const TERMS: readonly { heading: string; body: ReactNode }[] = [
     ),
   },
   {
+    heading: "No token",
+    body: "RampRidge has no token and will not launch one. Coins using the name were launched by third parties and are not part of this project.",
+  },
+  {
     heading: "Trading with people",
     body: "Every trade is between you and another person. Pay only the exact amount, to the handle shown, from your own account. Payment apps may limit or reverse transfers they consider risky. Crypto prices and availability can change.",
   },
