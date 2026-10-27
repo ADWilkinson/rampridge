@@ -232,7 +232,7 @@ statically from a title-path module.
 | `tests/send-fork` | its own `vitest.config.ts` | The USDC send path on a fork, including lost outcomes |
 | `tests/buy-parity/signal`, `tests/buy-parity/golden` | `bun run test:parity`, `vitest.golden.config.ts` | Buy signals and fulfilments compared with the Peer web app's code and real Base transactions, through a read-only mainnet proxy |
 | `tests/buy-parity/fork-ui-e2e` | `dev/buy-e2e/vitest.e2e.config.ts` | The real interface in headless Chrome, buying on a fork with a simulated extension |
-| `scripts/load` | `node scripts/load/*.mjs` | Load and abuse against the emulator only |
+| `scripts/load` | `node scripts/load/*.mjs` | Load and abuse against the emulator only (Node: `lib.mjs` needs `node:module` `registerHooks`, which Bun lacks) |
 
 ## Configuration
 

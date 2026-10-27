@@ -24,8 +24,10 @@ bun run bake -- --no-lock            # leave assets.lock.json alone
 bun run typecheck                    # bake sources (strict)
 ```
 
-Requirements: Bun, `unzip` (to unpack the downloads), the OSRS cache under
-`.cache/osrs/caches` (`bun run setup:assets` or `bun run fetch-cache`, see
+Requirements: Bun, Node (the bake runs under `tsx` on Node, not Bun: Bun's
+`node:zlib` deflates differently, so 27 sprites come out pixel-identical but
+not byte-identical to the lock), `unzip` (to unpack the downloads), the OSRS
+cache under `.cache/osrs/caches` (`bun run setup:assets` or `bun run fetch-cache`, see
 below) and Google Chrome for the wordmark in the `ui` step (`CHROME_PATH`
 overrides the macOS default; profiles are throwaway temp dirs under
 `SHOOT_PROFILE_ROOT` or the OS temp dir). Without Chrome the step keeps the
