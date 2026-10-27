@@ -1,12 +1,12 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Reads a buy order (a Peer intent on OrchestratorV3) straight from Base, for
  * "my purchase is stuck" reports. Read-only. Uses BASE_RPC_URL from the shell
  * or .env.local.
  *
- *   node scripts/ops/intent.mjs <intent hash>         # the order itself
- *   node scripts/ops/intent.mjs <signal or fulfil tx> # the order(s) a transaction touched
- *   node scripts/ops/intent.mjs <buyer address>       # the buyer's open orders
+ *   bun scripts/ops/intent.mjs <intent hash>         # the order itself
+ *   bun scripts/ops/intent.mjs <signal or fulfil tx> # the order(s) a transaction touched
+ *   bun scripts/ops/intent.mjs <buyer address>       # the buyer's open orders
  *   options: --days 3 (how far back to search history for a closed order)
  *
  * The buyer finds their address in the Account tab; the signal transaction is

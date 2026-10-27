@@ -1,13 +1,13 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Launch-day status in one screen: which deployment is live, /api/health,
  * players online in each world against its cap, today's funnel (UTC) against
  * yesterday, browser mix, and the latest client errors. Read-only.
  *
- *   node scripts/ops/status.mjs                 # once
- *   node scripts/ops/status.mjs --watch 30      # refresh every 30 s
- *   node scripts/ops/status.mjs --errors 50 --no-vercel --site http://localhost:5173
- *   node scripts/ops/status.mjs --json          # machine-readable
+ *   bun scripts/ops/status.mjs                 # once
+ *   bun scripts/ops/status.mjs --watch 30      # refresh every 30 s
+ *   bun scripts/ops/status.mjs --errors 50 --no-vercel --site http://localhost:5173
+ *   bun scripts/ops/status.mjs --json          # machine-readable
  */
 
 import { execFile } from "node:child_process";

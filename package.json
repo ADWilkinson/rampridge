@@ -37,7 +37,7 @@
     "assets:lock": "bun scripts/assets.ts lock",
     "check": "bun run typecheck && bun run lint && bun run test && bun run build",
     "deploy:prod": "bash scripts/deploy.sh",
-    "ops:status": "node scripts/ops/status.mjs --watch 30",
+    "ops:status": "bun scripts/ops/status.mjs --watch 30",
     "ops:matrix": "bun scripts/ops/peer-matrix.ts"
   },
   "dependencies": {

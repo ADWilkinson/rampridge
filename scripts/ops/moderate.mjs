@@ -1,16 +1,16 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Chat moderation for launch day. Find an abuser, then mute, ban, kick or
  * purge their chat. Changes are dry runs unless --apply is given.
  *
- *   node scripts/ops/moderate.mjs recent [--minutes 15]          # recent chat with pids
- *   node scripts/ops/moderate.mjs who <name|pid>                 # profile, presence, recent lines
- *   node scripts/ops/moderate.mjs mute <name|pid> [--minutes 60] [--reason "..."] --apply
- *   node scripts/ops/moderate.mjs ban <name|pid> [--days 7] [--reason "..."] --apply
- *   node scripts/ops/moderate.mjs kick <name|pid> --apply        # remove from their world (they can rejoin)
- *   node scripts/ops/moderate.mjs purge <name|pid> --apply       # delete their chat lines and kick
- *   node scripts/ops/moderate.mjs unmute|unban <name|pid> --apply
- *   node scripts/ops/moderate.mjs list                           # active mutes and bans
+ *   bun scripts/ops/moderate.mjs recent [--minutes 15]          # recent chat with pids
+ *   bun scripts/ops/moderate.mjs who <name|pid>                 # profile, presence, recent lines
+ *   bun scripts/ops/moderate.mjs mute <name|pid> [--minutes 60] [--reason "..."] --apply
+ *   bun scripts/ops/moderate.mjs ban <name|pid> [--days 7] [--reason "..."] --apply
+ *   bun scripts/ops/moderate.mjs kick <name|pid> --apply        # remove from their world (they can rejoin)
+ *   bun scripts/ops/moderate.mjs purge <name|pid> --apply       # delete their chat lines and kick
+ *   bun scripts/ops/moderate.mjs unmute|unban <name|pid> --apply
+ *   bun scripts/ops/moderate.mjs list                           # active mutes and bans
  *   add --hold to mute or ban to keep re-asserting it every 30 s until it ends (Ctrl-C to stop)
  *
  * How it is enforced with today's server (no deploy needed):

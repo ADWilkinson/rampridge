@@ -13,17 +13,17 @@ CLI commands use the project in `.firebaserc`.
 
 | What | Command |
 |---|---|
-| One-screen status | `node scripts/ops/status.mjs` (add `--watch 30` to keep it open) |
+| One-screen status | `bun scripts/ops/status.mjs` (add `--watch 30` to keep it open) |
 | Health only | `curl -s https://www.rampridge.xyz/api/health \| jq` (200 ok, 503 degraded, 404 deploy predates it) |
 | Live deployment | `vercel inspect www.rampridge.xyz` |
 | Deploy | `bun run deploy:prod`, then [After a deploy](#after-a-deploy) |
 | Logs | `vercel logs --environment production --no-branch --since 30m` |
 | Worlds | Firebase console, `rampridge-world`, `meta/worlds`, `meta/worldCap`, `meta/roomCap` (see [Worlds](#worlds-and-realtime-load)) |
-| Moderation | `node scripts/ops/moderate.mjs recent` then `mute` / `ban` / `purge` |
-| Stuck buy | `node scripts/ops/intent.mjs <intent hash \| tx hash \| buyer address>` |
+| Moderation | `bun scripts/ops/moderate.mjs recent` then `mute` / `ban` / `purge` |
+| Stuck buy | `bun scripts/ops/intent.mjs <intent hash \| tx hash \| buyer address>` |
 | Buy/sell matrix | `bun run ops:matrix` (read-only, one to two minutes; see [Peer matrix](#peer-matrix-what-can-be-bought-and-sold-right-now)) |
 | Seller spreads off | `SELL_SPREAD_ENABLED = false` + deploy (see [Seller spreads](#seller-spreads)) |
-| Cleanup | `node scripts/ops/db-maintenance.mjs` (dry run) |
+| Cleanup | `bun scripts/ops/db-maintenance.mjs` (dry run) |
 
 Agents and contributors never write to the production database. Every
 database change in this runbook (world settings, moderation, cleanup with
@@ -84,7 +84,7 @@ order:
    playing." (in its chatbox, or on the title). Nothing it sends is written.
    If it later loads a code chunk the new deployment doesn't have, the
    existing "RampRidge was updated. Reload to continue." screen shows too.
-5. Remove the single room's leftovers: `node scripts/ops/db-maintenance.mjs
+5. Remove the single room's leftovers: `bun scripts/ops/db-maintenance.mjs
    --legacy` (dry run), then `--legacy --apply`. It deletes `world/`,
    `meta/room` and `meta/chatWindow`; nothing reads them now.
 
@@ -109,7 +109,7 @@ curl -sI https://www.rampridge.xyz/game/sprites/manifest.json | grep -i cache-co
 #    both: public, max-age=3600, stale-while-revalidate=86400
 
 # 3. Funnel and errors move: open the site, press Play, then
-node scripts/ops/status.mjs                       # page_view and play counted today
+bun scripts/ops/status.mjs                       # page_view and play counted today
 vercel logs --environment production --no-branch --since 15m --query client-error
 #    no new error groups since the deploy
 ```
@@ -378,7 +378,7 @@ the frequent sweeps. Before sending a crowd (a post, a stream), raise
 
 ### Watching the worlds
 
-- `node scripts/ops/status.mjs --watch 30`: the `Worlds` line shows each
+- `bun scripts/ops/status.mjs --watch 30`: the `Worlds` line shows each
   world's online players against the cap (`301 143/200   302 98/200`), the
   server's count when it differs, closed worlds, and the room cap.
 - `curl -s https://www.rampridge.xyz/api/worlds | jq`: what the World
@@ -502,12 +502,12 @@ switched). Set it back to `true` and redeploy to turn it on.
 ### Chat abuse
 
 ```bash
-node scripts/ops/moderate.mjs recent --minutes 15        # who said what (pid, name, line)
-node scripts/ops/moderate.mjs who <name>                 # profile, presence, their lines
-node scripts/ops/moderate.mjs mute <name|pid> --minutes 60 --reason "spam" --apply
-node scripts/ops/moderate.mjs ban <name|pid> --days 7 --reason "scam" --apply   # also kicks
-node scripts/ops/moderate.mjs purge <name|pid> --apply   # delete their chat lines + kick
-node scripts/ops/moderate.mjs list | unmute | unban
+bun scripts/ops/moderate.mjs recent --minutes 15        # who said what (pid, name, line)
+bun scripts/ops/moderate.mjs who <name>                 # profile, presence, their lines
+bun scripts/ops/moderate.mjs mute <name|pid> --minutes 60 --reason "spam" --apply
+bun scripts/ops/moderate.mjs ban <name|pid> --days 7 --reason "scam" --apply   # also kicks
+bun scripts/ops/moderate.mjs purge <name|pid> --apply   # delete their chat lines + kick
+bun scripts/ops/moderate.mjs list | unmute | unban
 ```
 
 These work without a deploy and across every world: `recent` lists each line
@@ -542,8 +542,8 @@ Ask the player for their wallet address (Account tab) or the order's
 transaction, then:
 
 ```bash
-node scripts/ops/intent.mjs <buyer address>      # their open orders
-node scripts/ops/intent.mjs <intent or tx hash>  # one order, open or closed
+bun scripts/ops/intent.mjs <buyer address>      # their open orders
+bun scripts/ops/intent.mjs <intent or tx hash>  # one order, open or closed
 ```
 
 | Status | Meaning | Do |
@@ -565,12 +565,12 @@ Tokens issued earlier are refused, so clients start fresh.
 ## After launch
 
 ```bash
-node scripts/ops/db-maintenance.mjs                                   # inventory + plan (dry run)
-node scripts/ops/db-maintenance.mjs --name-pattern '^(qa|test|e2e)'   # review test players
-node scripts/ops/db-maintenance.mjs --keep-errors-days 14 --stale-guests 30 --orphans --apply
+bun scripts/ops/db-maintenance.mjs                                   # inventory + plan (dry run)
+bun scripts/ops/db-maintenance.mjs --name-pattern '^(qa|test|e2e)'   # review test players
+bun scripts/ops/db-maintenance.mjs --keep-errors-days 14 --stale-guests 30 --orphans --apply
 ```
 
 It never touches `shares/` (public links to real trades). Once after the worlds
-release: `node scripts/ops/db-maintenance.mjs --legacy --apply` (see
+release: `bun scripts/ops/db-maintenance.mjs --legacy --apply` (see
 [The worlds release](#the-worlds-release-once)). Any script runs against the
 Firebase emulator instead with `FIREBASE_DATABASE_EMULATOR_HOST=127.0.0.1:9000`.

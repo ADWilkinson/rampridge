@@ -1,16 +1,16 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Database housekeeping the cron does not do: old telemetry, test players and
  * stale guest profiles. Always prints an inventory first. A dry run unless
  * --apply is given; deletes go out in batches of 500 paths.
  *
- *   node scripts/ops/db-maintenance.mjs                          # inventory + default plan
- *   node scripts/ops/db-maintenance.mjs --name-pattern '^(qa|test|e2e)'   # find test players by name
- *   node scripts/ops/db-maintenance.mjs --pid abc...,def...      # remove these players entirely
- *   node scripts/ops/db-maintenance.mjs --stale-guests 30        # Guest#### profiles idle 30+ days, no wallet
- *   node scripts/ops/db-maintenance.mjs --orphans                # names and stall entries pointing at nobody
- *   node scripts/ops/db-maintenance.mjs --legacy                 # the single room from before worlds
- *   node scripts/ops/db-maintenance.mjs --keep-errors-days 14 --keep-metrics-days 0 --apply
+ *   bun scripts/ops/db-maintenance.mjs                          # inventory + default plan
+ *   bun scripts/ops/db-maintenance.mjs --name-pattern '^(qa|test|e2e)'   # find test players by name
+ *   bun scripts/ops/db-maintenance.mjs --pid abc...,def...      # remove these players entirely
+ *   bun scripts/ops/db-maintenance.mjs --stale-guests 30        # Guest#### profiles idle 30+ days, no wallet
+ *   bun scripts/ops/db-maintenance.mjs --orphans                # names and stall entries pointing at nobody
+ *   bun scripts/ops/db-maintenance.mjs --legacy                 # the single room from before worlds
+ *   bun scripts/ops/db-maintenance.mjs --keep-errors-days 14 --keep-metrics-days 0 --apply
  *
  * Removing a player deletes profiles/{pid}, their names/{key} claim, their
  * record in every world and presence/{pid}, stall index entry, chat lines and announcements in
