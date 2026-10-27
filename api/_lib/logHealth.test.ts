@@ -57,6 +57,7 @@ describe("GET /api/health", () => {
     const body = await read(response);
     expect(body).toMatchObject({
       ok: true,
+      revision: null,
       checks: {
         rtdb: { ok: true, sweepAgeS: 12, marketAgeS: 40 },
         curator: { ok: true },
@@ -66,6 +67,23 @@ describe("GET /api/health", () => {
       telemetry: "on",
       missingConfig: [],
     });
+  });
+
+  it("reports the exact archive release stamp independently of Vercel git metadata", async () => {
+    const revision = "a".repeat(40);
+    const body = await read(await createHealthHandler(probes({ env: () => ({ ...FULL_ENV, RAMPRIDGE_RELEASE_SHA: revision, VERCEL_GIT_COMMIT_SHA: "b".repeat(40) }) }))());
+    expect(body.revision).toBe(revision);
+    expect(body.deployment.commit).toBe("b".repeat(12));
+  });
+
+  it.each(["abc123", "a".repeat(39), "g".repeat(40), "a".repeat(41)])("rejects an incomplete or invalid serving stamp %s", async revision => {
+    const body = await read(await createHealthHandler(probes({ env: () => ({ ...FULL_ENV, RAMPRIDGE_RELEASE_SHA: revision }) }))());
+    expect(body.revision).toBeNull();
+  });
+
+  it("accepts complete native Vercel provenance when no archive stamp is present", async () => {
+    const body = await read(await createHealthHandler(probes({ env: () => ({ ...FULL_ENV, VERCEL_GIT_COMMIT_SHA: "C".repeat(40) }) }))());
+    expect(body.revision).toBe("c".repeat(40));
   });
 
   it("answers 503 naming the failing dependency, never echoing upstream errors", async () => {

@@ -95,7 +95,9 @@ Run all of these after every production deploy. Each line says what a pass looks
 ```bash
 # 1. The new build is the one serving: both print the same dpl_ id, created just now.
 vercel inspect www.rampridge.xyz
-curl -s https://www.rampridge.xyz/api/health | jq '{ok, id: .deployment.id, telemetry, missingConfig}'
+curl -s https://www.rampridge.xyz/api/health | jq '{ok, revision, id: .deployment.id, telemetry, missingConfig}'
+# revision must equal the full committed deployment SHA. scripts/deploy.sh stamps
+# RAMPRIDGE_RELEASE_SHA because clean archive deployments contain no Git metadata.
 #    ok true, telemetry "on", missingConfig []. A 404 means the serving build predates /api/health.
 
 # 2. Cache headers. actors.bin is content-hashed (?v=), so it is cached for a year;

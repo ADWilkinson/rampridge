@@ -20,6 +20,7 @@ git archive HEAD | tar -x -C "$out"
 bun scripts/assets.ts copy "$out"
 mkdir -p "$out/.vercel"
 cp .vercel/project.json "$out/.vercel/project.json"
-echo "Deploying $(git rev-parse --short HEAD) to production..."
+revision=$(git rev-parse HEAD)
+echo "Deploying ${revision:0:12} to production..."
 # .vercel/project.json names the team; VERCEL_SCOPE overrides it for a CLI logged in elsewhere.
-(cd "$out" && vercel deploy --prod --yes ${VERCEL_SCOPE:+--scope "$VERCEL_SCOPE"})
+(cd "$out" && vercel deploy --prod --yes --env "RAMPRIDGE_RELEASE_SHA=$revision" ${VERCEL_SCOPE:+--scope "$VERCEL_SCOPE"})

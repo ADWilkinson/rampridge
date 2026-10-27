@@ -51,6 +51,8 @@ export interface BaseCheck extends CheckResult {
 }
 
 export interface HealthResponse {
+  /** Full serving source revision; null when the deployment has no valid stamp. */
+  revision: string | null;
   ok: boolean;
   checks: { rtdb: RtdbCheck; curator: CheckResult; base: BaseCheck };
   deployment: { id: string | null; env: string | null; region: string | null; commit: string | null };
@@ -168,7 +170,9 @@ export async function runHealthChecks(probes: HealthProbes): Promise<HealthRespo
     (name) => !env[name]?.trim() && !(name === "FIREBASE_SERVICE_ACCOUNT" && emulator),
   );
   const clean = (value: string | undefined) => (value?.trim() ? value.trim() : null);
+  const sourceRevision = clean(env.RAMPRIDGE_RELEASE_SHA) ?? clean(env.VERCEL_GIT_COMMIT_SHA);
   return {
+    revision: sourceRevision && /^[a-f0-9]{40}$/i.test(sourceRevision) ? sourceRevision.toLowerCase() : null,
     ok: rtdbCheck.ok && curatorCheck.ok && baseCheck.ok,
     checks: { rtdb: rtdbCheck, curator: curatorCheck, base: baseCheck },
     deployment: {
