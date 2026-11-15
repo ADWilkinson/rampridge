@@ -47,7 +47,7 @@
       "destination": "/game/ui/apple-touch-icon.png"
     },
     {
-      "source": "/((?!api/|assets/|game/).*)",
+      "source": "/terms",
       "destination": "/index.html"
     }
   ],

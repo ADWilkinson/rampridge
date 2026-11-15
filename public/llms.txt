@@ -1,0 +1,36 @@
+# RampRidge
+
+> Old School RuneScape's Varrock West Bank, rebuilt as a live peer-to-peer USDC
+> exchange in the browser. Players walk into the bank, chat, and buy or sell
+> USDC for fiat with real players. Every trade settles through the Peer
+> protocol (ZKP2P) on Base; RampRidge never holds anyone's funds.
+
+- Play: https://www.rampridge.xyz/
+- Source (MIT): https://github.com/ADWilkinson/rampridge
+- Peer protocol: https://peer.xyz
+
+## How trades work
+
+- Buying: pick an offer at a bank booth's Exchange or from a merchant, pay the
+  seller directly (for example Revolut, Wise, Zelle or Cash App), prove the
+  payment with the PeerAuth browser extension in Chrome or Brave on a
+  computer, and Peer's escrow contract releases the USDC to your wallet.
+- Selling: deposit USDC into Peer's escrow with a payout handle. Orders are
+  priced at the live oracle rate with an optional spread of -5% to +5%.
+- Fees: Peer's fee and a 0.5% RampRidge buy fee come out of the USDC
+  received and are listed on every confirm screen. RampRidge waives its fee
+  when the seller's order already carries its Peer referral code.
+- A practice trade walks the whole buy flow on a simulated seller, wallet and
+  extension, with no login and no money.
+- Logins: email, Google, an existing Peer account or any wallet, through
+  Privy. Email and Google logins get a smart wallet on Base with sponsored gas.
+
+## Notes
+
+- RampRidge is an unofficial fan project. RuneScape and Old School RuneScape
+  are trademarks of Jagex Ltd; RampRidge is not affiliated with or endorsed by
+  Jagex. The repository contains none of the game's art, models, sounds or
+  fonts.
+- Chat filters links, wallet addresses and payment handles; trades only
+  settle through the bank's interfaces.
+- Buying and selling are real transactions on Base mainnet.
