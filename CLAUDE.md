@@ -258,6 +258,7 @@ changes there need the maintainer's agreement.
   rules deploy with `firebase deploy --only database`.
 - Deploys (`bun run deploy:prod`), world settings, moderation and incident
   response are the maintainer's; `docs/runbook.md` is the procedure.
-  `GET /api/health` returns 200 or 503 with the serving deployment id.
+  `GET /api/health` returns 200 or 503 with the serving deployment id and
+  `revision`, the full commit SHA `scripts/deploy.sh` stamped on the build.
   Telemetry runs only on the production host; `RAMPRIDGE_TELEMETRY=off` is
   its kill switch (needs a redeploy).
